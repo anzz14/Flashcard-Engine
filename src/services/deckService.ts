@@ -155,7 +155,7 @@ export async function getDeckById(
     newCount,
     masteredCount,
     topicTotals,
-    topicMastered,
+    topicDue,
     latestReview,
   ] =
     await Promise.all([
@@ -194,8 +194,7 @@ export async function getDeckById(
         by: ["topicTag"],
         where: {
           deckId: deck.id,
-          isNew: false,
-          easeFactor: { gte: 2.0 },
+          OR: [{ nextReviewDate: { lte: now } }, { isNew: true }],
         },
         _count: {
           _all: true,
@@ -217,14 +216,13 @@ export async function getDeckById(
       }),
     ]);
 
-  const masteredByTopic = new Map(
-    topicMastered.map((row) => [row.topicTag ?? "Untagged", row._count._all])
-  );
+  const dueByTopic = new Map(topicDue.map((row) => [row.topicTag ?? "Untagged", row._count._all]));
 
   const topics: TopicStat[] = topicTotals.map((row) => {
     const topicTag = row.topicTag ?? "Untagged";
     const total = row._count._all;
-    const mastered = masteredByTopic.get(topicTag) ?? 0;
+    const due = dueByTopic.get(topicTag) ?? 0;
+    const mastered = Math.max(0, total - due);
 
     return {
       topicTag,

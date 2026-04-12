@@ -21,17 +21,24 @@ async function assertDeckOwnership(deckId: string, userId: string): Promise<void
 export async function getCardsForDeck(
   deckId: string,
   userId: string,
-  options?: { topic?: string; search?: string }
+  options?: { topics?: string[]; topic?: string; search?: string }
 ): Promise<CardWithSM2[]> {
   await assertDeckOwnership(deckId, userId);
 
+  const topics = (options?.topics ?? [])
+    .map((topic) => topic.trim())
+    .filter(Boolean);
   const topic = options?.topic?.trim();
   const search = options?.search?.trim();
 
   const cards = await prisma.card.findMany({
     where: {
       deckId,
-      ...(topic
+      ...(topics.length > 0
+        ? {
+            topicTag: { in: topics },
+          }
+        : topic
         ? {
             topicTag: topic,
           }

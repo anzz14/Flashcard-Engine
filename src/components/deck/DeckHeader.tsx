@@ -26,7 +26,19 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
   const [addCardOpen, setAddCardOpen] = useState(false);
   const [bulkAddOpen, setBulkAddOpen] = useState(false);
 
-  const activeTopic = searchParams.get("topic") ?? null;
+  const activeTopics = useMemo(() => {
+    const many = searchParams
+      .getAll("topic")
+      .map((topic) => topic.trim())
+      .filter(Boolean);
+
+    if (many.length > 0) {
+      return many;
+    }
+
+    const single = searchParams.get("topic")?.trim();
+    return single ? [single] : [];
+  }, [searchParams]);
 
   const topicTags = useMemo(() => {
     const seen = new Set<string>();
@@ -42,18 +54,31 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
 
   const setTopicFilter = (topic: string | null) => {
     const nextParams = new URLSearchParams(searchParams.toString());
+    nextParams.delete("topic");
+
     if (!topic) {
-      nextParams.delete("topic");
+      const query = nextParams.toString();
+      router.push(`/decks/${deck.id}${query ? `?${query}` : ""}`);
+      return;
+    }
+
+    const current = new Set(activeTopics);
+    if (current.has(topic)) {
+      current.delete(topic);
     } else {
-      nextParams.set("topic", topic);
+      current.add(topic);
+    }
+
+    for (const selectedTopic of current) {
+      nextParams.append("topic", selectedTopic);
     }
 
     const query = nextParams.toString();
     router.push(`/decks/${deck.id}${query ? `?${query}` : ""}`);
   };
 
-  const startSessionHref = activeTopic
-    ? `/decks/${deck.id}/study?topic=${encodeURIComponent(activeTopic)}`
+  const startSessionHref = activeTopics.length === 1
+    ? `/decks/${deck.id}/study?topic=${encodeURIComponent(activeTopics[0])}`
     : `/decks/${deck.id}/study`;
 
   return (
@@ -88,7 +113,7 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
           clickable
           onClick={() => setTopicFilter(null)}
           sx={
-            activeTopic === null
+            activeTopics.length === 0
               ? { backgroundColor: "#e0e7ff", color: "#3730a3", fontWeight: 700 }
               : { backgroundColor: "#f1f5f9", color: "#334155" }
           }
@@ -101,7 +126,7 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
             clickable
             onClick={() => setTopicFilter(topic)}
             sx={
-              activeTopic === topic
+              activeTopics.includes(topic)
                 ? { backgroundColor: "#e0e7ff", color: "#3730a3", fontWeight: 700 }
                 : { backgroundColor: "#f1f5f9", color: "#334155" }
             }

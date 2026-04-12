@@ -8,6 +8,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import CardRow from "@/components/cards/CardRow";
 import CardSearch from "@/components/cards/CardSearch";
@@ -111,17 +112,35 @@ function CardFormModal({
 }
 
 export default function CardList({ deckId, topics }: CardListProps) {
+  const searchParams = useSearchParams();
+  const topicsFromUrl = useMemo(() => {
+    const many = searchParams
+      .getAll("topic")
+      .map((topic) => topic.trim())
+      .filter(Boolean);
+
+    if (many.length > 0) {
+      return many;
+    }
+
+    const single = searchParams.get("topic")?.trim();
+    return single ? [single] : [];
+  }, [searchParams]);
   const [cards, setCards] = useState<CardWithSM2[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [search, setSearch] = useState("");
-  const [topicFilter, setTopicFilter] = useState<string | null>(null);
+  const [topicFilter, setTopicFilter] = useState<string[]>(topicsFromUrl);
   const [editingCard, setEditingCard] = useState<CardWithSM2 | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const { show } = useToast();
 
+  useEffect(() => {
+    setTopicFilter(topicsFromUrl);
+  }, [topicsFromUrl]);
+
   const fetchCards = useCallback(async () => {
     const query = new URLSearchParams();
-    if (topicFilter) query.set("topic", topicFilter);
+    topicFilter.forEach((topic) => query.append("topic", topic));
     if (search) query.set("search", search);
 
     const queryString = query.toString();
@@ -237,7 +256,7 @@ export default function CardList({ deckId, topics }: CardListProps) {
         <CardSearch
           topics={availableTopics}
           onSearch={setSearch}
-          onTopicFilter={setTopicFilter}
+          onTopicFilter={(topic) => setTopicFilter(topic ? [topic] : [])}
         />
         <Button
           variant="primary"

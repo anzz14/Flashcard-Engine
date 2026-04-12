@@ -37,11 +37,8 @@ export default async function EditDeckCardsPage({ params }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-4">
-        <Link href={`/decks/${deckId}`}>← Back to Deck</Link>
-        <h1 className="text-2xl font-bold">Edit: {deck.name}</h1>
-      </div>
-      <p className="text-muted">{deck.cardCount} cards total</p>
+     
+      <p className="text-black font-bold">{deck.cardCount} cards total</p>
 
       <CardList deckId={deckId} topics={uniqueTopics} />
     </div>
