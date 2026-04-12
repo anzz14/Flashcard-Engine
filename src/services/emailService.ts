@@ -79,7 +79,7 @@ export async function sendWelcomeEmail(user: {
     await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL!,
       to: user.email,
-      subject: "Welcome to Flashcard Engine 🧠",
+      subject: "Welcome to Flashcard Engine ",
       html: htmlContent,
     });
   } catch (error) {

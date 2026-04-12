@@ -8,6 +8,10 @@ import CreateDeckModal from "@/components/deck/CreateDeckModal";
 import StreakTracker from "@/components/dashboard/StreakTracker";
 import DeckGrid from "@/components/deck/DeckGrid";
 import WeakSpotsList from "@/components/deck/WeakSpotsList";
+import { Modal } from "@/components/ui/Modal";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+// ...existing code...
 import { Button } from "@/components/ui/Button";
 import type { CardWithSM2 } from "@/types/card";
 import type { DeckSummary } from "@/types/deck";
@@ -22,6 +26,7 @@ type DashboardContentProps = {
   dueDeckId?: string;
 };
 
+
 export default function DashboardContent({
   userFirstName,
   decks,
@@ -32,6 +37,7 @@ export default function DashboardContent({
 }: DashboardContentProps) {
   const router = useRouter();
   const [openCreateModal, setOpenCreateModal] = useState(false);
+  const [viewingCard, setViewingCard] = useState<CardWithSM2 | null>(null);
 
   return (
     <div className="space-y-8">
@@ -74,7 +80,31 @@ export default function DashboardContent({
         />
       </div>
 
-      {weakSpots.length > 0 ? <WeakSpotsList cards={weakSpots} /> : null}
+      {weakSpots.length > 0 ? (
+        <WeakSpotsList cards={weakSpots} onViewCard={setViewingCard} />
+      ) : null}
+
+      <Modal open={viewingCard !== null} onClose={() => setViewingCard(null)} title="View Card" maxWidth="sm">
+        <Stack spacing={3} sx={{ pt: 1 }}>
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Question</p>
+            <p className="whitespace-pre-wrap text-sm text-slate-900">{viewingCard?.question ?? ""}</p>
+          </Box>
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Answer</p>
+            <p className="whitespace-pre-wrap text-sm text-slate-900">{viewingCard?.answer ?? ""}</p>
+          </Box>
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Topic</p>
+            <p className="text-sm text-slate-900">{viewingCard?.topicTag?.trim() || "General"}</p>
+          </Box>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button variant="primary" onClick={() => setViewingCard(null)}>
+              Close
+            </Button>
+          </Box>
+        </Stack>
+      </Modal>
 
       <div>
         <div className="mb-4 flex items-center justify-between gap-3">

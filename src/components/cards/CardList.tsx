@@ -8,6 +8,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import CardRow from "@/components/cards/CardRow";
@@ -56,7 +58,7 @@ function CardFormModal({
 
   return (
     <Modal open={open} onClose={onClose} title={title} maxWidth="sm">
-      <div className="space-y-4 pt-1">
+      <Stack spacing={3} sx={{ pt: 1 }}>
         <TextField
           label="Question"
           value={question}
@@ -82,7 +84,7 @@ function CardFormModal({
           fullWidth
         />
 
-        <div className="flex justify-end gap-2">
+        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
           <Button variant="ghost" onClick={onClose} disabled={saving}>
             Cancel
           </Button>
@@ -105,8 +107,8 @@ function CardFormModal({
           >
             Save
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Stack>
     </Modal>
   );
 }
@@ -130,7 +132,10 @@ export default function CardList({ deckId, topics }: CardListProps) {
   const [totalCount, setTotalCount] = useState(0);
   const [search, setSearch] = useState("");
   const [topicFilter, setTopicFilter] = useState<string[]>(topicsFromUrl);
+  const [viewingCard, setViewingCard] = useState<CardWithSM2 | null>(null);
   const [editingCard, setEditingCard] = useState<CardWithSM2 | null>(null);
+  const [deletingCard, setDeletingCard] = useState<CardWithSM2 | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const { show } = useToast();
 
@@ -196,6 +201,7 @@ export default function CardList({ deckId, topics }: CardListProps) {
   }, [cards, topics]);
 
   const handleDelete = async (cardId: string) => {
+    setIsDeleting(true);
     try {
       const response = await fetch(`/api/decks/${deckId}/cards/${cardId}`, {
         method: "DELETE",
@@ -206,9 +212,12 @@ export default function CardList({ deckId, topics }: CardListProps) {
 
       setCards((prev) => prev.filter((card) => card.id !== cardId));
       setTotalCount((prev) => Math.max(0, prev - 1));
+      setDeletingCard(null);
       show("Card deleted", "success");
     } catch {
       show("Failed to delete card", "error");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -288,9 +297,10 @@ export default function CardList({ deckId, topics }: CardListProps) {
               <CardRow
                 key={card.id}
                 card={card}
+                onView={(next) => setViewingCard(next)}
                 onEdit={(next) => setEditingCard(next)}
-                onDelete={(cardId) => {
-                  void handleDelete(cardId);
+                onDelete={(next) => {
+                  setDeletingCard(next);
                 }}
               />
             ))}
@@ -320,6 +330,61 @@ export default function CardList({ deckId, topics }: CardListProps) {
         onClose={() => setEditingCard(null)}
         onSave={handleSaveEdit}
       />
+
+      <Modal open={viewingCard !== null} onClose={() => setViewingCard(null)} title="View Card" maxWidth="sm">
+        <Stack spacing={3} sx={{ pt: 1 }}>
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Question</p>
+            <p className="whitespace-pre-wrap text-sm text-slate-900">{viewingCard?.question ?? ""}</p>
+          </Box>
+
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Answer</p>
+            <p className="whitespace-pre-wrap text-sm text-slate-900">{viewingCard?.answer ?? ""}</p>
+          </Box>
+
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Topic</p>
+            <p className="text-sm text-slate-900">{viewingCard?.topicTag?.trim() || "General"}</p>
+          </Box>
+
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button variant="primary" onClick={() => setViewingCard(null)}>
+              Close
+            </Button>
+          </Box>
+        </Stack>
+      </Modal>
+
+      <Modal open={deletingCard !== null} onClose={() => setDeletingCard(null)} title="Delete Card" maxWidth="sm">
+        <Stack spacing={3} sx={{ pt: 1 }}>
+          <p className="text-sm text-slate-700">
+            Are you sure you want to delete this card? This action cannot be undone.
+          </p>
+
+          {deletingCard ? (
+            <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
+              <p className="text-sm font-medium text-slate-900">{deletingCard.question}</p>
+            </Box>
+          ) : null}
+
+          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
+            <Button variant="ghost" onClick={() => setDeletingCard(null)} disabled={isDeleting}>
+              Cancel
+            </Button>
+            <Button
+              variant="danger"
+              disabled={isDeleting || !deletingCard}
+              onClick={() => {
+                if (!deletingCard) return;
+                void handleDelete(deletingCard.id);
+              }}
+            >
+              Delete
+            </Button>
+          </Box>
+        </Stack>
+      </Modal>
     </div>
   );
 }

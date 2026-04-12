@@ -35,7 +35,7 @@ export default function Sidebar() {
   return (
     <aside className="flex h-full w-60 flex-col border-r border-slate-200 bg-white">
       <div className="border-b border-slate-200 px-4 py-5">
-        <p className="text-lg font-bold text-slate-900">🧠 Flashcard Engine</p>
+        <p className="text-lg font-bold text-slate-900">Flashcard Engine</p>
       </div>
 
       <nav className="flex-1 px-2 py-4">

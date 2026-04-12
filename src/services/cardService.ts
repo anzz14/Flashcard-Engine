@@ -132,7 +132,7 @@ export async function createCard(
 export async function updateCard(
   cardId: string,
   userId: string,
-  data: { question?: string; answer?: string; topicTag?: string }
+  data: { question?: string; answer?: string; topicTag?: string | null }
 ): Promise<CardWithSM2> {
   const card = await prisma.card.findFirst({
     where: {
@@ -175,8 +175,12 @@ export async function updateCard(
   }
 
   if (data.topicTag !== undefined) {
-    const topicTag = data.topicTag.trim();
-    updateData.topicTag = topicTag || null;
+    if (data.topicTag === null) {
+      updateData.topicTag = null;
+    } else {
+      const topicTag = data.topicTag.trim();
+      updateData.topicTag = topicTag || null;
+    }
   }
 
   const updated = await prisma.card.update({

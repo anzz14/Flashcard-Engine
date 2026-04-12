@@ -9,6 +9,7 @@ import type { CardWithSM2 } from "@/types/card";
 
 type WeakSpotsListProps = {
   cards: CardWithSM2[];
+  onViewCard?: (card: CardWithSM2) => void;
 };
 
 function getWeaknessWidthPercent(easeFactor: number): number {
@@ -21,27 +22,21 @@ function getWeaknessWidthPercent(easeFactor: number): number {
   return Math.round(20 + normalized * 80);
 }
 
-export default function WeakSpotsList({ cards }: WeakSpotsListProps) {
+
+export default function WeakSpotsList({ cards, onViewCard }: WeakSpotsListProps) {
   const { show } = useToast();
 
   const weakestCards = [...cards]
     .sort((a, b) => a.easeFactor - b.easeFactor)
     .slice(0, 5);
 
-  const handleCopyQuestion = async (question: string) => {
-    try {
-      await navigator.clipboard.writeText(question);
-      show("Question copied!", "success");
-    } catch {
-      show("Could not copy question", "error");
-    }
-  };
+
 
   return (
     <Card className="p-6">
       <div className="mb-4 flex items-center gap-2">
         <Target className="h-5 w-5 text-slate-700" />
-        <h3 className="text-lg font-semibold text-slate-900">Weak Spots 🎯</h3>
+        <h3 className="text-lg font-semibold text-slate-900">Weak Spots</h3>
       </div>
       <p className="mb-5 text-sm text-slate-600">Cards you struggle with most</p>
 
@@ -60,7 +55,9 @@ export default function WeakSpotsList({ cards }: WeakSpotsListProps) {
                 key={card.id}
                 type="button"
                 onClick={() => {
-                  void handleCopyQuestion(card.question);
+                  if (typeof onViewCard === "function") {
+                    onViewCard(card);
+                  }
                 }}
                 className="w-full rounded-xl border border-slate-200 bg-white p-3 text-left transition hover:border-red-200 hover:bg-red-50/40"
               >

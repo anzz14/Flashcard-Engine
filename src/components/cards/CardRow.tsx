@@ -1,29 +1,36 @@
 "use client";
 
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Tooltip from "@mui/material/Tooltip";
+import { useState, type MouseEvent } from "react";
 import { Badge, getTopicColor } from "@/components/ui/Badge";
 import { formatDate, truncate } from "@/lib/utils";
 import type { CardWithSM2 } from "@/types/card";
 
 type CardRowProps = {
   card: CardWithSM2;
+  onView: (card: CardWithSM2) => void;
   onEdit: (card: CardWithSM2) => void;
-  onDelete: (cardId: string) => void;
+  onDelete: (card: CardWithSM2) => void;
 };
 
-export default function CardRow({ card, onEdit, onDelete }: CardRowProps) {
+export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps) {
   const topic = card.topicTag?.trim() || "General";
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const menuOpen = Boolean(anchorEl);
 
-  const handleDelete = () => {
-    const confirmed = window.confirm("Delete this card?");
-    if (!confirmed) return;
-    onDelete(card.id);
+  const handleOpenMenu = (event: MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -64,14 +71,39 @@ export default function CardRow({ card, onEdit, onDelete }: CardRowProps) {
       </TableCell>
 
       <TableCell align="right">
-        <div className="flex items-center justify-end gap-1">
-          <IconButton size="small" aria-label="Edit card" onClick={() => onEdit(card)}>
-            <EditOutlinedIcon fontSize="small" />
-          </IconButton>
-          <IconButton size="small" aria-label="Delete card" onClick={handleDelete}>
-            <DeleteOutlinedIcon fontSize="small" />
-          </IconButton>
-        </div>
+        <IconButton size="small" aria-label="Card actions" onClick={handleOpenMenu}>
+          <MoreVertIcon fontSize="small" />
+        </IconButton>
+
+        <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleCloseMenu}>
+          <MenuItem
+            onClick={() => {
+              handleCloseMenu();
+              onView(card);
+            }}
+            sx={{ fontSize: '0.875rem', lineHeight: 1.5, minHeight: 0, py: 0.5 }}
+          >
+            <span style={{ fontSize: '0.875rem' }}>View</span>
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleCloseMenu();
+              onEdit(card);
+            }}
+            sx={{ fontSize: '0.875rem', lineHeight: 1.5, minHeight: 0, py: 0.5 }}
+          >
+            <span style={{ fontSize: '0.875rem' }}>Edit</span>
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleCloseMenu();
+              onDelete(card);
+            }}
+            sx={{ fontSize: '0.875rem', lineHeight: 1.5, minHeight: 0, py: 0.5 }}
+          >
+            <span style={{ fontSize: '0.875rem' }}>Delete</span>
+          </MenuItem>
+        </Menu>
       </TableCell>
     </TableRow>
   );
