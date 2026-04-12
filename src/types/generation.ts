@@ -4,6 +4,8 @@ export interface ProgressEvent {
   doneChunks: number;
   totalChunks: number;
   status: JobStatus;
+  progress?: number;
+  message?: string;
   cardCount?: number;
   errorMessage?: string;
 }
