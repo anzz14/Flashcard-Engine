@@ -3,6 +3,8 @@
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import { useMemo, useState } from "react";
 import GenerationProgress from "@/components/upload/GenerationProgress";
 import PDFUploader from "@/components/upload/PDFUploader";
@@ -116,9 +118,9 @@ export function CreateDeckFlow({
   };
 
   return (
-    <div className="space-y-5 pt-1">
+    <Stack spacing={3} sx={{ pt: 1 }}>
       {step === 1 ? (
-        <div className="space-y-4">
+        <Stack spacing={3}>
           <TextField
             label="Deck name"
             value={deckName}
@@ -127,7 +129,7 @@ export function CreateDeckFlow({
             autoFocus
           />
 
-          <div className="flex justify-end gap-2">
+          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
             {showCancel && onCancel ? (
               <Button variant="ghost" onClick={onCancel}>
                 Cancel
@@ -140,12 +142,12 @@ export function CreateDeckFlow({
             >
               Continue
             </Button>
-          </div>
-        </div>
+          </Box>
+        </Stack>
       ) : null}
 
       {step === 2 ? (
-        <div className="space-y-4">
+        <Stack spacing={3}>
           <Tabs
             value={contentTab}
             onChange={(_, value) => {
@@ -179,7 +181,7 @@ export function CreateDeckFlow({
             <UploadErrorBanner message={errorMessage} onDismiss={() => setErrorMessage(null)} />
           ) : null}
 
-          <div className="flex justify-between gap-2">
+          <Box sx={{ display: "flex", justifyContent: "space-between", gap: 1 }}>
             <Button variant="ghost" onClick={() => setStep(1)} disabled={isStarting}>
               Back
             </Button>
@@ -187,19 +189,19 @@ export function CreateDeckFlow({
             <Button variant="primary" onClick={() => void handleGenerate()} disabled={isStarting}>
               Generate Flashcards
             </Button>
-          </div>
-        </div>
+          </Box>
+        </Stack>
       ) : null}
 
       {step === 3 ? (
-        <div className="space-y-4">
+        <Stack spacing={3}>
           {generationError ? (
             <>
               <UploadErrorBanner
                 message={generationError}
                 onDismiss={() => setGenerationError(null)}
               />
-              <div className="flex justify-end">
+              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                 <Button
                   variant="secondary"
                   onClick={() => {
@@ -209,7 +211,7 @@ export function CreateDeckFlow({
                 >
                   Try Again
                 </Button>
-              </div>
+              </Box>
             </>
           ) : createdDeckId ? (
             <GenerationProgress
@@ -222,9 +224,9 @@ export function CreateDeckFlow({
               }}
             />
           ) : null}
-        </div>
+        </Stack>
       ) : null}
-    </div>
+    </Stack>
   );
 }
 

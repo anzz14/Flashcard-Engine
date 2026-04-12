@@ -42,7 +42,7 @@ export async function getUserDecks(userId: string): Promise<DeckSummary[]> {
 
   const deckIds = decks.map((deck) => deck.id);
 
-  const [totalByDeck, dueByDeck, masteredByDeck] = await Promise.all([
+  const [totalByDeck, dueByDeck, masteredByDeck, latestReviews] = await Promise.all([
     prisma.card.groupBy({
       by: ["deckId"],
       where: {
@@ -73,6 +73,25 @@ export async function getUserDecks(userId: string): Promise<DeckSummary[]> {
         _all: true,
       },
     }),
+    prisma.review.findMany({
+      where: {
+        userId,
+        card: {
+          deckId: { in: deckIds },
+        },
+      },
+      orderBy: {
+        reviewedAt: "desc",
+      },
+      select: {
+        reviewedAt: true,
+        card: {
+          select: {
+            deckId: true,
+          },
+        },
+      },
+    }),
   ]);
 
   const totalMap = new Map(totalByDeck.map((item) => [item.deckId, item._count._all]));
@@ -80,19 +99,27 @@ export async function getUserDecks(userId: string): Promise<DeckSummary[]> {
   const masteredMap = new Map(
     masteredByDeck.map((item) => [item.deckId, item._count._all])
   );
+  const latestReviewMap = new Map<string, Date>();
+
+  for (const review of latestReviews) {
+    if (!latestReviewMap.has(review.card.deckId)) {
+      latestReviewMap.set(review.card.deckId, review.reviewedAt);
+    }
+  }
 
   return decks.map((deck) => {
     const cardCount = totalMap.get(deck.id) ?? 0;
     const dueToday = dueMap.get(deck.id) ?? 0;
     const mastered = masteredMap.get(deck.id) ?? 0;
+    const masteryPercent = cardCount > 0 && dueToday === 0 ? 100 : toPercent(mastered, cardCount);
 
     return {
       id: deck.id,
       name: deck.name,
       cardCount,
       dueToday,
-      masteryPercent: toPercent(mastered, cardCount),
-      lastStudied: deck.lastStudied,
+      masteryPercent,
+      lastStudied: deck.lastStudied ?? latestReviewMap.get(deck.id) ?? null,
       createdAt: deck.createdAt,
     };
   });
@@ -122,7 +149,15 @@ export async function getDeckById(
     return null;
   }
 
-  const [cardCount, dueToday, newCount, masteredCount, topicTotals, topicMastered] =
+  const [
+    cardCount,
+    dueToday,
+    newCount,
+    masteredCount,
+    topicTotals,
+    topicMastered,
+    latestReview,
+  ] =
     await Promise.all([
       prisma.card.count({
         where: { deckId: deck.id },
@@ -166,6 +201,20 @@ export async function getDeckById(
           _all: true,
         },
       }),
+      prisma.review.findFirst({
+        where: {
+          userId,
+          card: {
+            deckId: deck.id,
+          },
+        },
+        orderBy: {
+          reviewedAt: "desc",
+        },
+        select: {
+          reviewedAt: true,
+        },
+      }),
     ]);
 
   const masteredByTopic = new Map(
@@ -193,8 +242,9 @@ export async function getDeckById(
     cardCount,
     dueToday,
     newCount,
-    masteryPercent: toPercent(masteredCount, cardCount),
-    lastStudied: deck.lastStudied,
+    masteryPercent:
+      cardCount > 0 && dueToday === 0 ? 100 : toPercent(masteredCount, cardCount),
+    lastStudied: deck.lastStudied ?? latestReview?.reviewedAt ?? null,
     topics,
   };
 }

@@ -2,7 +2,9 @@
 
 import { Layers } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import DeckCard from "@/components/deck/DeckCard";
+import RenameDeckModal from "@/components/deck/RenameDeckModal";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { useToast } from "@/components/ui/Toast";
@@ -29,20 +31,10 @@ export default function DeckGrid({ decks, onDeckChange }: DeckGridProps) {
   const router = useRouter();
   const { show } = useToast();
   const triggerDeckChange = onDeckChange ?? (() => undefined);
+  const [renamingDeck, setRenamingDeck] = useState<DeckSummary | null>(null);
 
-  const handleRename = async (deck: DeckSummary) => {
-    const nextName = window.prompt("Rename deck", deck.name)?.trim();
-    if (!nextName || nextName === deck.name) {
-      return;
-    }
-
-    try {
-      await patchDeck(deck.id, { name: nextName });
-      show("Deck renamed", "success");
-      triggerDeckChange();
-    } catch {
-      show("Failed to rename deck", "error");
-    }
+  const handleRename = (deck: DeckSummary) => {
+    setRenamingDeck(deck);
   };
 
   const handleArchive = async (deck: DeckSummary) => {
@@ -75,19 +67,32 @@ export default function DeckGrid({ decks, onDeckChange }: DeckGridProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {decks.map((deck) => (
-        <DeckCard
-          key={deck.id}
-          deck={deck}
-          onRename={() => {
-            void handleRename(deck);
-          }}
-          onArchive={() => {
-            void handleArchive(deck);
-          }}
-        />
-      ))}
-    </div>
+    <>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {decks.map((deck) => (
+          <DeckCard
+            key={deck.id}
+            deck={deck}
+            onRename={() => {
+              handleRename(deck);
+            }}
+            onArchive={() => {
+              void handleArchive(deck);
+            }}
+          />
+        ))}
+      </div>
+
+      <RenameDeckModal
+        open={renamingDeck !== null}
+        deckName={renamingDeck?.name ?? ""}
+        deckId={renamingDeck?.id ?? ""}
+        onClose={() => setRenamingDeck(null)}
+        onRenamed={() => {
+          show("Deck renamed", "success");
+          triggerDeckChange();
+        }}
+      />
+    </>
   );
 }

@@ -8,7 +8,8 @@ type DueTodayProps = {
 };
 
 export default function DueToday({ dueCount, onClick }: DueTodayProps) {
-  const countColor = dueCount > 0 ? "text-indigo-600" : "text-emerald-600";
+  const countColor =
+    dueCount < 3 ? "text-emerald-600" : dueCount < 10 ? "text-amber-500" : "text-indigo-600";
 
   return (
     <Card className="p-6">

@@ -22,6 +22,12 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const menuOpen = Boolean(anchorEl);
+  const dueColorClass =
+    deck.dueToday < 3
+      ? "text-emerald-600"
+      : deck.dueToday < 10
+        ? "text-amber-500"
+        : "text-orange-600";
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -47,7 +53,7 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
 
       <div className="flex items-center justify-between">
         <div className="space-y-2">
-          <p className={`text-sm font-semibold ${deck.dueToday > 0 ? "text-orange-600" : "text-slate-500"}`}>
+          <p className={`text-sm font-semibold ${dueColorClass}`}>
             {deck.dueToday} due
           </p>
           <p className="text-xs text-slate-500">

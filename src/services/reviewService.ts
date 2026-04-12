@@ -17,6 +17,7 @@ export async function applyReview(
   }
 
   const updates = applyRating(card, rating);
+  const reviewedAt = new Date();
 
   await prisma.$transaction([
     prisma.card.update({
@@ -29,8 +30,12 @@ export async function applyReview(
         isNew: false,
       },
     }),
+    prisma.deck.update({
+      where: { id: card.deckId },
+      data: { lastStudied: reviewedAt },
+    }),
     prisma.review.create({
-      data: { cardId, userId, rating },
+      data: { cardId, userId, rating, reviewedAt },
     }),
   ]);
 

@@ -27,7 +27,18 @@ export default function RecentDecks({ decks }: RecentDecksProps) {
             <h3 className="truncate text-base font-semibold text-slate-900">{deck.name}</h3>
 
             <p className="text-sm text-slate-600">
-              <span className="font-semibold text-slate-900">{deck.dueToday}</span> due today
+              <span
+                className={`font-semibold ${
+                  deck.dueToday < 3
+                    ? "text-emerald-600"
+                    : deck.dueToday < 10
+                      ? "text-amber-500"
+                      : "text-slate-900"
+                }`}
+              >
+                {deck.dueToday}
+              </span>{" "}
+              due today
             </p>
 
             <Button
