@@ -1,3 +1,4 @@
+import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -49,3 +50,5 @@ export const authOptions: NextAuthOptions = {
     error: "/login",
   },
 };
+
+export const { auth } = NextAuth(authOptions);
