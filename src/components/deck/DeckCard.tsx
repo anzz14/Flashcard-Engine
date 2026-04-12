@@ -22,6 +22,8 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const menuOpen = Boolean(anchorEl);
+  const displayName = truncate(deck.name, 40);
+  const isNameTruncated = displayName !== deck.name;
   const dueColorClass =
     deck.dueToday < 3
       ? "text-emerald-600"
@@ -42,7 +44,12 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
     <Card hoverable className="space-y-4 p-5" onClick={() => router.push(`/decks/${deck.id}`)}>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 space-y-2">
-          <p className="truncate text-lg font-semibold text-slate-900">{truncate(deck.name, 40)}</p>
+          <p
+            className="truncate text-lg font-semibold text-slate-900"
+            title={isNameTruncated ? deck.name : undefined}
+          >
+            {displayName}
+          </p>
           <Badge label={`${deck.cardCount} cards`} color="gray" />
         </div>
 

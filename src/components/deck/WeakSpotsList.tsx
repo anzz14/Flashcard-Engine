@@ -52,6 +52,8 @@ export default function WeakSpotsList({ cards }: WeakSpotsListProps) {
           {weakestCards.map((card) => {
             const topic = card.topicTag?.trim() || "General";
             const weaknessWidth = getWeaknessWidthPercent(card.easeFactor);
+            const displayQuestion = truncate(card.question, 80);
+            const isQuestionTruncated = displayQuestion !== card.question;
 
             return (
               <button
@@ -63,7 +65,12 @@ export default function WeakSpotsList({ cards }: WeakSpotsListProps) {
                 className="w-full rounded-xl border border-slate-200 bg-white p-3 text-left transition hover:border-red-200 hover:bg-red-50/40"
               >
                 <div className="mb-2 flex items-start justify-between gap-3">
-                  <p className="text-sm font-medium text-slate-900">{truncate(card.question, 80)}</p>
+                  <p
+                    className="text-sm font-medium text-slate-900"
+                    title={isQuestionTruncated ? card.question : undefined}
+                  >
+                    {displayQuestion}
+                  </p>
                   <Badge label={topic} color={getTopicColor(topic)} />
                 </div>
 
