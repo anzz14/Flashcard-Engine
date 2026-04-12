@@ -4,13 +4,21 @@ import type { Chunk } from "../types/generation";
 
 type LLMProvider = "gemini" | "groq";
 
+function looksLikeGroqKey(value: string | undefined): boolean {
+  return typeof value === "string" && value.trim().startsWith("gsk_");
+}
+
 function resolveProvider(): LLMProvider {
   const configured = process.env.LLM_PROVIDER?.trim().toLowerCase();
   if (configured === "gemini" || configured === "groq") {
     return configured;
   }
 
-  if (process.env.GROQ_API_KEY && !process.env.GEMINI_API_KEY) {
+  if (process.env.GROQ_API_KEY) {
+    return "groq";
+  }
+
+  if (looksLikeGroqKey(process.env.GEMINI_API_KEY)) {
     return "groq";
   }
 
@@ -161,6 +169,12 @@ async function generateWithGemini(prompt: string): Promise<string> {
     );
   }
 
+  if (looksLikeGroqKey(apiKey)) {
+    throw new Error(
+      "GEMINI_API_KEY appears to be a Groq key (gsk_*). Set LLM_PROVIDER=groq and/or GROQ_API_KEY."
+    );
+  }
+
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({
     model: process.env.GEMINI_MODEL || "gemini-1.5-flash",
@@ -176,9 +190,12 @@ async function generateWithGemini(prompt: string): Promise<string> {
 }
 
 async function generateWithGroq(prompt: string): Promise<string> {
-  const apiKey = process.env.GROQ_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY ||
+    (looksLikeGroqKey(process.env.GEMINI_API_KEY) ? process.env.GEMINI_API_KEY : undefined);
   if (!apiKey) {
-    throw new Error("GROQ_API_KEY is missing while LLM provider is set to groq");
+    throw new Error(
+      "GROQ_API_KEY is missing while LLM provider is set to groq"
+    );
   }
 
   const model = process.env.GROQ_MODEL || "llama-3.1-8b-instant";
