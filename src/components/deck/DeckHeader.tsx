@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import AddCardModal from "@/components/cards/AddCardModal";
+import BulkAddCardsModal from "@/components/deck/BulkAddCardsModal";
 import RenameDeckModal from "@/components/deck/RenameDeckModal";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
@@ -23,6 +24,7 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
 
   const [renameOpen, setRenameOpen] = useState(false);
   const [addCardOpen, setAddCardOpen] = useState(false);
+  const [bulkAddOpen, setBulkAddOpen] = useState(false);
 
   const activeTopic = searchParams.get("topic") ?? null;
 
@@ -67,6 +69,12 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
         <div className="flex items-center gap-2">
           <Button variant="secondary" href={startSessionHref}>
             Start Session
+          </Button>
+          <Button variant="secondary" href={`/decks/${deck.id}/edit`}>
+            Manage Cards
+          </Button>
+          <Button variant="secondary" onClick={() => setBulkAddOpen(true)}>
+            Bulk Add
           </Button>
           <Button variant="primary" onClick={() => setAddCardOpen(true)}>
             Add Card
@@ -119,6 +127,16 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
         onClose={() => setAddCardOpen(false)}
         onAdd={() => {
           show("Card added", "success");
+          router.refresh();
+        }}
+      />
+
+      <BulkAddCardsModal
+        open={bulkAddOpen}
+        deckId={deck.id}
+        onClose={() => setBulkAddOpen(false)}
+        onCompleted={(cardCount) => {
+          show(`Bulk generation complete: ${cardCount} cards added`, "success");
           router.refresh();
         }}
       />

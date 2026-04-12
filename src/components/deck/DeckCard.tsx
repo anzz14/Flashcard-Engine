@@ -71,7 +71,8 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
 
       <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleMenuClose}>
         <MenuItem
-          onClick={() => {
+          onClick={(event) => {
+            event.stopPropagation();
             handleMenuClose();
             onRename?.();
           }}
@@ -79,7 +80,8 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
           Rename
         </MenuItem>
         <MenuItem
-          onClick={() => {
+          onClick={(event) => {
+            event.stopPropagation();
             handleMenuClose();
             onArchive?.();
           }}
