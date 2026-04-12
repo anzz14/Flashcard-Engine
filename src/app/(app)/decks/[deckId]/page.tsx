@@ -7,13 +7,14 @@ import { auth } from "@/lib/auth";
 import { getDeckById } from "@/services/deckService";
 import { getDeckTopicStats } from "@/services/progressService";
 
-type Props = { params: { deckId: string } };
+type Props = { params: Promise<{ deckId: string }> };
 
 export default async function DeckDetailPage({ params }: Props) {
+	const { deckId } = await params;
 	const session = await auth();
 	const userId = session!.user.id;
 
-	const deck = await getDeckById(params.deckId, userId);
+	const deck = await getDeckById(deckId, userId);
 	if (!deck || deck.archived) {
 		notFound();
 	}

@@ -8,7 +8,12 @@ export async function POST(req: Request) {
 	const { userId, error } = await getAuthenticatedUser();
 	if (error) return error;
 
-	const formData = await req.formData();
+	let formData: FormData;
+	try {
+		formData = await req.formData();
+	} catch {
+		return apiError("Invalid form data", 400);
+	}
 	const deckIdValue = formData.get("deckId");
 	const fileValue = formData.get("file");
 	const textValue = formData.get("text");
@@ -40,7 +45,19 @@ export async function POST(req: Request) {
 			if (e instanceof PDFExtractionError) {
 				return apiError(e.message, 422);
 			}
-			return apiError("Failed to process PDF", 500);
+
+			const message = e instanceof Error ? e.message.toLowerCase() : "";
+			if (
+				message.includes("pdf") ||
+				message.includes("password") ||
+				message.includes("encrypted") ||
+				message.includes("xref")
+			) {
+				return apiError("PDF appears to be scanned — try pasting text instead", 422);
+			}
+
+			console.error("Unexpected PDF extraction error:", e);
+			return apiError("Generation failed — please try again", 500);
 		}
 	} else if (text) {
 		if (text.trim().split(/\s+/).length < 100) {

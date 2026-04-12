@@ -2,7 +2,9 @@
 
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import DueToday from "@/components/dashboard/DueToday";
+import CreateDeckModal from "@/components/deck/CreateDeckModal";
 import StreakTracker from "@/components/dashboard/StreakTracker";
 import DeckGrid from "@/components/deck/DeckGrid";
 import WeakSpotsList from "@/components/deck/WeakSpotsList";
@@ -29,6 +31,7 @@ export default function DashboardContent({
   dueDeckId,
 }: DashboardContentProps) {
   const router = useRouter();
+  const [openCreateModal, setOpenCreateModal] = useState(false);
 
   return (
     <div className="space-y-8">
@@ -43,7 +46,12 @@ export default function DashboardContent({
           <p className="mt-1 text-sm text-indigo-800">
             Create your first deck to start generating and reviewing flashcards.
           </p>
-          <Button variant="primary" href="/decks/new" startIcon={<AddIcon />} sx={{ mt: 2 }}>
+          <Button
+            variant="primary"
+            onClick={() => setOpenCreateModal(true)}
+            startIcon={<AddIcon />}
+            sx={{ mt: 2 }}
+          >
             Create First Deck
           </Button>
         </div>
@@ -71,13 +79,27 @@ export default function DashboardContent({
       <div>
         <div className="mb-4 flex items-center justify-between gap-3">
           <h2 className="text-xl font-semibold text-slate-900">Your Decks</h2>
-          <Button variant="primary" href="/decks/new" startIcon={<AddIcon />}>
+          <Button
+            variant="primary"
+            onClick={() => setOpenCreateModal(true)}
+            startIcon={<AddIcon />}
+          >
             New Deck
           </Button>
         </div>
 
         <DeckGrid decks={decks} onDeckChange={() => router.refresh()} />
       </div>
+
+      <CreateDeckModal
+        open={openCreateModal}
+        onClose={() => setOpenCreateModal(false)}
+        onCreated={(deckId) => {
+          setOpenCreateModal(false);
+          router.push(`/decks/${deckId}`);
+          router.refresh();
+        }}
+      />
     </div>
   );
 }

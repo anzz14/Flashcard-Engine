@@ -14,7 +14,12 @@ export async function buildSessionQueue(
   deckId: string,
   userId: string,
   options?: { topic?: string }
-): Promise<{ cards: CardWithSM2[]; totalNew: number; totalDue: number }> {
+): Promise<{
+  cards: CardWithSM2[];
+  totalNew: number;
+  totalDue: number;
+  nextDueDate: Date | null;
+}> {
   const deck = await prisma.deck.findFirst({ where: { id: deckId, userId } });
   if (!deck) {
     throw new Error("Deck not found");
@@ -65,9 +70,20 @@ export async function buildSessionQueue(
     },
   });
 
+  const nextUpcoming = await prisma.card.findFirst({
+    where: {
+      ...baseWhere,
+      isNew: false,
+      nextReviewDate: { gt: new Date() },
+    },
+    orderBy: { nextReviewDate: "asc" },
+    select: { nextReviewDate: true },
+  });
+
   return {
     cards: [...shuffle(newCards), ...shuffle(dueCards)],
     totalNew: newCards.length,
     totalDue: dueCards.length,
+    nextDueDate: nextUpcoming?.nextReviewDate ?? null,
   };
 }
