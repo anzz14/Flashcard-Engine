@@ -1,0 +1,127 @@
+"use client";
+
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import Chip from "@mui/material/Chip";
+import IconButton from "@mui/material/IconButton";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
+import AddCardModal from "@/components/cards/AddCardModal";
+import RenameDeckModal from "@/components/deck/RenameDeckModal";
+import { Button } from "@/components/ui/Button";
+import { useToast } from "@/components/ui/Toast";
+import type { DeckWithStats } from "@/types/deck";
+
+type DeckHeaderProps = {
+  deck: DeckWithStats;
+  onRename?: () => void;
+};
+
+export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { show } = useToast();
+
+  const [renameOpen, setRenameOpen] = useState(false);
+  const [addCardOpen, setAddCardOpen] = useState(false);
+
+  const activeTopic = searchParams.get("topic") ?? null;
+
+  const topicTags = useMemo(() => {
+    const seen = new Set<string>();
+
+    for (const topic of deck.topics) {
+      const tag = topic.topicTag?.trim();
+      if (!tag || seen.has(tag)) continue;
+      seen.add(tag);
+    }
+
+    return Array.from(seen);
+  }, [deck.topics]);
+
+  const setTopicFilter = (topic: string | null) => {
+    const nextParams = new URLSearchParams(searchParams.toString());
+    if (!topic) {
+      nextParams.delete("topic");
+    } else {
+      nextParams.set("topic", topic);
+    }
+
+    const query = nextParams.toString();
+    router.push(`/decks/${deck.id}${query ? `?${query}` : ""}`);
+  };
+
+  const startSessionHref = activeTopic
+    ? `/decks/${deck.id}/study?topic=${encodeURIComponent(activeTopic)}`
+    : `/decks/${deck.id}/study`;
+
+  return (
+    <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center gap-2">
+          <h1 className="text-3xl font-bold text-slate-900">{deck.name}</h1>
+          <IconButton aria-label="Rename deck" onClick={() => setRenameOpen(true)}>
+            <EditOutlinedIcon fontSize="small" />
+          </IconButton>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Button variant="secondary" href={startSessionHref}>
+            Start Session
+          </Button>
+          <Button variant="primary" onClick={() => setAddCardOpen(true)}>
+            Add Card
+          </Button>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Chip
+          label="All Topics"
+          clickable
+          onClick={() => setTopicFilter(null)}
+          sx={
+            activeTopic === null
+              ? { backgroundColor: "#e0e7ff", color: "#3730a3", fontWeight: 700 }
+              : { backgroundColor: "#f1f5f9", color: "#334155" }
+          }
+        />
+
+        {topicTags.map((topic) => (
+          <Chip
+            key={topic}
+            label={topic}
+            clickable
+            onClick={() => setTopicFilter(topic)}
+            sx={
+              activeTopic === topic
+                ? { backgroundColor: "#e0e7ff", color: "#3730a3", fontWeight: 700 }
+                : { backgroundColor: "#f1f5f9", color: "#334155" }
+            }
+          />
+        ))}
+      </div>
+
+      <RenameDeckModal
+        open={renameOpen}
+        deckName={deck.name}
+        deckId={deck.id}
+        onClose={() => setRenameOpen(false)}
+        onRenamed={() => {
+          show("Deck renamed", "success");
+          onRename?.();
+          router.refresh();
+        }}
+      />
+
+      <AddCardModal
+        open={addCardOpen}
+        deckId={deck.id}
+        onClose={() => setAddCardOpen(false)}
+        onAdd={() => {
+          show("Card added", "success");
+          router.refresh();
+        }}
+      />
+    </div>
+  );
+}
