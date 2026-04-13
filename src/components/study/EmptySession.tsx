@@ -72,6 +72,18 @@ export default function EmptySession({ deckId, topicFilter }: EmptySessionProps)
         <Button variant="secondary" onClick={() => router.push(`/decks/${deckId}`)}>
           Back to Deck
         </Button>
+
+        <Button
+          variant="ghost"
+          onClick={() => router.push(`/decks/${deckId}/last-session`)}
+          sx={{
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+        >
+          View Last Session
+        </Button>
       </div>
     </div>
   );

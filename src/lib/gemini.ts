@@ -190,7 +190,11 @@ async function generateWithGemini(
     maxOutputTokens: 2048,
     responseMimeType: "application/json",
   };
-  const generationConfig = {
+  const generationConfig: {
+    temperature: number;
+    maxOutputTokens: number;
+    responseMimeType?: string;
+  } = {
     ...baseGenerationConfig,
     ...overrides,
   };
@@ -249,6 +253,107 @@ async function generateWithGroq(prompt: string): Promise<string> {
   return text;
 }
 
+async function generateWithOpenRouter(prompt: string): Promise<string> {
+  const apiKey = process.env.OPENROUTER_API_KEY?.trim();
+  if (!apiKey) {
+    throw new Error("OPENROUTER_API_KEY is not set");
+  }
+
+  const model = process.env.OPENROUTER_MODEL || "mistralai/mistral-7b-instruct:free";
+
+  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+      "HTTP-Referer": process.env.NEXTAUTH_URL || "http://localhost:3000",
+      "X-Title": "Flashcard Engine",
+    },
+    body: JSON.stringify({
+      model,
+      temperature: 0.4,
+      max_tokens: 2048,
+      messages: [{ role: "user", content: prompt }],
+    }),
+  });
+
+  if (!response.ok) {
+    const errBody = await response.text();
+    throw new Error(`OpenRouter API error ${response.status}: ${errBody}`);
+  }
+
+  const payload = (await response.json()) as {
+    choices?: Array<{ message?: { content?: string | null } }>;
+  };
+
+  const text = payload.choices?.[0]?.message?.content?.trim();
+  if (!text) {
+    throw new Error("OpenRouter response did not contain message content");
+  }
+
+  return text;
+}
+
+async function withFallback(
+  prompt: string,
+  overrides?: GeminiGenerationOverrides
+): Promise<string> {
+  const primary = resolveProvider();
+  const errors: string[] = [];
+
+  try {
+    const result =
+      primary === "groq"
+        ? await generateWithGroq(prompt)
+        : await generateWithGemini(prompt, overrides);
+    console.log(`[withFallback] Primary (${primary}) succeeded`);
+    return result;
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    errors.push(`Primary (${primary}): ${msg}`);
+    console.warn(`[withFallback] Primary (${primary}) failed:`, msg);
+  }
+
+  const openRouterKey = process.env.OPENROUTER_API_KEY?.trim();
+  if (openRouterKey) {
+    try {
+      console.warn("[withFallback] Trying OpenRouter fallback...");
+      const result = await generateWithOpenRouter(prompt);
+      console.log("[withFallback] OpenRouter fallback succeeded");
+      return result;
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      errors.push(`OpenRouter: ${msg}`);
+      console.warn("[withFallback] OpenRouter failed:", msg);
+    }
+  }
+
+  const groqFallbackKey = process.env.GROQ_API_KEY_FALLBACK?.trim();
+  if (groqFallbackKey) {
+    try {
+      console.warn("[withFallback] Trying second Groq key...");
+      const originalKey = process.env.GROQ_API_KEY;
+      process.env.GROQ_API_KEY = groqFallbackKey;
+
+      try {
+        const result = await generateWithGroq(prompt);
+        console.log("[withFallback] Second Groq key succeeded");
+        return result;
+      } finally {
+        process.env.GROQ_API_KEY = originalKey;
+      }
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      errors.push(`Groq fallback key: ${msg}`);
+      console.warn("[withFallback] Second Groq key failed:", msg);
+    }
+  }
+
+  throw new Error(
+    `All providers failed. Tried ${errors.length} provider(s):\n${errors.join("\n")}`
+  );
+}
+
 export async function generateFlashcardsFromChunk(
   chunk: Chunk
 ): Promise<RawCard[]> {
@@ -258,22 +363,16 @@ export async function generateFlashcardsFromChunk(
   );
 
   const prompt = buildPrompt(chunk);
-  const provider = resolveProvider();
-
-  console.log(`[generateFlashcardsFromChunk] provider: ${provider}`);
 
   console.log("[generateFlashcardsFromChunk] prompt preview:", `${prompt.slice(0, 350)}...`);
 
   try {
-    const text =
-      provider === "groq"
-        ? await generateWithGroq(prompt)
-        : await generateWithGemini(prompt);
+    const text = await withFallback(prompt);
     console.log("[generateFlashcardsFromChunk] raw AI response:", text);
     const parsedArray = extractJSONArrayPayload(text);
 
     if (!parsedArray) {
-      throw new Error("Gemini response does not contain a parseable JSON array");
+      throw new Error("AI response does not contain a parseable JSON array");
     }
 
     const normalizedCards = parsedArray
@@ -282,7 +381,7 @@ export async function generateFlashcardsFromChunk(
       .filter((item) => isValidRawCard(item));
 
     if (normalizedCards.length === 0) {
-      throw new Error("Gemini response contained no valid card entries");
+      throw new Error("AI response contained no valid card entries");
     }
 
     console.log("[generateFlashcardsFromChunk] parsed cards:", normalizedCards);
@@ -317,17 +416,12 @@ Rules:
 
 Return ONLY the hint text. No labels, no preamble, no quotation marks.`;
 
-  const provider = resolveProvider();
-
   try {
-    const result =
-      provider === "groq"
-        ? await generateWithGroq(prompt)
-        : await generateWithGemini(prompt, {
-            temperature: 0.6,
-            maxOutputTokens: 150,
-            responseMimeType: undefined,
-          });
+    const result = await withFallback(prompt, {
+      temperature: 0.6,
+      maxOutputTokens: 150,
+      responseMimeType: undefined,
+    });
 
     return result.trim();
   } catch (error) {
@@ -367,17 +461,12 @@ Your task:
 Return ONLY a valid JSON array, no other text:
 [{ "question": "...", "answer": "...", "topicTag": "..." }]`;
 
-  const provider = resolveProvider();
-
   try {
-    const text =
-      provider === "groq"
-        ? await generateWithGroq(prompt)
-        : await generateWithGemini(prompt, {
-            responseMimeType: "application/json",
-            temperature: 0.5,
-            maxOutputTokens: 1024,
-          });
+    const text = await withFallback(prompt, {
+      responseMimeType: "application/json",
+      temperature: 0.5,
+      maxOutputTokens: 1024,
+    });
 
     const parsedArray = extractJSONArrayPayload(text);
     if (!parsedArray) {
