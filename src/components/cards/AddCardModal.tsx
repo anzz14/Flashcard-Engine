@@ -1,7 +1,9 @@
 "use client";
 
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
@@ -80,7 +82,7 @@ export default function AddCardModal({ open, deckId, onClose, onAdd }: AddCardMo
 
   return (
     <Modal open={open} onClose={onClose} title="Add Card" maxWidth="md">
-      <div className="space-y-4 pt-1">
+      <Stack spacing={2.5} sx={{ pt: 1 }}>
         {error ? <Alert severity="error">{error}</Alert> : null}
 
         <TextField
@@ -118,15 +120,15 @@ export default function AddCardModal({ open, deckId, onClose, onAdd }: AddCardMo
           label="Add Another?"
         />
 
-        <div className="flex justify-end gap-2">
+        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
           <Button variant="ghost" onClick={onClose} disabled={saving}>
             Cancel
           </Button>
           <Button variant="primary" onClick={() => void handleSave()} disabled={saving}>
             {saving ? <Spinner size="sm" className="text-white" /> : "Save"}
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Stack>
     </Modal>
   );
 }

@@ -10,7 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import CardRow from "@/components/cards/CardRow";
 import CardSearch from "@/components/cards/CardSearch";
@@ -115,6 +115,7 @@ function CardFormModal({
 
 export default function CardList({ deckId, topics }: CardListProps) {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const topicsFromUrl = useMemo(() => {
     const many = searchParams
       .getAll("topic")
@@ -171,6 +172,7 @@ export default function CardList({ deckId, topics }: CardListProps) {
     await fetchCards();
   }, [deckId, fetchCards]);
 
+  // Reload cards whenever the pathname changes (e.g. returning from /edit)
   useEffect(() => {
     let mounted = true;
 
@@ -189,23 +191,10 @@ export default function CardList({ deckId, topics }: CardListProps) {
 
     void load();
 
-    const handlePageShow = () => {
-      void loadCards().catch(() => undefined);
-    };
-
-    const handleFocus = () => {
-      void loadCards().catch(() => undefined);
-    };
-
-    window.addEventListener("pageshow", handlePageShow);
-    window.addEventListener("focus", handleFocus);
-
     return () => {
       mounted = false;
-      window.removeEventListener("pageshow", handlePageShow);
-      window.removeEventListener("focus", handleFocus);
     };
-  }, [loadCards, show]);
+  }, [loadCards, show, pathname]);
 
   const availableTopics = useMemo(() => {
     const dynamicTopics = new Set(

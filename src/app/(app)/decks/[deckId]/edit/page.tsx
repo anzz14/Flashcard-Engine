@@ -4,6 +4,8 @@ import CardList from "@/components/cards/CardList";
 import { auth } from "@/lib/auth";
 import { getCardsForDeck } from "@/services/cardService";
 import { getDeckById } from "@/services/deckService";
+import { ArrowLeft } from "@/lib/lucide";
+import { Button } from "@/components/ui/Button";
 
 type Props = {
   params: Promise<{ deckId: string }>;
@@ -38,6 +40,14 @@ export default async function EditDeckCardsPage({ params }: Props) {
   return (
     <div className="space-y-4">
      
+      <div className="flex items-center gap-3">
+        <Link href={`/decks/${deckId}`}>
+          <Button variant="ghost" startIcon={<ArrowLeft size={20} />}>
+            Back to Deck
+          </Button>
+        </Link>
+      </div>
+
       <p className="text-black font-bold">{deck.cardCount} cards total</p>
 
       <CardList deckId={deckId} topics={uniqueTopics} />

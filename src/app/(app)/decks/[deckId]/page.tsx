@@ -7,6 +7,9 @@ import { auth } from "@/lib/auth";
 import { getDeckById } from "@/services/deckService";
 import { getDeckTopicStats } from "@/services/progressService";
 
+// Disable caching to ensure fresh data when returning from edit page
+export const revalidate = 0;
+
 type Props = { params: Promise<{ deckId: string }> };
 
 export default async function DeckDetailPage({ params }: Props) {
