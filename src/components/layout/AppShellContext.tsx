@@ -4,8 +4,11 @@ import { createContext, useContext } from "react";
 
 type AppShellContextValue = {
   sidebarOpen: boolean;
+  sidebarCollapsed: boolean;
   setSidebarOpen: (open: boolean) => void;
+  setSidebarCollapsed: (collapsed: boolean) => void;
   toggleSidebar: () => void;
+  toggleSidebarCollapsed: () => void;
 };
 
 export const AppShellContext = createContext<AppShellContextValue | undefined>(

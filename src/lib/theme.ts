@@ -8,7 +8,7 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Inter, sans-serif",
+    fontFamily: "Poppins, sans-serif",
   },
   shape: {
     borderRadius: 10,

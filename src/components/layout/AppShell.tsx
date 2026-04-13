@@ -13,14 +13,18 @@ type AppShellProps = {
 
 export default function AppShell({ children }: AppShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const contextValue = useMemo(
     () => ({
       sidebarOpen,
+      sidebarCollapsed,
       setSidebarOpen,
+      setSidebarCollapsed,
       toggleSidebar: () => setSidebarOpen((prev) => !prev),
+      toggleSidebarCollapsed: () => setSidebarCollapsed((prev) => !prev),
     }),
-    [sidebarOpen]
+    [sidebarOpen, sidebarCollapsed]
   );
 
   return (
@@ -28,7 +32,8 @@ export default function AppShell({ children }: AppShellProps) {
       <div className="flex h-screen overflow-hidden bg-slate-50">
         <div
           className={cn(
-            "fixed inset-y-0 left-0 z-40 w-60 transform transition-transform duration-200 md:static md:translate-x-0",
+            "fixed inset-y-0 left-0 z-40 w-60 transform transition-all duration-300 md:static md:translate-x-0",
+            sidebarCollapsed ? "md:w-20" : "md:w-60",
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           )}
         >

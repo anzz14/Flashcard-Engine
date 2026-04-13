@@ -36,6 +36,7 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
   const isDue = !card.isNew && reviewDateStart.getTime() <= todayStart.getTime();
 
   const statusLabel = card.isNew ? "New" : isDue ? "Due" : "Scheduled";
+  const statusBorderColor = card.isNew ? "#bcd0f8" : isDue ? "#f3bcbc" : "#aee8c5";
   const statusSx = card.isNew
     ? { backgroundColor: "#dbeafe", color: "#1d4ed8", fontWeight: 600 }
     : isDue
@@ -89,15 +90,25 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
         </Tooltip>
       </TableCell>
 
-      <TableCell>
-        <Badge label={topic} color={getTopicColor(topic)} />
+      <TableCell align="center">
+        <Badge label={topic} color={getTopicColor(topic)} compact thinBorder />
       </TableCell>
 
-      <TableCell>
+      <TableCell align="center">
         <Chip
           size="small"
           label={statusLabel}
-          sx={statusSx}
+          sx={{
+            ...statusSx,
+            borderStyle: "solid",
+            borderWidth: "1px",
+            borderColor: statusBorderColor,
+            fontSize: "0.68rem",
+            height: 22,
+            "& .MuiChip-label": {
+              px: 0.75,
+            },
+          }}
         />
       </TableCell>
 
@@ -119,7 +130,7 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
         </Tooltip>
       </TableCell>
 
-      <TableCell align="right">
+      <TableCell align="center">
         <IconButton size="small" aria-label="Card actions" onClick={handleOpenMenu}>
           <MoreVertical size={18} />
         </IconButton>

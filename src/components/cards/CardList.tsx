@@ -299,10 +299,10 @@ export default function CardList({ deckId, topics }: CardListProps) {
             <TableRow>
               <TableCell>Question</TableCell>
               <TableCell>Answer</TableCell>
-              <TableCell>Topic</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell align="center">Topic</TableCell>
+              <TableCell align="center">Status</TableCell>
               <TableCell>Due</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

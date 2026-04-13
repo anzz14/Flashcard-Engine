@@ -6,6 +6,8 @@ export {
 	X,
 	FileText,
 	Menu,
+	ChevronsLeft,
+	ChevronsRight,
 	LayoutDashboard,
 	BookOpen,
 	Settings,

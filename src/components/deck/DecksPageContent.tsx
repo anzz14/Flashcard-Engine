@@ -66,8 +66,8 @@ export default function DecksPageContent({ decks }: DecksPageContentProps) {
     <section className="space-y-4">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900">My Decks</h1>
-          <p className="text-sm text-slate-600">Browse and manage your flashcard decks.</p>
+        
+          <p className="text-md text-slate-600">Browse and manage your flashcard decks.</p>
         </div>
 
         <Button variant="primary" startIcon={<Plus size={20} />} onClick={() => setOpenCreateModal(true)}>
