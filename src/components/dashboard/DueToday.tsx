@@ -25,7 +25,7 @@ export default function DueToday({ dueCount, onClick }: DueTodayProps) {
         </div>
 
         {dueCount === 0 ? (
-          <p className="shrink-0 text-sm font-semibold text-emerald-600">🎉 All caught up!</p>
+          <p className="shrink-0 text-sm font-semibold text-emerald-600">All caught up!</p>
         ) : (
           <Button variant="primary" size="small" onClick={onClick}>
             Start Review

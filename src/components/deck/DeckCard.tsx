@@ -1,13 +1,11 @@
 "use client";
 
 import { MoreVertical } from "@/lib/lucide";
-import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useRouter } from "next/navigation";
 import { useState, type MouseEvent } from "react";
-import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { formatDate, truncate } from "@/lib/utils";
 import type { DeckSummary } from "@/types/deck";
@@ -30,6 +28,16 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
       : deck.dueToday < 10
         ? "text-amber-500"
         : "text-orange-600";
+  const reviewedCount = Math.max(0, deck.cardCount - deck.newCount);
+
+  const progressLegend = [
+    {
+      label: "Reviewed",
+      value: reviewedCount,
+      color: "bg-emerald-500",
+      textColor: "text-emerald-700",
+    },
+  ] as const;
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -50,39 +58,40 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
           >
             {displayName}
           </p>
-          <Badge label={`${deck.cardCount} cards`} color="gray" />
         </div>
 
-        <IconButton
-          aria-label="Deck actions"
-          onClick={handleMenuOpen}
-          size="small"
-        >
-          <MoreVertical size={18} />
-        </IconButton>
+        <div className="flex items-center gap-1.5">
+          <p className="text-xs text-slate-500">{deck.cardCount} cards</p>
+          <IconButton
+            aria-label="Deck actions"
+            onClick={handleMenuOpen}
+            size="small"
+          >
+            <MoreVertical size={18} />
+          </IconButton>
+        </div>
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between ">
         <div className="space-y-2">
-          <p className={`text-sm font-semibold ${dueColorClass}`}>
+          <p className={`text-sm mt-8 font-semibold ${dueColorClass}`}>
             {deck.dueToday} due
           </p>
-          <p className="text-xs text-slate-500">
+          <p className="text-[11px] -mt-2 text-slate-500">
             Last studied: {deck.lastStudied ? formatDate(deck.lastStudied) : "Never studied"}
           </p>
         </div>
 
-        <div className="relative inline-flex items-center justify-center">
-          <CircularProgress
-            variant="determinate"
-            value={Math.max(0, Math.min(100, Math.round(deck.masteryPercent)))}
-            size={54}
-            thickness={5}
-            sx={{ color: "#6366f1" }}
-          />
-          <span className="absolute text-xs font-semibold text-slate-700">
-            {Math.round(deck.masteryPercent)}%
-          </span>
+        <div className="mt-12 mr-3 grid gap-1 text-[10px] leading-none sm:grid-cols-1 sm:gap-2">
+          {progressLegend.map((item) => (
+            <div key={item.label} className="flex items-center gap-1.5 whitespace-nowrap">
+              <span className={`h-2 w-2 rounded-full ${item.color}`} />
+              <span className={`font-semibold ${item.textColor}`}>
+                {item.value}
+              </span>
+              <span className="text-slate-500">{item.label}</span>
+            </div>
+          ))}
         </div>
       </div>
 

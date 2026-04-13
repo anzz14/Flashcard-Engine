@@ -52,14 +52,14 @@ export default function HintBox({ cardId, question, answer }: HintBoxProps) {
           void fetchHint();
         }}
       >
-        💡 Give me a hint
+        Give me a hint
       </Button>
     );
   }
 
   return (
     <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-      <div className="text-xs font-semibold text-amber-700">💡 Hint</div>
+      <div className="text-xs font-semibold text-amber-700"> Hint</div>
 
       {isLoading ? (
         <div className="mt-3 flex items-center justify-center gap-2 text-sm text-amber-600">

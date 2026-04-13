@@ -3,6 +3,9 @@ export interface DeckSummary {
   name: string;
   cardCount: number;
   dueToday: number;
+  masteredCount: number;
+  learningCount: number;
+  newCount: number;
   masteryPercent: number;
   lastStudied: Date | null;
   createdAt: Date;

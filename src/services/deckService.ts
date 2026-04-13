@@ -42,7 +42,7 @@ export async function getUserDecks(userId: string): Promise<DeckSummary[]> {
 
   const deckIds = decks.map((deck) => deck.id);
 
-  const [totalByDeck, dueByDeck, masteredByDeck, latestReviews] = await Promise.all([
+  const [totalByDeck, dueByDeck, masteredByDeck, newByDeck, latestReviews] = await Promise.all([
     prisma.card.groupBy({
       by: ["deckId"],
       where: {
@@ -68,6 +68,16 @@ export async function getUserDecks(userId: string): Promise<DeckSummary[]> {
         deckId: { in: deckIds },
         isNew: false,
         easeFactor: { gte: 2.0 },
+      },
+      _count: {
+        _all: true,
+      },
+    }),
+    prisma.card.groupBy({
+      by: ["deckId"],
+      where: {
+        deckId: { in: deckIds },
+        isNew: true,
       },
       _count: {
         _all: true,
@@ -99,6 +109,7 @@ export async function getUserDecks(userId: string): Promise<DeckSummary[]> {
   const masteredMap = new Map(
     masteredByDeck.map((item) => [item.deckId, item._count._all])
   );
+  const newMap = new Map(newByDeck.map((item) => [item.deckId, item._count._all]));
   const latestReviewMap = new Map<string, Date>();
 
   for (const review of latestReviews) {
@@ -111,6 +122,8 @@ export async function getUserDecks(userId: string): Promise<DeckSummary[]> {
     const cardCount = totalMap.get(deck.id) ?? 0;
     const dueToday = dueMap.get(deck.id) ?? 0;
     const mastered = masteredMap.get(deck.id) ?? 0;
+    const newCount = newMap.get(deck.id) ?? 0;
+    const learningCount = Math.max(0, cardCount - mastered - newCount);
     const masteryPercent = cardCount > 0 && dueToday === 0 ? 100 : toPercent(mastered, cardCount);
 
     return {
@@ -118,6 +131,9 @@ export async function getUserDecks(userId: string): Promise<DeckSummary[]> {
       name: deck.name,
       cardCount,
       dueToday,
+      masteredCount: mastered,
+      learningCount,
+      newCount,
       masteryPercent,
       lastStudied: deck.lastStudied ?? latestReviewMap.get(deck.id) ?? null,
       createdAt: deck.createdAt,
