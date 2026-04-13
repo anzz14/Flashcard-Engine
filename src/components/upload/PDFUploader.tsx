@@ -1,6 +1,6 @@
 "use client";
 
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import { FileText } from "@/lib/lucide";
 import Alert from "@mui/material/Alert";
 import { useRef, useState, type DragEvent } from "react";
 import { Button } from "@/components/ui/Button";
@@ -68,7 +68,7 @@ export default function PDFUploader({ onFileSelected, disabled = false }: PDFUpl
             : "border-slate-300 bg-white"
         } ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
       >
-        <DescriptionOutlinedIcon className="mb-2 text-slate-500" />
+        <FileText className="mb-2 text-slate-500" size={22} />
         <p className="text-sm text-slate-700">Drag and drop your PDF here</p>
         <p className="mt-1 text-xs text-slate-500">Max file size: 20MB</p>
 

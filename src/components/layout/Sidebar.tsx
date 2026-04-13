@@ -1,8 +1,6 @@
 "use client";
 
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import SettingsIcon from "@mui/icons-material/Settings";
+import { LayoutDashboard, BookOpen, Settings } from "@/lib/lucide";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -19,9 +17,9 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard", icon: <DashboardIcon fontSize="small" /> },
-  { label: "My Decks", href: "/decks", icon: <LibraryBooksIcon fontSize="small" /> },
-  { label: "Settings", href: "/settings", icon: <SettingsIcon fontSize="small" /> },
+  { label: "Dashboard", href: "/dashboard", icon: <LayoutDashboard size={18} /> },
+  { label: "My Decks", href: "/decks", icon: <BookOpen size={18} /> },
+  { label: "Settings", href: "/settings", icon: <Settings size={18} /> },
 ];
 
 function isActive(pathname: string, href: string): boolean {

@@ -1,6 +1,6 @@
 "use client";
 
-import AddIcon from "@mui/icons-material/Add";
+import { Plus } from "@/lib/lucide";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import DueToday from "@/components/dashboard/DueToday";
@@ -55,7 +55,7 @@ export default function DashboardContent({
           <Button
             variant="primary"
             onClick={() => setOpenCreateModal(true)}
-            startIcon={<AddIcon />}
+            startIcon={<Plus size={20} />}
             sx={{ mt: 2 }}
           >
             Create First Deck
@@ -112,7 +112,7 @@ export default function DashboardContent({
           <Button
             variant="primary"
             onClick={() => setOpenCreateModal(true)}
-            startIcon={<AddIcon />}
+            startIcon={<Plus size={20} />}
           >
             New Deck
           </Button>

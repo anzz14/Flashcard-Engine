@@ -1,6 +1,6 @@
 "use client";
 
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { MoreVertical } from "@/lib/lucide";
 import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
@@ -54,7 +54,7 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
         </div>
 
         <IconButton aria-label="Deck actions" onClick={handleMenuOpen} size="small">
-          <MoreVertIcon fontSize="small" />
+          <MoreVertical size={18} />
         </IconButton>
       </div>
 

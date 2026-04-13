@@ -1,6 +1,6 @@
 "use client";
 
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { Edit2 } from "@/lib/lucide";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -87,7 +87,7 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
         <div className="flex items-center gap-2">
           <h1 className="text-3xl font-bold text-slate-900">{deck.name}</h1>
           <IconButton aria-label="Rename deck" onClick={() => setRenameOpen(true)}>
-            <EditOutlinedIcon fontSize="small" />
+            <Edit2 size={18} />
           </IconButton>
         </div>
 

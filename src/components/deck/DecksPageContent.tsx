@@ -1,6 +1,6 @@
 "use client";
 
-import AddIcon from "@mui/icons-material/Add";
+import { Plus } from "@/lib/lucide";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CreateDeckModal from "@/components/deck/CreateDeckModal";
@@ -24,7 +24,7 @@ export default function DecksPageContent({ decks }: DecksPageContentProps) {
           <p className="text-sm text-slate-600">Browse and manage your flashcard decks.</p>
         </div>
 
-        <Button variant="primary" startIcon={<AddIcon />} onClick={() => setOpenCreateModal(true)}>
+        <Button variant="primary" startIcon={<Plus size={20} />} onClick={() => setOpenCreateModal(true)}>
           New Deck
         </Button>
       </div>

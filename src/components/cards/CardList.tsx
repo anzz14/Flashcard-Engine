@@ -1,6 +1,6 @@
 "use client";
 
-import AddIcon from "@mui/icons-material/Add";
+import { Plus } from "@/lib/lucide";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -269,7 +269,7 @@ export default function CardList({ deckId, topics }: CardListProps) {
         />
         <Button
           variant="primary"
-          startIcon={<AddIcon />}
+          startIcon={<Plus size={20} />}
           onClick={() => setShowAddModal(true)}
         >
           Add Card

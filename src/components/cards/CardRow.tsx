@@ -1,6 +1,6 @@
 "use client";
 
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { MoreVertical } from "@/lib/lucide";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
@@ -72,7 +72,7 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
 
       <TableCell align="right">
         <IconButton size="small" aria-label="Card actions" onClick={handleOpenMenu}>
-          <MoreVertIcon fontSize="small" />
+          <MoreVertical size={18} />
         </IconButton>
 
         <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleCloseMenu}>

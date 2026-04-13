@@ -1,6 +1,6 @@
 "use client";
 
-import CloseIcon from "@mui/icons-material/Close";
+import { X } from "@/lib/lucide";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -24,7 +24,7 @@ export function Modal({ open, onClose, title, children, maxWidth = "sm" }: Modal
         onClick={onClose}
         sx={{ position: "absolute", right: 8, top: 8 }}
       >
-        <CloseIcon fontSize="small" />
+        <X size={18} />
       </IconButton>
       <DialogContent>{children}</DialogContent>
     </Dialog>

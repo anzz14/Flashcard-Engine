@@ -1,6 +1,6 @@
 "use client";
 
-import MenuIcon from "@mui/icons-material/Menu";
+import { Menu } from "@/lib/lucide";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import { useSession } from "next-auth/react";
@@ -41,7 +41,7 @@ export default function Topbar() {
     <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 md:px-6">
       <div className="flex items-center gap-3">
         <IconButton onClick={toggleSidebar} className="md:hidden!" aria-label="Open menu">
-          <MenuIcon />
+          <Menu size={22} />
         </IconButton>
         <h1 className="text-lg font-semibold text-slate-900">{title}</h1>
       </div>

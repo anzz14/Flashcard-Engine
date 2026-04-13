@@ -1,6 +1,6 @@
 "use client";
 
-import CloseIcon from "@mui/icons-material/Close";
+import { X } from "@/lib/lucide";
 import IconButton from "@mui/material/IconButton";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useRouter } from "next/navigation";
@@ -45,7 +45,7 @@ export default function SessionProgress({
           }}
           size="small"
         >
-          <CloseIcon fontSize="small" />
+          <X size={18} />
         </IconButton>
       </div>
 
