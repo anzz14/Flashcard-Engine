@@ -46,7 +46,16 @@ export default function TopicHeatmap({ topics, deckId }: TopicHeatmapProps) {
                 }
                 className={`border-2 bg-white p-2.5 text-slate-900 ${getBorderColor(topic.masteryPercent)}`}
               >
-                <Tooltip title={topic.topicTag} arrow enterDelay={100} placement="top">
+                <Tooltip
+                  title={topic.topicTag}
+                  arrow
+                  enterDelay={100}
+                  placement="top"
+                  slotProps={{
+                    tooltip: { sx: { bgcolor: "#000000", color: "#ffffff" } },
+                    arrow: { sx: { color: "#000000" } },
+                  }}
+                >
                   <div className="space-y-0.5">
                     <p className="truncate text-[11px] font-medium text-slate-800">
                       {truncate(topic.topicTag, 20)}

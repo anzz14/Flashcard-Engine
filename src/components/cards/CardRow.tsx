@@ -25,6 +25,23 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const menuOpen = Boolean(anchorEl);
 
+  const today = new Date();
+  const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const reviewDate = new Date(card.nextReviewDate);
+  const reviewDateStart = new Date(
+    reviewDate.getFullYear(),
+    reviewDate.getMonth(),
+    reviewDate.getDate()
+  );
+  const isDue = !card.isNew && reviewDateStart.getTime() <= todayStart.getTime();
+
+  const statusLabel = card.isNew ? "New" : isDue ? "Due" : "Scheduled";
+  const statusSx = card.isNew
+    ? { backgroundColor: "#dbeafe", color: "#1d4ed8", fontWeight: 600 }
+    : isDue
+      ? { backgroundColor: "#fee2e2", color: "#b91c1c", fontWeight: 600 }
+      : { backgroundColor: "#dcfce7", color: "#166534", fontWeight: 600 };
+
   const dotColor = card.isNew
     ? "#94a3b8"
     : card.interval >= 7
@@ -45,13 +62,29 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
   return (
     <TableRow hover>
       <TableCell>
-        <Tooltip title={card.question} arrow>
+        <Tooltip
+          title={card.question}
+          arrow
+          placement="top"
+          slotProps={{
+            tooltip: { sx: { bgcolor: "#000000", color: "#ffffff" } },
+            arrow: { sx: { color: "#000000" } },
+          }}
+        >
           <span>{truncate(card.question, 60)}</span>
         </Tooltip>
       </TableCell>
 
       <TableCell>
-        <Tooltip title={card.answer} arrow>
+        <Tooltip
+          title={card.answer}
+          arrow
+          placement="top"
+          slotProps={{
+            tooltip: { sx: { bgcolor: "#000000", color: "#ffffff" } },
+            arrow: { sx: { color: "#000000" } },
+          }}
+        >
           <span>{truncate(card.answer, 60)}</span>
         </Tooltip>
       </TableCell>
@@ -63,17 +96,21 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
       <TableCell>
         <Chip
           size="small"
-          label={card.isNew ? "New" : "Reviewed"}
-          sx={
-            card.isNew
-              ? { backgroundColor: "#dbeafe", color: "#1d4ed8", fontWeight: 600 }
-              : { backgroundColor: "#dcfce7", color: "#166534", fontWeight: 600 }
-          }
+          label={statusLabel}
+          sx={statusSx}
         />
       </TableCell>
 
       <TableCell align="center">
-        <Tooltip title={tooltipLabel} arrow>
+        <Tooltip
+          title={tooltipLabel}
+          arrow
+          placement="top"
+          slotProps={{
+            tooltip: { sx: { bgcolor: "#000000", color: "#ffffff" } },
+            arrow: { sx: { color: "#000000" } },
+          }}
+        >
           <span
             className="mx-auto inline-block h-3 w-3 rounded-full"
             style={{ backgroundColor: dotColor }}
