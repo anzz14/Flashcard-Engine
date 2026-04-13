@@ -29,7 +29,7 @@ export default function StudySession({
   totalDue,
   deckId,
 }: StudySessionProps) {
-  const [cards] = useState<CardWithSM2[]>(initialCards);
+  const [cards, setCards] = useState<CardWithSM2[]>(initialCards);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [ratings, setRatings] = useState<Record<string, ReviewRating>>({});
@@ -94,7 +94,19 @@ export default function StudySession({
         [currentCard.id]: rating,
       }));
 
-      if (currentIndex + 1 >= cards.length) {
+      if (rating === "AGAIN") {
+        setCards((prevCards) => {
+          if (prevCards.length <= 1) {
+            return prevCards;
+          }
+
+          const nextCards = [...prevCards];
+          const [card] = nextCards.splice(currentIndex, 1);
+          nextCards.push(card);
+          return nextCards;
+        });
+        setIsFlipped(false);
+      } else if (currentIndex + 1 >= cards.length) {
         setSessionComplete(true);
         setStreakData(data.streak ?? null);
       } else {

@@ -6,6 +6,7 @@ import { Eye } from "lucide-react";
 import { Badge, getTopicColor } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { Modal } from "@/components/ui/Modal";
 import { Spinner } from "@/components/ui/Spinner";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +25,7 @@ export default function CardSuggestions({ deckId, onAdded }: CardSuggestionsProp
   const [error, setError] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
   const [addedCount, setAddedCount] = useState(0);
+  const [activeSuggestion, setActiveSuggestion] = useState<Suggestion | null>(null);
 
   const fetchSuggestions = async () => {
     try {
@@ -150,7 +152,17 @@ export default function CardSuggestions({ deckId, onAdded }: CardSuggestionsProp
                       />
                       <div className="min-w-0">
                         <p className="flex items-center gap-2 text-sm font-medium text-slate-900">
-                          <Eye className="h-4 w-4 shrink-0 text-slate-400" aria-hidden="true" />
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActiveSuggestion(item);
+                            }}
+                            className="inline-flex items-center justify-center rounded-md p-0.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                            aria-label="View card details"
+                          >
+                            <Eye className="h-4 w-4 shrink-0" aria-hidden="true" />
+                          </button>
                           <span className="truncate">{item.question}</span>
                         </p>
                         <p className="text-xs text-slate-500">{preview}</p>
@@ -178,6 +190,32 @@ export default function CardSuggestions({ deckId, onAdded }: CardSuggestionsProp
           ) : null}
         </div>
       ) : null}
+
+      <Modal
+        open={activeSuggestion !== null}
+        onClose={() => setActiveSuggestion(null)}
+        title="Card Details"
+        maxWidth="sm"
+      >
+        {activeSuggestion ? (
+          <div className="space-y-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Question</p>
+              <p className="mt-1 text-sm text-slate-900">{activeSuggestion.question}</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Answer</p>
+              <p className="mt-1 text-sm leading-relaxed text-slate-700">{activeSuggestion.answer}</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Topic</p>
+              <div className="mt-1">
+                <Badge label={activeSuggestion.topicTag} color={getTopicColor(activeSuggestion.topicTag)} />
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </Modal>
     </Card>
   );
 }

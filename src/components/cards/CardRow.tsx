@@ -54,7 +54,7 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
       <TableCell>
         <Chip
           size="small"
-          label={card.isNew ? "New" : "Reviewing"}
+          label={card.isNew ? "New" : "Reviewed"}
           sx={
             card.isNew
               ? { backgroundColor: "#dbeafe", color: "#1d4ed8", fontWeight: 600 }
