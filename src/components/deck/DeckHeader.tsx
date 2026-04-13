@@ -114,8 +114,21 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
           onClick={() => setTopicFilter(null)}
           sx={
             activeTopics.length === 0
-              ? { backgroundColor: "#e0e7ff", color: "#3730a3", fontWeight: 700 }
-              : { backgroundColor: "#f1f5f9", color: "#334155" }
+              ? {
+                  backgroundColor: "#e0e7ff",
+                  borderColor: "#e0e7ff",
+                  borderWidth: 1,
+                  borderStyle: "solid",
+                  color: "#3730a3",
+                  fontWeight: 700,
+                }
+              : {
+                  backgroundColor: "#ffffff",
+                  borderColor: "#e0e7ff",
+                  borderWidth: 1,
+                  borderStyle: "solid",
+                  color: "#3730a3",
+                }
           }
         />
 
@@ -127,8 +140,21 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
             onClick={() => setTopicFilter(topic)}
             sx={
               activeTopics.includes(topic)
-                ? { backgroundColor: "#e0e7ff", color: "#3730a3", fontWeight: 700 }
-                : { backgroundColor: "#f1f5f9", color: "#334155" }
+                ? {
+                    backgroundColor: "#e0e7ff",
+                    borderColor: "#e0e7ff",
+                    borderWidth: 1,
+                    borderStyle: "solid",
+                    color: "#3730a3",
+                    fontWeight: 700,
+                  }
+                : {
+                    backgroundColor: "#ffffff",
+                    borderColor: "#e0e7ff",
+                    borderWidth: 1,
+                    borderStyle: "solid",
+                    color: "#3730a3",
+                  }
             }
           />
         ))}
