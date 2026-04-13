@@ -72,7 +72,7 @@ export default function WeakSpotsList({ cards, onViewCard }: WeakSpotsListProps)
                 </div>
 
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-xs text-slate-500">Ease: {card.easeFactor.toFixed(1)}</p>
+               
                   <div className="h-2 w-28 rounded-full bg-red-100">
                     <div
                       className="h-2 rounded-full bg-red-500"

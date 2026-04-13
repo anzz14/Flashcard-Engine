@@ -1,8 +1,12 @@
 "use client";
 
 import Card from "@mui/material/Card";
+import Checkbox from "@mui/material/Checkbox";
 import Chip from "@mui/material/Chip";
-import { useState } from "react";
+import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import FlashCard from "@/components/study/FlashCard";
 import RatingButtons from "@/components/study/RatingButtons";
@@ -17,6 +21,8 @@ type Props = {
   cards: Array<CardWithSM2 & { sessionRating: ReviewRating }>;
 };
 
+type SessionPageRating = Exclude<ReviewRating, "AGAIN">;
+
 const ratingStyle: Record<ReviewRating, { bg: string; color: string }> = {
   AGAIN: { bg: "#fee2e2", color: "#991b1b" },
   HARD: { bg: "#ffedd5", color: "#9a3412" },
@@ -24,13 +30,57 @@ const ratingStyle: Record<ReviewRating, { bg: string; color: string }> = {
   EASY: { bg: "#dcfce7", color: "#166534" },
 };
 
+const ratingLabels: Record<SessionPageRating, string> = {
+  HARD: "Hard",
+  GOOD: "Good",
+  EASY: "Easy",
+};
+
+const ratingOptions: SessionPageRating[] = ["HARD", "GOOD", "EASY"];
+
+function toSessionPageRating(rating: ReviewRating): SessionPageRating {
+  return rating === "AGAIN" ? "HARD" : rating;
+}
+
 export default function LastSessionClient({ deckId, sessionDate, cards }: Props) {
   const router = useRouter();
   const { show } = useToast();
   const [cardList, setCardList] = useState(cards);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedRatings, setSelectedRatings] = useState<SessionPageRating[]>([]);
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const filteredCards = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+
+    return cardList.filter((card) => {
+      const matchesSearch =
+        query.length === 0 ||
+        card.question.toLowerCase().includes(query) ||
+        card.answer.toLowerCase().includes(query) ||
+        (card.topicTag ?? "").toLowerCase().includes(query);
+
+      const matchesRating =
+        selectedRatings.length === 0 ||
+        selectedRatings.includes(toSessionPageRating(card.sessionRating));
+
+      return matchesSearch && matchesRating;
+    });
+  }, [cardList, searchQuery, selectedRatings]);
+
+  useEffect(() => {
+    if (!activeCardId) {
+      return;
+    }
+
+    const stillVisible = filteredCards.some((card) => card.id === activeCardId);
+    if (!stillVisible) {
+      setActiveCardId(null);
+      setIsFlipped(false);
+    }
+  }, [activeCardId, filteredCards]);
 
   const handleOpen = (cardId: string) => {
     if (activeCardId === cardId) {
@@ -84,12 +134,64 @@ export default function LastSessionClient({ deckId, sessionDate, cards }: Props)
         </Button>
       </div>
 
-      {cardList.map((card) => (
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <TextField
+          fullWidth
+          size="small"
+          label="Search cards"
+          placeholder="Search by question, answer, or topic"
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+        />
+
+        <TextField
+          select
+          fullWidth
+          size="small"
+          label="Difficulty"
+          value={selectedRatings}
+          slotProps={{
+            select: {
+              multiple: true,
+              renderValue: (selected: unknown) => {
+                const values = selected as SessionPageRating[];
+                if (!values.length) {
+                  return "All difficulties";
+                }
+                return values.map((rating) => ratingLabels[rating]).join(", ");
+              },
+            },
+          }}
+          onChange={(event) => {
+            const value = event.target.value;
+            setSelectedRatings(
+              typeof value === "string"
+                ? (value.split(",") as SessionPageRating[])
+                : (value as SessionPageRating[])
+            );
+          }}
+        >
+          {ratingOptions.map((rating) => (
+            <MenuItem key={rating} value={rating}>
+              <Checkbox checked={selectedRatings.includes(rating)} />
+              <ListItemText primary={ratingLabels[rating]} />
+            </MenuItem>
+          ))}
+        </TextField>
+      </div>
+
+      {!filteredCards.length ? (
+        <Card className="rounded-2xl border border-slate-200 p-6 text-center shadow-sm">
+          <p className="text-sm text-slate-600">No cards match your current filters.</p>
+        </Card>
+      ) : null}
+
+      {filteredCards.map((card) => (
         <Card key={card.id} className="rounded-2xl border border-slate-200 p-4 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm font-medium text-slate-900">{card.question}</p>
             <Chip
-              label={card.sessionRating}
+              label={ratingLabels[toSessionPageRating(card.sessionRating)]}
               size="small"
               sx={{
                 borderRadius: "9999px",
