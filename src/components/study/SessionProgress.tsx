@@ -3,7 +3,6 @@
 import { X } from "@/lib/lucide";
 import IconButton from "@mui/material/IconButton";
 import LinearProgress from "@mui/material/LinearProgress";
-import { useRouter } from "next/navigation";
 import { Badge, getTopicColor } from "@/components/ui/Badge";
 
 type SessionProgressProps = {
@@ -19,8 +18,6 @@ export default function SessionProgress({
   topicTag,
   onExit,
 }: SessionProgressProps) {
-  const router = useRouter();
-
   const safeTotal = total > 0 ? total : 1;
   const clampedCurrent = Math.max(0, Math.min(currentIndex, safeTotal));
   const percent = Math.round((clampedCurrent / safeTotal) * 100);
@@ -41,7 +38,6 @@ export default function SessionProgress({
           aria-label="Exit session"
           onClick={() => {
             onExit();
-            router.back();
           }}
           size="small"
         >

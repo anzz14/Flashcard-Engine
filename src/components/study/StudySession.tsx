@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import EmptySession from "@/components/study/EmptySession";
 import FlashCard from "@/components/study/FlashCard";
 import HintBox from "@/components/study/HintBox";
@@ -29,6 +30,7 @@ export default function StudySession({
   totalDue,
   deckId,
 }: StudySessionProps) {
+  const router = useRouter();
   const [cards, setCards] = useState<CardWithSM2[]>(initialCards);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -36,6 +38,9 @@ export default function StudySession({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [sessionComplete, setSessionComplete] = useState(initialCards.length === 0);
   const [streakData, setStreakData] = useState<UserStreak | null>(null);
+  const [hasHydratedResume, setHasHydratedResume] = useState(false);
+  const [restoreNonce, setRestoreNonce] = useState(0);
+  const storageKey = `study-session:${deckId}`;
   const { show } = useToast();
 
   const currentCard = cards[currentIndex];
@@ -60,6 +65,64 @@ export default function StudySession({
 
     void captureBaselineStreak();
   }, []);
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(storageKey);
+      if (!saved) {
+        setHasHydratedResume(true);
+        return;
+      }
+
+      const parsed = JSON.parse(saved) as {
+        cards?: CardWithSM2[];
+        currentIndex?: number;
+        ratings?: Record<string, ReviewRating>;
+        isFlipped?: boolean;
+      };
+
+      if (
+        Array.isArray(parsed.cards) &&
+        parsed.cards.length > 0 &&
+        typeof parsed.currentIndex === "number" &&
+        parsed.currentIndex < parsed.cards.length
+      ) {
+        setCards(parsed.cards);
+        setCurrentIndex(parsed.currentIndex);
+        setRatings(parsed.ratings ?? {});
+        setIsFlipped(Boolean(parsed.isFlipped));
+        setSessionComplete(false);
+      } else {
+        window.localStorage.removeItem(storageKey);
+      }
+    } catch {
+      window.localStorage.removeItem(storageKey);
+    } finally {
+      setHasHydratedResume(true);
+      setRestoreNonce((value) => value + 1);
+    }
+  }, [storageKey]);
+
+  useEffect(() => {
+    if (!hasHydratedResume) {
+      return;
+    }
+
+    if (sessionComplete || cards.length === 0 || currentIndex >= cards.length) {
+      window.localStorage.removeItem(storageKey);
+      return;
+    }
+
+    window.localStorage.setItem(
+      storageKey,
+      JSON.stringify({
+        cards,
+        currentIndex,
+        ratings,
+        isFlipped,
+      })
+    );
+  }, [cards, currentIndex, hasHydratedResume, isFlipped, ratings, sessionComplete, storageKey, restoreNonce]);
 
   const handleFlip = () => {
     if (!isFlipped) {
@@ -144,7 +207,19 @@ export default function StudySession({
         total={cards.length}
         topicTag={activeTopic}
         onExit={() => {
-          show(`Session exited (${totalNew} new / ${totalDue} due)`, "info");
+          const reviewedCount = Object.keys(ratings).length;
+          window.localStorage.setItem(
+            storageKey,
+            JSON.stringify({
+              cards,
+              currentIndex,
+              ratings,
+              isFlipped,
+            })
+          );
+          show(`Session exited (${reviewedCount}/${cards.length} reviewed)`, "info");
+          router.replace(`/decks/${deckId}`);
+          router.refresh();
         }}
       />
 
