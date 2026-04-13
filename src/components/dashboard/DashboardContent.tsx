@@ -7,6 +7,7 @@ import DueToday from "@/components/dashboard/DueToday";
 import CreateDeckModal from "@/components/deck/CreateDeckModal";
 import StreakTracker from "@/components/dashboard/StreakTracker";
 import DeckGrid from "@/components/deck/DeckGrid";
+import InsightsDashboard from "@/components/dashboard/InsightsDashboard";
 import WeakSpotsList from "@/components/deck/WeakSpotsList";
 import { Modal } from "@/components/ui/Modal";
 import Box from "@mui/material/Box";
@@ -120,6 +121,8 @@ export default function DashboardContent({
 
         <DeckGrid decks={decks} onDeckChange={() => router.refresh()} />
       </div>
+
+      {decks.length > 0 && <InsightsDashboard />}
 
       <CreateDeckModal
         open={openCreateModal}
