@@ -18,10 +18,18 @@ function StatCard({
   accent?: string;
 }) {
   return (
-    <Card className="space-y-1 p-5">
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
-      <p className={`text-3xl font-bold text-slate-900 ${accent ?? ""}`}>{value}</p>
-      {sub ? <p className="text-xs text-slate-500">{sub}</p> : null}
+    <Card className="px-3 py-2.5">
+      <div className="flex items-center justify-between gap-2">
+        <div className="min-w-0">
+          <p className="truncate text-[11px] font-medium uppercase tracking-wide text-slate-500">
+            {label}
+          </p>
+          {sub ? <p className="truncate text-[10px] text-slate-500">{sub}</p> : null}
+        </div>
+        <p className={`shrink-0 text-lg font-bold leading-none text-slate-900 ${accent ?? ""}`}>
+          {value}
+        </p>
+      </div>
     </Card>
   );
 }
@@ -51,7 +59,7 @@ export default function InsightsDashboard() {
     <div className="space-y-6">
       <h2 className="text-xl font-semibold text-slate-900">Study Insights</h2>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-4 gap-2 overflow-x-auto">
         <StatCard label="Total Reviews" value={String(data.totalReviews)} sub="Last 30 days" />
         <StatCard
           label="Best Study Time"

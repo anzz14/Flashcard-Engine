@@ -33,15 +33,15 @@ export default function DeckStats({ deck }: DeckStatsProps) {
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
       {stats.map((stat) => (
-        <Card key={stat.label} className="p-4">
-          <div className="space-y-1">
-            <p className={`text-3xl font-bold text-slate-900 ${stat.valueClassName ?? ""}`}>
-              {stat.value}
-            </p>
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+        <Card key={stat.label} className="px-3 py-2.5">
+          <div className="flex items-center justify-between gap-2">
+            <p className="truncate text-[11px] font-medium uppercase tracking-wide text-slate-500">
               {stat.label}
+            </p>
+            <p className={`shrink-0 text-lg font-bold leading-none text-slate-900 ${stat.valueClassName ?? ""}`}>
+              {stat.value}
             </p>
           </div>
         </Card>

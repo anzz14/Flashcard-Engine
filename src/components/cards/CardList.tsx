@@ -151,27 +151,35 @@ export default function CardList({ deckId, topics }: CardListProps) {
     const queryString = query.toString();
     const url = `/api/decks/${deckId}/cards${queryString ? `?${queryString}` : ""}`;
 
-    const response = await fetch(url, { method: "GET" });
+    const response = await fetch(url, { method: "GET", cache: "no-store" });
     if (!response.ok) {
       throw new Error("Failed to fetch cards");
     }
 
     const data = (await response.json()) as CardWithSM2[];
     setCards(data);
+    return data;
   }, [deckId, search, topicFilter]);
+
+  const loadCards = useCallback(async () => {
+    const allResponse = await fetch(`/api/decks/${deckId}/cards`, { cache: "no-store" });
+    if (allResponse.ok) {
+      const allData = (await allResponse.json()) as CardWithSM2[];
+      setTotalCount(allData.length);
+    }
+
+    await fetchCards();
+  }, [deckId, fetchCards]);
 
   useEffect(() => {
     let mounted = true;
 
     const load = async () => {
       try {
-        const allResponse = await fetch(`/api/decks/${deckId}/cards`);
-        if (allResponse.ok && mounted) {
-          const allData = (await allResponse.json()) as CardWithSM2[];
-          setTotalCount(allData.length);
+        if (mounted) {
+          setCards([]);
         }
-
-        await fetchCards();
+        await loadCards();
       } catch {
         if (mounted) {
           show("Failed to load cards", "error");
@@ -181,10 +189,23 @@ export default function CardList({ deckId, topics }: CardListProps) {
 
     void load();
 
+    const handlePageShow = () => {
+      void loadCards().catch(() => undefined);
+    };
+
+    const handleFocus = () => {
+      void loadCards().catch(() => undefined);
+    };
+
+    window.addEventListener("pageshow", handlePageShow);
+    window.addEventListener("focus", handleFocus);
+
     return () => {
       mounted = false;
+      window.removeEventListener("pageshow", handlePageShow);
+      window.removeEventListener("focus", handleFocus);
     };
-  }, [deckId, fetchCards, show]);
+  }, [loadCards, show]);
 
   const availableTopics = useMemo(() => {
     const dynamicTopics = new Set(
