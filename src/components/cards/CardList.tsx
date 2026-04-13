@@ -133,6 +133,7 @@ export default function CardList({ deckId, topics }: CardListProps) {
   const [totalCount, setTotalCount] = useState(0);
   const [search, setSearch] = useState("");
   const [topicFilter, setTopicFilter] = useState<string[]>(topicsFromUrl);
+  const [dueFilter, setDueFilter] = useState<"all" | "due" | "not-due">("all");
   const [viewingCard, setViewingCard] = useState<CardWithSM2 | null>(null);
   const [editingCard, setEditingCard] = useState<CardWithSM2 | null>(null);
   const [deletingCard, setDeletingCard] = useState<CardWithSM2 | null>(null);
@@ -148,6 +149,7 @@ export default function CardList({ deckId, topics }: CardListProps) {
     const query = new URLSearchParams();
     topicFilter.forEach((topic) => query.append("topic", topic));
     if (search) query.set("search", search);
+    if (dueFilter !== "all") query.set("due", dueFilter);
 
     const queryString = query.toString();
     const url = `/api/decks/${deckId}/cards${queryString ? `?${queryString}` : ""}`;
@@ -160,7 +162,7 @@ export default function CardList({ deckId, topics }: CardListProps) {
     const data = (await response.json()) as CardWithSM2[];
     setCards(data);
     return data;
-  }, [deckId, search, topicFilter]);
+  }, [deckId, dueFilter, search, topicFilter]);
 
   const loadCards = useCallback(async () => {
     const allResponse = await fetch(`/api/decks/${deckId}/cards`, { cache: "no-store" });
@@ -276,6 +278,7 @@ export default function CardList({ deckId, topics }: CardListProps) {
           topics={availableTopics}
           onSearch={setSearch}
           onTopicFilter={(topic) => setTopicFilter(topic ? [topic] : [])}
+          onDueFilter={setDueFilter}
         />
         <Button
           variant="primary"

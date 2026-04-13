@@ -11,11 +11,18 @@ type CardSearchProps = {
   topics: string[];
   onSearch: (search: string) => void;
   onTopicFilter: (topic: string | null) => void;
+  onDueFilter: (due: "all" | "due" | "not-due") => void;
 };
 
-export default function CardSearch({ topics, onSearch, onTopicFilter }: CardSearchProps) {
+export default function CardSearch({
+  topics,
+  onSearch,
+  onTopicFilter,
+  onDueFilter,
+}: CardSearchProps) {
   const [searchInput, setSearchInput] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("all");
+  const [selectedDue, setSelectedDue] = useState<"all" | "due" | "not-due">("all");
 
   const debounceSearch = useCallback(
     (value: string) => {
@@ -47,6 +54,12 @@ export default function CardSearch({ topics, onSearch, onTopicFilter }: CardSear
     onTopicFilter(value);
   };
 
+  const handleDueChange = (event: SelectChangeEvent<string>) => {
+    const value = event.target.value as "all" | "due" | "not-due";
+    setSelectedDue(value);
+    onDueFilter(value);
+  };
+
   return (
     <div className="flex flex-col gap-3 md:flex-row md:items-center">
       <TextField
@@ -71,6 +84,20 @@ export default function CardSearch({ topics, onSearch, onTopicFilter }: CardSear
               {topic}
             </MenuItem>
           ))}
+        </Select>
+      </FormControl>
+
+      <FormControl size="small" className="w-full md:max-w-xs">
+        <InputLabel id="due-filter-label">Due</InputLabel>
+        <Select
+          labelId="due-filter-label"
+          label="Due"
+          value={selectedDue}
+          onChange={handleDueChange}
+        >
+          <MenuItem value="all">All Cards</MenuItem>
+          <MenuItem value="due">Due Now</MenuItem>
+          <MenuItem value="not-due">Not Due</MenuItem>
         </Select>
       </FormControl>
     </div>

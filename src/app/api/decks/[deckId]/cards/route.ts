@@ -17,10 +17,12 @@ export async function GET(req: Request, { params }: Props) {
 			.filter(Boolean);
 		const topic = searchParams.get("topic") ?? undefined;
 		const search = searchParams.get("search") ?? undefined;
+		const due = searchParams.get("due") ?? undefined;
 		const cards = await getCardsForDeck(deckId, userId, {
 			topics: topics.length > 0 ? topics : undefined,
 			topic,
 			search,
+			due: due === "due" || due === "not-due" ? due : undefined,
 		});
 		return apiSuccess(cards);
 	} catch {
