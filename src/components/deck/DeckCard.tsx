@@ -53,7 +53,11 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
           <Badge label={`${deck.cardCount} cards`} color="gray" />
         </div>
 
-        <IconButton aria-label="Deck actions" onClick={handleMenuOpen} size="small">
+        <IconButton
+          aria-label="Deck actions"
+          onClick={handleMenuOpen}
+          size="small"
+        >
           <MoreVertical size={18} />
         </IconButton>
       </div>
@@ -82,8 +86,14 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
         </div>
       </div>
 
-      <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleMenuClose}>
+      <Menu
+        anchorEl={anchorEl}
+        open={menuOpen}
+        onClose={handleMenuClose}
+        onClick={(event) => event.stopPropagation()}
+      >
         <MenuItem
+          sx={{ fontSize: "0.82rem", lineHeight: 1.35, minHeight: 0, py: 0.5 }}
           onClick={(event) => {
             event.stopPropagation();
             handleMenuClose();
@@ -93,6 +103,7 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
           Rename
         </MenuItem>
         <MenuItem
+          sx={{ fontSize: "0.82rem", lineHeight: 1.35, minHeight: 0, py: 0.5 }}
           onClick={(event) => {
             event.stopPropagation();
             handleMenuClose();
