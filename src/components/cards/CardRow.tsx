@@ -25,6 +25,15 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const menuOpen = Boolean(anchorEl);
 
+  const dotColor = card.isNew
+    ? "#94a3b8"
+    : card.interval >= 7
+      ? "#16a34a"
+      : card.interval >= 3
+        ? "#eab308"
+        : "#ef4444";
+  const tooltipLabel = card.isNew ? "Not attempted" : `Due date: ${formatDate(card.nextReviewDate)}`;
+
   const handleOpenMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -63,11 +72,14 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
         />
       </TableCell>
 
-      <TableCell>
-        <div className="text-xs text-slate-600">
-          <p>Ease: {card.easeFactor.toFixed(1)}</p>
-          <p>Due: {formatDate(card.nextReviewDate)}</p>
-        </div>
+      <TableCell align="center">
+        <Tooltip title={tooltipLabel} arrow>
+          <span
+            className="mx-auto inline-block h-3 w-3 rounded-full"
+            style={{ backgroundColor: dotColor }}
+            aria-label={tooltipLabel}
+          />
+        </Tooltip>
       </TableCell>
 
       <TableCell align="right">

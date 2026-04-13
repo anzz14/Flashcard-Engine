@@ -68,8 +68,8 @@ export default function SessionSummary({
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <StatPill label="Again" value={counts.again} color="text-red-600" />
         <StatPill label="Hard" value={counts.hard} color="text-orange-600" />
-        <StatPill label="Good" value={counts.good} color="text-green-600" />
-        <StatPill label="Easy" value={counts.easy} color="text-blue-600" />
+        <StatPill label="Medium" value={counts.good} color="text-yellow-600" />
+        <StatPill label="Easy" value={counts.easy} color="text-green-600" />
       </div>
 
       {masteredToday > 0 ? (
