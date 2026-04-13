@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import CardSuggestions from "@/components/study/CardSuggestions";
 import { Button } from "@/components/ui/Button";
 import type { ReviewRating } from "@/types/card";
 import type { UserStreak } from "@/types/user";
@@ -30,6 +31,7 @@ export default function SessionSummary({
   deckId,
 }: SessionSummaryProps) {
   const router = useRouter();
+  const [addedCount, setAddedCount] = useState(0);
 
   const counts = useMemo(() => {
     const values = Object.values(ratings);
@@ -87,6 +89,19 @@ export default function SessionSummary({
           <p className="text-sm text-orange-800">Current streak: {streakData.streakCurrent} days</p>
         </motion.div>
       ) : null}
+
+      {totalCards >= 3 && (
+        <CardSuggestions
+          deckId={deckId}
+          onAdded={(count) => setAddedCount(count)}
+        />
+      )}
+
+      {addedCount > 0 && (
+        <p className="text-center text-xs text-slate-500">
+          {addedCount} new cards added - they'll appear in tomorrow's session
+        </p>
+      )}
 
       <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
         <Button variant="primary" onClick={() => router.push(`/decks/${deckId}/study`)}>

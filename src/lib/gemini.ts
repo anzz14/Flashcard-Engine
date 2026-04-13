@@ -161,7 +161,16 @@ Return ONLY a valid JSON array with this exact shape, no other text:
 [{ "question": "...", "answer": "...", "topicTag": "${chunk.heading}" }]`;
 }
 
-async function generateWithGemini(prompt: string): Promise<string> {
+type GeminiGenerationOverrides = {
+  temperature?: number;
+  maxOutputTokens?: number;
+  responseMimeType?: string;
+};
+
+async function generateWithGemini(
+  prompt: string,
+  overrides?: GeminiGenerationOverrides
+): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error(
@@ -176,13 +185,23 @@ async function generateWithGemini(prompt: string): Promise<string> {
   }
 
   const genAI = new GoogleGenerativeAI(apiKey);
+  const baseGenerationConfig = {
+    temperature: 0.4,
+    maxOutputTokens: 2048,
+    responseMimeType: "application/json",
+  };
+  const generationConfig = {
+    ...baseGenerationConfig,
+    ...overrides,
+  };
+
+  if (typeof generationConfig.responseMimeType === "undefined") {
+    delete generationConfig.responseMimeType;
+  }
+
   const model = genAI.getGenerativeModel({
     model: process.env.GEMINI_MODEL || "gemini-1.5-flash",
-    generationConfig: {
-      responseMimeType: "application/json",
-      temperature: 0.4,
-      maxOutputTokens: 2048,
-    },
+    generationConfig,
   });
 
   const result = await model.generateContent(prompt);
@@ -272,5 +291,128 @@ export async function generateFlashcardsFromChunk(
   } catch (error) {
     console.error("Failed to generate flashcards from chunk:", error);
     throw error;
+  }
+}
+
+export async function generateHintForCard(
+  question: string,
+  answer: string
+): Promise<string> {
+  const prompt = `You are a helpful study assistant. A student is struggling to remember the answer
+to a flashcard. Your job is to give them a subtle hint that nudges their memory
+WITHOUT revealing the answer directly.
+
+Question: "${question}"
+Answer (DO NOT reveal this): "${answer}"
+
+Rules:
+- Give exactly 1 hint in 1-2 sentences maximum
+- Do NOT repeat or paraphrase the answer
+- Do NOT say "the answer is..." or "it involves..."
+- Instead: point to a related concept, a memory anchor, an analogy, or the category
+  the answer belongs to
+- If the answer is a definition, hint at what field or domain it comes from
+- If the answer involves a process, hint at the first step only
+- Tone: encouraging, like a teacher who wants the student to figure it out themselves
+
+Return ONLY the hint text. No labels, no preamble, no quotation marks.`;
+
+  const provider = resolveProvider();
+
+  try {
+    const result =
+      provider === "groq"
+        ? await generateWithGroq(prompt)
+        : await generateWithGemini(prompt, {
+            temperature: 0.6,
+            maxOutputTokens: 150,
+            responseMimeType: undefined,
+          });
+
+    return result.trim();
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function generateCardSuggestions(
+  weakCards: Array<{ question: string; answer: string; topicTag: string | null }>,
+  existingQuestions: string[]
+): Promise<Array<{ question: string; answer: string; topicTag: string }>> {
+  const prompt = `You are an expert teacher analyzing a student's weak flashcards to identify
+knowledge gaps. Based on the cards they struggle with most, suggest NEW flashcards
+that would fill in missing foundational concepts.
+
+The student's weakest cards are:
+${weakCards
+  .map(
+    (c, i) =>
+      `${i + 1}. Q: "${c.question}" | A: "${c.answer}" | Topic: "${c.topicTag ?? "General"}"`
+  )
+  .join("\n")}
+
+Cards they already have (DO NOT suggest these or close variations):
+${existingQuestions
+  .slice(0, 20)
+  .map((q, i) => `${i + 1}. "${q}"`)
+  .join("\n")}
+
+Your task:
+- Identify what foundational concepts are MISSING based on what they struggle with
+- Suggest exactly 3 new flashcards that would help fill those gaps
+- Each card must be on a concept NOT already in their deck
+- Cards should be specific and actionable, not vague
+- Keep the same topic tags as the weak cards where relevant
+
+Return ONLY a valid JSON array, no other text:
+[{ "question": "...", "answer": "...", "topicTag": "..." }]`;
+
+  const provider = resolveProvider();
+
+  try {
+    const text =
+      provider === "groq"
+        ? await generateWithGroq(prompt)
+        : await generateWithGemini(prompt, {
+            responseMimeType: "application/json",
+            temperature: 0.5,
+            maxOutputTokens: 1024,
+          });
+
+    const parsedArray = extractJSONArrayPayload(text);
+    if (!parsedArray) {
+      return [];
+    }
+
+    const suggestions = parsedArray
+      .map((item) => {
+        if (typeof item !== "object" || item === null) {
+          return null;
+        }
+        const candidate = item as Record<string, unknown>;
+        if (
+          typeof candidate.question !== "string" ||
+          typeof candidate.answer !== "string" ||
+          typeof candidate.topicTag !== "string"
+        ) {
+          return null;
+        }
+
+        const question = candidate.question.trim();
+        const answer = candidate.answer.trim();
+        const topicTag = candidate.topicTag.trim();
+        if (!question || !answer || !topicTag) {
+          return null;
+        }
+
+        return { question, answer, topicTag };
+      })
+      .filter((item): item is { question: string; answer: string; topicTag: string } => item !== null)
+      .slice(0, 3);
+
+    return suggestions;
+  } catch (error) {
+    console.error("Failed to generate card suggestions:", error);
+    return [];
   }
 }

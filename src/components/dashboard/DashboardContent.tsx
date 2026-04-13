@@ -42,7 +42,7 @@ export default function DashboardContent({
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Welcome back, {userFirstName} 👋</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Welcome back, {userFirstName} </h1>
         <p className="mt-1 text-slate-600">Here&apos;s your study overview</p>
       </div>
 

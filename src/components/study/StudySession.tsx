@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import EmptySession from "@/components/study/EmptySession";
 import FlashCard from "@/components/study/FlashCard";
+import HintBox from "@/components/study/HintBox";
 import RatingButtons from "@/components/study/RatingButtons";
 import SessionProgress from "@/components/study/SessionProgress";
 import SessionSummary from "@/components/study/SessionSummary";
@@ -142,6 +143,14 @@ export default function StudySession({
           topicTag={currentCard.topicTag}
           isFlipped={isFlipped}
           onFlip={handleFlip}
+        />
+      ) : null}
+
+      {!isFlipped && currentCard ? (
+        <HintBox
+          cardId={currentCard.id}
+          question={currentCard.question}
+          answer={currentCard.answer}
         />
       ) : null}
 
