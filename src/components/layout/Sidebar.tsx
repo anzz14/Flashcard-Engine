@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, BookOpen, Settings, ChevronsLeft } from "@/lib/lucide";
+import { LayoutDashboard, BookOpen, Settings, ChevronsLeft, LogOut } from "@/lib/lucide";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -102,7 +102,12 @@ export default function Sidebar() {
                     >
                       <ListItemText
                         primary={item.label}
-                        primaryTypographyProps={{ fontWeight: active ? 700 : 500, fontSize: 14 }}
+                        sx={{
+                          "& .MuiListItemText-primary": {
+                            fontWeight: active ? 700 : 500,
+                            fontSize: 14,
+                          },
+                        }}
                       />
                     </motion.div>
                   ) : null}
@@ -117,15 +122,18 @@ export default function Sidebar() {
         {!sidebarCollapsed ? (
           <p className="truncate text-xs text-slate-500">{session?.user?.email ?? "Signed in"}</p>
         ) : null}
-        <Button
-          variant="ghost"
-          fullWidth
-          size="small"
-          sx={{ mt: 1, justifyContent: sidebarCollapsed ? "center" : "flex-start", px: 0.5 }}
-          onClick={() => signOut({ callbackUrl: "/login" })}
-        >
-          {sidebarCollapsed ? "Out" : "Logout"}
-        </Button>
+        <Tooltip title="Logout" placement="right" disableHoverListener={!sidebarCollapsed}>
+          <Button
+            variant="ghost"
+            fullWidth
+            size="small"
+            sx={{ mt: 1, justifyContent: sidebarCollapsed ? "center" : "flex-start", px: 0.5 }}
+            onClick={() => signOut({ callbackUrl: "/login" })}
+            aria-label="Logout"
+          >
+            {sidebarCollapsed ? <LogOut size={16} /> : "Logout"}
+          </Button>
+        </Tooltip>
       </div>
     </aside>
   );

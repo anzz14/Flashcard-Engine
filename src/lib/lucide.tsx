@@ -6,6 +6,7 @@ export {
 	X,
 	FileText,
 	Menu,
+	LogOut,
 	ChevronsLeft,
 	ChevronsRight,
 	LayoutDashboard,

@@ -40,10 +40,20 @@ export default function DashboardContent({
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [viewingCard, setViewingCard] = useState<CardWithSM2 | null>(null);
 
+  const hour = new Date().getHours();
+  const greeting =
+    hour >= 5 && hour < 12
+      ? "Good morning"
+      : hour >= 12 && hour < 16
+        ? "Good afternoon"
+        : hour >= 16 && hour < 22
+          ? "Good evening"
+          : "It's late-night";
+
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Welcome back, {userFirstName} </h1>
+        <h1 className="text-2xl font-bold text-slate-900">{greeting}, {userFirstName}</h1>
         <p className="mt-1 text-slate-600">Here&apos;s your study overview</p>
       </div>
 

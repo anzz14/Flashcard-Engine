@@ -112,7 +112,7 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
         />
       </TableCell>
 
-      <TableCell align="center">
+      <TableCell align="center" sx={{ textAlign: "center" }}>
         <Tooltip
           title={tooltipLabel}
           arrow
@@ -123,7 +123,7 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
           }}
         >
           <span
-            className="mx-auto inline-block h-3 w-3 rounded-full"
+            className="inline-block h-3 w-3 rounded-full"
             style={{ backgroundColor: dotColor }}
             aria-label={tooltipLabel}
           />
