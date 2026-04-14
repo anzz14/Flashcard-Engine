@@ -3,17 +3,13 @@
 import { motion } from "framer-motion";
 import {
   ArrowRight,
-  BarChart3,
-  Bot,
   Brain,
-  CheckCircle2,
   Code2,
   GraduationCap,
   Trophy,
-  Upload,
 } from "lucide-react";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 type LandingPageProps = {
   isLoggedIn: boolean;
@@ -22,6 +18,15 @@ type LandingPageProps = {
 type SimpleCard = {
   title: string;
   text: string;
+};
+
+type HowStep = {
+  step: string;
+  title: string;
+  summary: string;
+  details: [string, string];
+  panelTitle: string;
+  panelRows: Array<{ label: string; value: string }>;
 };
 
 const reveal = {
@@ -58,9 +63,71 @@ const featureGrid = [
     text: "Organize by concept so every session has focused intent.",
   },
   {
-    icon: <Brain size={18} />,
     title: "Instant Recall Training",
     text: "Practice active recall with immediate feedback and retention loops.",
+  },
+];
+
+const howSteps: HowStep[] = [
+  {
+    step: "01",
+    title: "Upload notes or text",
+    summary: "Bring your raw material in, and the system structures it instantly.",
+    details: [
+      "Paste notes, upload text, or import study documents without manual formatting.",
+      "Flashcard Engine extracts concepts, definitions, and high-value recall prompts automatically.",
+    ],
+    panelTitle: "Input Pipeline",
+    panelRows: [
+      { label: "Sources", value: "Notes · PDF · Text" },
+      { label: "Parsing", value: "Semantic chunks" },
+      { label: "Output", value: "Clean study units" },
+    ],
+  },
+  {
+    step: "02",
+    title: "AI generates flashcards",
+    summary: "The model converts concepts into question-answer pairs ready to review.",
+    details: [
+      "Cards are generated for active recall, not passive rereading, improving retention quality.",
+      "You can edit and curate cards so the final deck matches your exact learning intent.",
+    ],
+    panelTitle: "Generation Engine",
+    panelRows: [
+      { label: "Card style", value: "Recall-first" },
+      { label: "Coverage", value: "Core + edge cases" },
+      { label: "Controls", value: "Edit before publish" },
+    ],
+  },
+  {
+    step: "03",
+    title: "Study daily with smart scheduling",
+    summary: "Every review is timed to maximize memory strength with minimal waste.",
+    details: [
+      "Spaced repetition adapts intervals based on your rating performance per card.",
+      "Hard cards return sooner, strong cards appear later, creating focused sessions.",
+    ],
+    panelTitle: "Adaptive Scheduler",
+    panelRows: [
+      { label: "Timing", value: "Dynamic intervals" },
+      { label: "Priority", value: "Weak cards first" },
+      { label: "Session", value: "Due-now queue" },
+    ],
+  },
+  {
+    step: "04",
+    title: "Improve retention over time",
+    summary: "Long-term memory compounds through consistent, data-driven review loops.",
+    details: [
+      "Track retention trends, weak topics, and streak consistency in one workflow.",
+      "As your data grows, recommendations become sharper and your study load gets smarter.",
+    ],
+    panelTitle: "Progress Intelligence",
+    panelRows: [
+      { label: "Retention", value: "Trend monitored" },
+      { label: "Weak spots", value: "Auto-detected" },
+      { label: "Consistency", value: "Streak + volume" },
+    ],
   },
 ];
 
@@ -125,6 +192,8 @@ function Section({ id, children }: { id?: string; children: ReactNode }) {
 export default function LandingPage({ isLoggedIn }: LandingPageProps) {
   const primaryHref = isLoggedIn ? "/dashboard" : "/register";
   const authHref = isLoggedIn ? "/dashboard" : "/login";
+  const [activeHowStep, setActiveHowStep] = useState(1);
+  const activeStep = howSteps[activeHowStep];
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#151515] text-white">
@@ -302,22 +371,81 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
 
         <Section id="how-it-works">
           <Reveal>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">How it works</h2>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                { icon: <Upload size={18} />, label: "Upload notes or text" },
-                { icon: <Bot size={18} />, label: "AI generates flashcards" },
-                { icon: <CheckCircle2 size={18} />, label: "Study daily with smart scheduling" },
-                { icon: <BarChart3 size={18} />, label: "Improve retention over time" },
-              ].map((step, idx) => (
-                <div key={step.label} className="rounded-xl border border-white/10 bg-[#151515] p-4">
-                  <p className="text-[11px] uppercase tracking-wide text-[#ff6a3d]">Step {idx + 1}</p>
-                  <div className="mt-2 flex items-center gap-2 text-sm text-zinc-200">
-                    <span className="text-[#ff6a3d]">{step.icon}</span>
-                    {step.label}
+            <div className="space-y-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#ff6a3d]">Our Approach</p>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Purpose beats scale.</h2>
+              <p className="max-w-3xl text-zinc-300">
+                Flashcard Engine combines AI generation, adaptive scheduling, and progress feedback as one continuous learning loop.
+              </p>
+            </div>
+
+            <div className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="space-y-3">
+                {howSteps.map((step, index) => {
+                  const active = activeHowStep === index;
+
+                  return (
+                    <button
+                      key={step.step}
+                      type="button"
+                      onClick={() => setActiveHowStep(index)}
+                      className={`w-full rounded-xl border bg-[#151515] p-4 text-left transition ${
+                        active
+                          ? "border-[#ff3b00]/45 bg-[#171717]"
+                          : "border-white/10 hover:border-[#ff3b00]/40"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#ff6a3d]">
+                          Step {step.step}
+                        </p>
+                        <span
+                          className={`h-1.5 w-14 rounded-full ${
+                            active ? "bg-[#ff3b00]" : "bg-white/10"
+                          }`}
+                        />
+                      </div>
+                      <h3 className="mt-2 text-lg font-semibold text-zinc-100">{step.title}</h3>
+                      <p className="mt-1 text-sm text-zinc-500">{step.summary}</p>
+
+                      {active ? (
+                        <div className="mt-3 space-y-2 border-t border-white/10 pt-3">
+                          <p className="text-sm leading-6 text-zinc-400">{step.details[0]}</p>
+                          <p className="text-sm leading-6 text-zinc-500">{step.details[1]}</p>
+                        </div>
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-[#151515] p-5">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#ff6a3d]">Live Trace</p>
+                <h3 className="mt-2 text-xl font-semibold text-white">{activeStep.panelTitle}</h3>
+
+                <div className="mt-4 space-y-2">
+                  {activeStep.panelRows.map((row) => (
+                    <div
+                      key={row.label}
+                      className="flex items-center justify-between rounded-md border border-white/10 bg-[#111111] px-3 py-2"
+                    >
+                      <span className="text-xs uppercase tracking-wide text-zinc-400">{row.label}</span>
+                      <span className="text-sm font-medium text-zinc-100">{row.value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-5 rounded-md border border-[#ff3b00]/35 bg-black/30 p-3">
+                  <p className="text-xs uppercase tracking-wide text-zinc-400">Flow</p>
+                  <div className="mt-2 flex items-center gap-2 text-[11px] text-zinc-200">
+                    <span className="rounded border border-[#ff3b00]/40 px-2 py-1">Input</span>
+                    <ArrowRight size={12} className="text-[#ff6a3d]" />
+                    <span className="rounded border border-[#ff3b00]/40 px-2 py-1">AI</span>
+                    <ArrowRight size={12} className="text-[#ff6a3d]" />
+                    <span className="rounded border border-[#ff3b00]/40 px-2 py-1">Review</span>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
           </Reveal>
         </Section>
