@@ -260,7 +260,7 @@ export default function StudySession({
         ) : null}
       </AnimatePresence>
 
-      <p className="text-center text-xs text-slate-500">
+      <p className="text-center text-xs text-white">
         Progress: {Math.round(progress * 100)}%
       </p>
     </div>

@@ -37,10 +37,10 @@ export default function DeckStats({ deck }: DeckStatsProps) {
       {stats.map((stat) => (
         <Card key={stat.label} className="px-3 py-2.5">
           <div className="flex items-center justify-between gap-2">
-            <p className="truncate text-[11px] font-medium uppercase tracking-wide text-slate-500">
+            <p className="truncate text-[11px] font-medium uppercase tracking-wide text-white">
               {stat.label}
             </p>
-            <p className={`shrink-0 text-lg font-bold leading-none text-slate-900 ${stat.valueClassName ?? ""}`}>
+            <p className={`shrink-0 text-lg font-bold leading-none text-[#ff6a3d] ${stat.valueClassName ?? ""}`}>
               {stat.value}
             </p>
           </div>

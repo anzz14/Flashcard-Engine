@@ -35,15 +35,15 @@ export default function Sidebar() {
   const { sidebarCollapsed, toggleSidebarCollapsed } = useAppShell();
 
   return (
-    <aside className="flex h-full w-full flex-col border-r border-slate-200 bg-white">
-      <div className="flex h-16 items-center justify-between border-b border-slate-200 px-4">
-        <p className="text-xl font-semibold tracking-tight text-slate-900">
+    <aside className="flex h-full w-full flex-col border-r border-white/10 bg-[#151515]">
+      <div className="flex h-16 items-center justify-between border-b border-white/10 px-4">
+        <p className="text-xl font-semibold tracking-tight text-white">
           {sidebarCollapsed ? "FE" : "Flashcard Engine"}
         </p>
         <Tooltip title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"} placement="right">
           <motion.button
             type="button"
-            className="hidden rounded-md p-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 md:inline-flex"
+            className="hidden rounded-md p-1.5 text-zinc-400 hover:bg-white/10 hover:text-white md:inline-flex"
             onClick={toggleSidebarCollapsed}
             whileTap={{ scale: 0.92 }}
             aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
@@ -78,16 +78,16 @@ export default function Sidebar() {
                     mb: 0.5,
                     px: sidebarCollapsed ? 1.25 : 1.5,
                     justifyContent: sidebarCollapsed ? "center" : "flex-start",
-                    backgroundColor: active ? "#e0e7ff" : "transparent",
-                    color: active ? "#3730a3" : "#334155",
+                    backgroundColor: active ? "rgba(255,59,0,0.15)" : "transparent",
+                    color: active ? "#ff6a3d" : "#a1a1a1",
                     "&:hover": {
-                      backgroundColor: active ? "#c7d2fe" : "#f1f5f9",
+                      backgroundColor: active ? "rgba(255,59,0,0.25)" : "rgba(255,255,255,0.08)",
                     },
                   }}
                 >
                   <ListItemIcon
                     sx={{
-                      color: active ? "#3730a3" : "#64748b",
+                      color: active ? "#ff6a3d" : "#727272",
                       minWidth: sidebarCollapsed ? 0 : 34,
                       justifyContent: "center",
                     }}
@@ -118,9 +118,9 @@ export default function Sidebar() {
         </List>
       </nav>
 
-      <div className="border-t border-slate-200 px-4 py-4">
+      <div className="border-t border-white/10 px-4 py-4">
         {!sidebarCollapsed ? (
-          <p className="truncate text-xs text-slate-500">{session?.user?.email ?? "Signed in"}</p>
+          <p className="truncate text-xs text-zinc-400">{session?.user?.email ?? "Signed in"}</p>
         ) : null}
         <Tooltip title="Logout" placement="right" disableHoverListener={!sidebarCollapsed}>
           <Button

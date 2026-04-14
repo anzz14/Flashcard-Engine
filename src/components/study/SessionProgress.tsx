@@ -28,7 +28,7 @@ export default function SessionProgress({
     <div className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
       <div className="flex items-center justify-between gap-3">
         <div className="space-y-1">
-          <p className="text-sm font-semibold text-slate-900">
+          <p className="text-sm font-semibold text-[#ff6a3d]">
             Card {clampedCurrent} of {total}
           </p>
           {topic ? <Badge label={topic} color={getTopicColor(topic)} /> : null}

@@ -53,7 +53,7 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 space-y-2">
           <p
-            className="truncate text-lg font-semibold text-slate-900"
+            className="truncate text-lg font-semibold text-[#ff6a3d]"
             title={isNameTruncated ? deck.name : undefined}
           >
             {displayName}
@@ -61,13 +61,14 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
         </div>
 
         <div className="flex items-center gap-1.5">
-          <p className="text-xs text-slate-500">{deck.cardCount} cards</p>
+          <p className="text-xs text-white">{deck.cardCount} cards</p>
           <IconButton
             aria-label="Deck actions"
             onClick={handleMenuOpen}
             size="small"
+            sx={{ color: "#ffffff" }}
           >
-            <MoreVertical size={18} />
+            <MoreVertical size={18} className="text-white" />
           </IconButton>
         </div>
       </div>
@@ -77,7 +78,7 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
           <p className={`text-sm mt-8 font-semibold ${dueColorClass}`}>
             {deck.dueToday} due
           </p>
-          <p className="text-[11px] -mt-2 text-slate-500">
+          <p className="text-[11px] -mt-2 text-white">
             Last studied: {deck.lastStudied ? formatDate(deck.lastStudied) : "Never studied"}
           </p>
         </div>
@@ -89,7 +90,7 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
               <span className={`font-semibold ${item.textColor}`}>
                 {item.value}
               </span>
-              <span className="text-slate-500">{item.label}</span>
+              <span className="text-white">{item.label}</span>
             </div>
           ))}
         </div>

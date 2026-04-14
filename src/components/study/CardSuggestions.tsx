@@ -92,13 +92,13 @@ export default function CardSuggestions({ deckId, onAdded }: CardSuggestionsProp
   return (
     <Card className="border border-indigo-100 bg-indigo-50/40 p-5">
       {isLoading ? (
-        <div className="flex items-center gap-2 text-sm text-slate-600">
+        <div className="flex items-center gap-2 text-sm text-white">
           <Spinner size="sm" />
           <span>Analysing your weak spots...</span>
         </div>
       ) : null}
 
-      {!isLoading && error ? <p className="text-sm text-slate-500">Could not load suggestions</p> : null}
+      {!isLoading && error ? <p className="text-sm text-white">Could not load suggestions</p> : null}
 
       {!isLoading && !error && added ? (
         <p className="text-sm font-medium text-emerald-700">✅ {addedCount} cards added to your deck!</p>
@@ -107,8 +107,8 @@ export default function CardSuggestions({ deckId, onAdded }: CardSuggestionsProp
       {!isLoading && !error && !added && suggestions.length > 0 ? (
         <div className="space-y-3">
           <div className="flex items-center justify-between gap-3">
-            <p className="font-semibold text-slate-900">🧠 Suggested Cards</p>
-            <p className="text-xs text-slate-500">Based on your weak spots</p>
+            <p className="font-semibold text-[#ff6a3d]">🧠 Suggested Cards</p>
+            <p className="text-xs text-white">Based on your weak spots</p>
           </div>
 
           <div className="space-y-2">
@@ -151,21 +151,21 @@ export default function CardSuggestions({ deckId, onAdded }: CardSuggestionsProp
                         size="small"
                       />
                       <div className="min-w-0">
-                        <p className="flex items-center gap-2 text-sm font-medium text-slate-900">
+                        <p className="flex items-center gap-2 text-sm font-medium text-[#ff6a3d]">
                           <button
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation();
                               setActiveSuggestion(item);
                             }}
-                            className="inline-flex items-center justify-center rounded-md p-0.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                            className="inline-flex items-center justify-center rounded-md p-0.5 text-white transition hover:bg-slate-100 hover:text-white"
                             aria-label="View card details"
                           >
                             <Eye className="h-4 w-4 shrink-0" aria-hidden="true" />
                           </button>
                           <span className="truncate">{item.question}</span>
                         </p>
-                        <p className="text-xs text-slate-500">{preview}</p>
+                        <p className="text-xs text-white">{preview}</p>
                       </div>
                     </div>
                     <Badge label={item.topicTag} color={getTopicColor(item.topicTag)} />
@@ -200,15 +200,15 @@ export default function CardSuggestions({ deckId, onAdded }: CardSuggestionsProp
         {activeSuggestion ? (
           <div className="space-y-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Question</p>
-              <p className="mt-1 text-sm text-slate-900">{activeSuggestion.question}</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-white">Question</p>
+              <p className="mt-1 text-sm text-[#ff6a3d]">{activeSuggestion.question}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Answer</p>
-              <p className="mt-1 text-sm leading-relaxed text-slate-700">{activeSuggestion.answer}</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-white">Answer</p>
+              <p className="mt-1 text-sm leading-relaxed text-white">{activeSuggestion.answer}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Topic</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-white">Topic</p>
               <div className="mt-1">
                 <Badge label={activeSuggestion.topicTag} color={getTopicColor(activeSuggestion.topicTag)} />
               </div>

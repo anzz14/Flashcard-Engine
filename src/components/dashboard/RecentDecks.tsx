@@ -24,18 +24,18 @@ export default function RecentDecks({ decks }: RecentDecksProps) {
       {displayDecks.map((deck) => (
         <Card key={deck.id} className="min-w-65 flex-1 p-5" hoverable>
           <div className="space-y-3">
-            <h3 className="truncate text-base font-semibold text-slate-900" title={deck.name}>
+            <h3 className="truncate text-base font-semibold text-[#ff6a3d]" title={deck.name}>
               {deck.name}
             </h3>
 
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-white">
               <span
                 className={`font-semibold ${
                   deck.dueToday < 3
                     ? "text-emerald-600"
                     : deck.dueToday < 10
                       ? "text-amber-500"
-                      : "text-slate-900"
+                      : "text-[#ff6a3d]"
                 }`}
               >
                 {deck.dueToday}
@@ -46,7 +46,7 @@ export default function RecentDecks({ decks }: RecentDecksProps) {
             <Button
               variant="secondary"
               size="small"
-              endIcon={<ArrowRightCircle className="h-4 w-4" />}
+              endIcon={<ArrowRightCircle className="h-4 w-4 text-white" />}
               onClick={() => router.push(`/decks/${deck.id}/study`)}
             >
               Quick Start

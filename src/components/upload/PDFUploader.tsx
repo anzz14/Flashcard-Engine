@@ -68,9 +68,9 @@ export default function PDFUploader({ onFileSelected, disabled = false }: PDFUpl
             : "border-slate-300 bg-white"
         } ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
       >
-        <FileText className="mb-2 text-slate-500" size={22} />
-        <p className="text-sm text-slate-700">Drag and drop your PDF here</p>
-        <p className="mt-1 text-xs text-slate-500">Max file size: 20MB</p>
+        <FileText className="mb-2 text-white" size={22} />
+        <p className="text-sm text-white">Drag and drop your PDF here</p>
+        <p className="mt-1 text-xs text-white">Max file size: 20MB</p>
 
         <div className="mt-4">
           <Button
@@ -97,7 +97,7 @@ export default function PDFUploader({ onFileSelected, disabled = false }: PDFUpl
       </div>
 
       {selectedFile ? (
-        <p className="text-sm text-slate-700">Selected file: {selectedFile.name}</p>
+        <p className="text-sm text-white">Selected file: {selectedFile.name}</p>
       ) : null}
 
       {error ? <Alert severity="error">{error}</Alert> : null}

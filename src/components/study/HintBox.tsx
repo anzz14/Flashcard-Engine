@@ -78,7 +78,7 @@ export default function HintBox({ cardId, question, answer }: HintBoxProps) {
       ) : null}
 
       {!isLoading && !error && hint ? (
-        <p className="mt-3 text-sm leading-relaxed text-slate-700">{hint}</p>
+        <p className="mt-3 text-sm leading-relaxed text-white">{hint}</p>
       ) : null}
     </div>
   );

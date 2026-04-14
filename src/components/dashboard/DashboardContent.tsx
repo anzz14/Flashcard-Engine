@@ -53,20 +53,20 @@ export default function DashboardContent({
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">{greeting}, {userFirstName}</h1>
-        <p className="mt-1 text-slate-600">Here&apos;s your study overview</p>
+        <h1 className="text-2xl font-bold text-white">{greeting}, {userFirstName}</h1>
+        <p className="mt-1 text-zinc-400">Here&apos;s your study overview</p>
       </div>
 
       {decks.length === 0 ? (
-        <div className="rounded-2xl border border-indigo-100 bg-indigo-50 px-6 py-5">
-          <h2 className="text-lg font-semibold text-indigo-900">Ready for your first deck?</h2>
-          <p className="mt-1 text-sm text-indigo-800">
+        <div className="rounded-2xl border border-[#ff3b00]/30 bg-[rgba(255,59,0,0.08)] px-6 py-5">
+          <h2 className="text-lg font-semibold text-[#ff6a3d]">Ready for your first deck?</h2>
+          <p className="mt-1 text-sm text-[#ff9a7c]">
             Create your first deck to start generating and reviewing flashcards.
           </p>
           <Button
             variant="primary"
             onClick={() => setOpenCreateModal(true)}
-            startIcon={<Plus size={20} />}
+            startIcon={<Plus size={20} className="text-white" />}
             sx={{ mt: 2 }}
           >
             Create First Deck
@@ -98,16 +98,16 @@ export default function DashboardContent({
       <Modal open={viewingCard !== null} onClose={() => setViewingCard(null)} title="View Card" maxWidth="sm">
         <Stack spacing={3} sx={{ pt: 1 }}>
           <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Question</p>
-            <p className="whitespace-pre-wrap text-sm text-slate-900">{viewingCard?.question ?? ""}</p>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-white">Question</p>
+            <p className="whitespace-pre-wrap text-sm text-[#ff6a3d]">{viewingCard?.question ?? ""}</p>
           </Box>
           <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Answer</p>
-            <p className="whitespace-pre-wrap text-sm text-slate-900">{viewingCard?.answer ?? ""}</p>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-white">Answer</p>
+            <p className="whitespace-pre-wrap text-sm text-[#ff6a3d]">{viewingCard?.answer ?? ""}</p>
           </Box>
           <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Topic</p>
-            <p className="text-sm text-slate-900">{viewingCard?.topicTag?.trim() || "General"}</p>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-white">Topic</p>
+            <p className="text-sm text-[#ff6a3d]">{viewingCard?.topicTag?.trim() || "General"}</p>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button variant="primary" onClick={() => setViewingCard(null)}>
@@ -119,11 +119,11 @@ export default function DashboardContent({
 
       <div>
         <div className="mb-4 flex items-center justify-between gap-3">
-          <h2 className="text-xl font-semibold text-slate-900">Your Decks</h2>
+          <h2 className="text-xl font-semibold text-[#ff6a3d]">Your Decks</h2>
           <Button
             variant="primary"
             onClick={() => setOpenCreateModal(true)}
-            startIcon={<Plus size={20} />}
+            startIcon={<Plus size={20} className="text-white" />}
           >
             New Deck
           </Button>

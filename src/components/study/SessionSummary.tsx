@@ -19,7 +19,7 @@ function StatPill({ label, value, color }: { label: string; value: number; color
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-4 text-center shadow-sm">
       <p className={`text-2xl font-bold ${color}`}>{value}</p>
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
+      <p className="text-xs font-medium uppercase tracking-wide text-white">{label}</p>
     </div>
   );
 }
@@ -59,8 +59,8 @@ export default function SessionSummary({
   return (
     <div className="mx-auto max-w-3xl space-y-6 rounded-2xl border border-slate-200 bg-slate-50 p-6">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-slate-900">Session Complete! 🎉</h2>
-        <p className="mt-1 text-sm text-slate-600">
+        <h2 className="text-3xl font-bold text-[#ff6a3d]">Session Complete! 🎉</h2>
+        <p className="mt-1 text-sm text-white">
           You reviewed {Object.keys(ratings).length || totalCards} cards this session.
         </p>
       </div>
@@ -98,7 +98,7 @@ export default function SessionSummary({
       )}
 
       {addedCount > 0 && (
-        <p className="text-center text-xs text-slate-500">
+        <p className="text-center text-xs text-white">
           {addedCount} new cards added - they'll appear in tomorrow's session
         </p>
       )}

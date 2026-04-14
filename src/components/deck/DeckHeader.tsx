@@ -85,7 +85,7 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
     <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-2">
-          <h1 className="text-3xl font-bold text-slate-900">{deck.name}</h1>
+          <h1 className="text-3xl font-bold text-[#ff6a3d]">{deck.name}</h1>
           <IconButton aria-label="Rename deck" onClick={() => setRenameOpen(true)}>
             <Edit2 size={18} />
           </IconButton>

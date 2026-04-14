@@ -67,7 +67,7 @@ export default function DecksPageContent({ decks }: DecksPageContentProps) {
       <div className="flex items-center justify-between gap-3">
         <div>
         
-          <p className="text-lg text-slate-600">Browse and manage your flashcard decks.</p>
+          <p className="text-lg text-white">Browse and manage your flashcard decks.</p>
         </div>
 
         <Button variant="primary" startIcon={<Plus size={20} />} onClick={() => setOpenCreateModal(true)}>
@@ -112,7 +112,7 @@ export default function DecksPageContent({ decks }: DecksPageContentProps) {
         </TextField>
       </div>
 
-      <p className="text-xs text-slate-500">
+      <p className="text-xs text-white">
         Showing {visibleDecks.length} of {decks.length} decks
       </p>
 

@@ -14,7 +14,7 @@ export function ProgressBar({ value, max, label, color = "#6366f1" }: ProgressBa
 
   return (
     <div className="w-full">
-      <div className="mb-2 flex items-center justify-between text-sm text-slate-600">
+      <div className="mb-2 flex items-center justify-between text-sm text-white">
         <span>{label ?? `${percentage}%`}</span>
         <span>{percentage}%</span>
       </div>

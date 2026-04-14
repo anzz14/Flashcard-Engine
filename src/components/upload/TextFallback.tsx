@@ -35,7 +35,7 @@ export default function TextFallback({ onTextChange, disabled = false }: TextFal
       />
 
       <div className="flex items-center justify-between text-sm">
-        <span className="text-slate-600">{wordCount} words</span>
+        <span className="text-white">{wordCount} words</span>
         {wordCount < 100 ? (
           <span className="font-medium text-amber-600">
             ⚠️ Need at least 100 words for good card generation

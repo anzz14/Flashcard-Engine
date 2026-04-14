@@ -36,8 +36,8 @@ export default function ReminderToggle({ initialEnabled }: ReminderToggleProps) 
   return (
     <div className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white p-4">
       <div className="space-y-1">
-        <p className="text-sm font-medium text-slate-900">Daily email reminders</p>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm font-medium text-[#ff6a3d]">Daily email reminders</p>
+        <p className="text-sm text-white">
           Get an email when you have cards due. Sent at 8:00 AM UTC.
         </p>
       </div>

@@ -38,16 +38,16 @@ export default function Topbar() {
   const initials = getInitials(session?.user?.name, session?.user?.email);
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 md:px-6">
+    <header className="flex h-16 items-center justify-between border-b border-white/10 bg-[#151515] px-4 md:px-6">
       <div className="flex items-center gap-3">
-        <IconButton onClick={toggleSidebar} className="md:hidden!" aria-label="Open menu">
+        <IconButton onClick={toggleSidebar} className="md:hidden!" aria-label="Open menu" sx={{ color: "#fff" }}>
           <Menu size={22} />
         </IconButton>
-        <h1 className="text-lg font-semibold text-slate-900">{title}</h1>
+        <h1 className="text-lg font-semibold text-white">{title}</h1>
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="rounded-full bg-orange-50 px-3 py-1 text-sm font-semibold text-orange-700">
+        <div className="rounded-full bg-[rgba(255,59,0,0.15)] px-3 py-1 text-sm font-semibold text-[#ff6a3d]">
           🔥 {streakCurrent}
         </div>
         <Avatar src={session?.user?.image ?? undefined} sx={{ width: 34, height: 34 }}>

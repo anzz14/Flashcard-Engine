@@ -32,7 +32,7 @@ export default async function DeckDetailPage({ params }: Props) {
 			<TopicHeatmap topics={deck.topics} deckId={deck.id} />
 
 			<div>
-				<h2 className="mb-4 text-xl font-semibold text-slate-900">All Cards</h2>
+				<h2 className="mb-4 text-xl font-semibold text-[#ff6a3d]">All Cards</h2>
 				<CardList deckId={deck.id} topics={uniqueTopics} />
 			</div>
 		</div>

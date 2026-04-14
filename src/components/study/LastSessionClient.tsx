@@ -126,7 +126,7 @@ export default function LastSessionClient({ deckId, sessionDate, cards }: Props)
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-slate-900">
+        <h1 className="text-2xl font-bold text-[#ff6a3d]">
           Last Session - {formatDate(`${sessionDate}T00:00:00Z`)}
         </h1>
         <Button variant="secondary" onClick={() => router.push(`/decks/${deckId}`)}>
@@ -182,14 +182,14 @@ export default function LastSessionClient({ deckId, sessionDate, cards }: Props)
 
       {!filteredCards.length ? (
         <Card className="rounded-2xl border border-slate-200 p-6 text-center shadow-sm">
-          <p className="text-sm text-slate-600">No cards match your current filters.</p>
+          <p className="text-sm text-white">No cards match your current filters.</p>
         </Card>
       ) : null}
 
       {filteredCards.map((card) => (
         <Card key={card.id} className="rounded-2xl border border-slate-200 p-4 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm font-medium text-slate-900">{card.question}</p>
+            <p className="text-sm font-medium text-[#ff6a3d]">{card.question}</p>
             <Chip
               label={ratingLabels[toSessionPageRating(card.sessionRating)]}
               size="small"

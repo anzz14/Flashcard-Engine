@@ -35,13 +35,13 @@ export default function WeakSpotsList({ cards, onViewCard }: WeakSpotsListProps)
   return (
     <Card className="p-6">
       <div className="mb-4 flex items-center gap-2">
-        <Target className="h-5 w-5 text-slate-700" />
-        <h3 className="text-lg font-semibold text-slate-900">Weak Spots</h3>
+        <Target className="h-5 w-5 text-white" />
+        <h3 className="text-lg font-semibold text-[#ff6a3d]">Weak Spots</h3>
       </div>
-      <p className="mb-5 text-sm text-slate-600">Cards you struggle with most</p>
+      <p className="mb-5 text-sm text-white">Cards you struggle with most</p>
 
       {weakestCards.length === 0 ? (
-        <p className="text-sm text-slate-500">No weak spots yet - keep studying!</p>
+        <p className="text-sm text-white">No weak spots yet - keep studying!</p>
       ) : (
         <div className="space-y-3">
           {weakestCards.map((card) => {
@@ -59,11 +59,11 @@ export default function WeakSpotsList({ cards, onViewCard }: WeakSpotsListProps)
                     onViewCard(card);
                   }
                 }}
-                className="w-full rounded-xl border border-slate-200 bg-white p-3 text-left transition hover:border-red-200 hover:bg-red-50/40"
+                className="w-full rounded-xl border border-white/10 bg-[#151515] p-3 text-left transition hover:border-[#ff3b00]/40"
               >
                 <div className="mb-2 flex items-start justify-between gap-3">
                   <p
-                    className="text-sm font-medium text-slate-900"
+                    className="text-sm font-medium text-white"
                     title={isQuestionTruncated ? card.question : undefined}
                   >
                     {displayQuestion}

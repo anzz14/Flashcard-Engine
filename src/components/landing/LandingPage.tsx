@@ -302,8 +302,8 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
                     transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
                   >
                     <div className="absolute inset-0 rounded-xl border border-white/10 bg-white p-5 text-black" style={{ backfaceVisibility: "hidden" }}>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Question</p>
-                      <p className="mt-6 text-xl font-semibold leading-snug text-slate-900">What makes spaced repetition effective for long-term memory?</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-white">Question</p>
+                      <p className="mt-6 text-xl font-semibold leading-snug text-[#ff6a3d]">What makes spaced repetition effective for long-term memory?</p>
                     </div>
                     <div
                       className="absolute inset-0 rounded-xl border border-[#ff3b00] bg-[#ff3b00] p-5 text-white"

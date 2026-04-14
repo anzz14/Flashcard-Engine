@@ -49,7 +49,7 @@ export default function DangerZone() {
     <div className="rounded-xl border border-red-200 bg-red-50/40 p-5">
       <div className="space-y-2">
         <h4 className="text-lg font-semibold text-red-700">Delete Account</h4>
-        <p className="text-sm text-slate-700">{WARNING_TEXT}</p>
+        <p className="text-sm text-white">{WARNING_TEXT}</p>
       </div>
 
       <div className="mt-4 flex justify-end">
@@ -60,7 +60,7 @@ export default function DangerZone() {
 
       <Modal open={open} onClose={closeModal} title="Confirm account deletion" maxWidth="sm">
         <div className="space-y-4 pt-1">
-          <p className="text-sm text-slate-700">{WARNING_TEXT}</p>
+          <p className="text-sm text-white">{WARNING_TEXT}</p>
 
           <TextField
             label='Type "DELETE" to confirm'

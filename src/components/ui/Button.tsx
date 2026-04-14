@@ -12,24 +12,27 @@ const variantSxMap: Record<AppButtonVariant, MuiButtonProps["sx"]> = {
   primary: {
     textTransform: "none",
     borderRadius: "0.75rem",
-    backgroundColor: "#6366f1",
-    color: "#ffffff",
+    borderColor: "#ff6a3d",
+    backgroundColor: "transparent",
+    color: "#ff6a3d",
     "&:hover": {
-      backgroundColor: "#4f46e5",
+      borderColor: "#ff3b00",
+      backgroundColor: "rgba(255,59,0,0.08)",
     },
     "&.Mui-disabled": {
-      backgroundColor: "#c7d2fe",
-      color: "#ffffff",
+      borderColor: "rgba(255,106,61,0.35)",
+      backgroundColor: "transparent",
+      color: "rgba(255,106,61,0.45)",
     },
   },
   secondary: {
     textTransform: "none",
     borderRadius: "0.75rem",
-    borderColor: "#6366f1",
-    color: "#4f46e5",
+    borderColor: "#ff6a3d",
+    color: "#ff6a3d",
     "&:hover": {
-      borderColor: "#4f46e5",
-      backgroundColor: "#eef2ff",
+      borderColor: "#ff3b00",
+      backgroundColor: "rgba(255,59,0,0.08)",
     },
   },
   ghost: {
@@ -57,7 +60,7 @@ const variantSxMap: Record<AppButtonVariant, MuiButtonProps["sx"]> = {
 };
 
 const variantModeMap: Record<AppButtonVariant, MuiButtonProps["variant"]> = {
-  primary: "contained",
+  primary: "outlined",
   secondary: "outlined",
   ghost: "text",
   danger: "contained",

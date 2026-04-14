@@ -29,7 +29,7 @@ export default function AppShell({ children }: AppShellProps) {
 
   return (
     <AppShellContext.Provider value={contextValue}>
-      <div className="flex h-screen overflow-hidden bg-slate-50">
+      <div className="flex h-screen overflow-hidden bg-[#151515]">
         <div
           className={cn(
             "fixed inset-y-0 left-0 z-40 w-60 transform transition-all duration-300 md:static md:translate-x-0",
@@ -43,14 +43,14 @@ export default function AppShell({ children }: AppShellProps) {
         {sidebarOpen ? (
           <button
             aria-label="Close sidebar"
-            className="fixed inset-0 z-30 bg-slate-900/40 md:hidden"
+            className="fixed inset-0 z-30 bg-black/40 md:hidden"
             onClick={() => setSidebarOpen(false)}
           />
         ) : null}
 
         <div className="flex min-w-0 flex-1 flex-col">
           <Topbar />
-          <main className="flex-1 overflow-y-auto p-6">{children}</main>
+          <main className="flex-1 overflow-y-auto p-6 bg-[#151515]">{children}</main>
         </div>
       </div>
     </AppShellContext.Provider>

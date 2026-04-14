@@ -21,7 +21,7 @@ export default async function DeckLastSessionPage({ params }: Props) {
     return (
       <div className="min-h-screen bg-gray-50 px-4 py-8">
         <div className="mx-auto max-w-xl space-y-4 rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-          <p className="text-lg font-semibold text-slate-900">No previous session found</p>
+          <p className="text-lg font-semibold text-[#ff6a3d]">No previous session found</p>
           <div className="pt-2">
             <Button variant="secondary" component={Link} href={`/decks/${deckId}`}>
               Back to Deck

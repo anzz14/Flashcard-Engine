@@ -58,13 +58,13 @@ export default function EmptySession({ deckId, topicFilter }: EmptySessionProps)
         <CheckCircle2 className="h-14 w-14 text-emerald-500" />
       </div>
 
-      <h2 className="text-2xl font-bold text-slate-900">You&apos;re all caught up!</h2>
+      <h2 className="text-2xl font-bold text-[#ff6a3d]">You&apos;re all caught up!</h2>
 
       {topicFilter ? (
-        <p className="text-sm text-slate-600">No {topicFilter} cards due today</p>
+        <p className="text-sm text-white">No {topicFilter} cards due today</p>
       ) : null}
 
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-white">
         Next review: {nextDueDate ? formatDate(nextDueDate) : "No upcoming reviews"}
       </p>
 

@@ -9,8 +9,8 @@ export default function NewDeckPage() {
 	return (
 		<div className="mx-auto max-w-3xl space-y-5 py-2">
 			<div>
-				<h1 className="text-3xl font-bold text-slate-900">Create New Deck</h1>
-				<p className="mt-1 text-sm text-slate-600">
+				<h1 className="text-3xl font-bold text-[#ff6a3d]">Create New Deck</h1>
+				<p className="mt-1 text-sm text-white">
 					Name your deck and add source content to generate flashcards.
 				</p>
 			</div>
