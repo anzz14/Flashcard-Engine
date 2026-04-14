@@ -18,7 +18,7 @@ export default function SettingsSection({
         {description ? <p className="text-sm text-white">{description}</p> : null}
       </header>
 
-      <div className="h-px w-full bg-slate-200" />
+      <div className="h-px w-full bg-white/10" />
 
       <div>{children}</div>
     </section>

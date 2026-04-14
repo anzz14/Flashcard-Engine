@@ -52,8 +52,8 @@ export default function TopicHeatmap({ topics, deckId }: TopicHeatmapProps) {
                   enterDelay={100}
                   placement="top"
                   slotProps={{
-                    tooltip: { sx: { bgcolor: "#000000", color: "#ffffff" } },
-                    arrow: { sx: { color: "#000000" } },
+                    tooltip: { sx: { bgcolor: "#ff6a3d", color: "#000000" } },
+                    arrow: { sx: { color: "#ff6a3d" } },
                   }}
                 >
                   <div className="space-y-0.5">

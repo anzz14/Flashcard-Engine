@@ -43,7 +43,7 @@ export default function Sidebar() {
         <Tooltip title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"} placement="right">
           <motion.button
             type="button"
-            className="hidden rounded-md p-1.5 text-zinc-400 hover:bg-white/10 hover:text-white md:inline-flex"
+            className="hidden rounded-md p-1.5 text-[#ff6a3d] hover:bg-[rgba(255,59,0,0.08)] hover:text-[#ff6a3d] md:inline-flex"
             onClick={toggleSidebarCollapsed}
             whileTap={{ scale: 0.92 }}
             aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
@@ -79,7 +79,7 @@ export default function Sidebar() {
                     px: sidebarCollapsed ? 1.25 : 1.5,
                     justifyContent: sidebarCollapsed ? "center" : "flex-start",
                     backgroundColor: active ? "rgba(255,59,0,0.15)" : "transparent",
-                    color: active ? "#ff6a3d" : "#a1a1a1",
+                    color: "#ffffff",
                     "&:hover": {
                       backgroundColor: active ? "rgba(255,59,0,0.25)" : "rgba(255,255,255,0.08)",
                     },
@@ -87,7 +87,7 @@ export default function Sidebar() {
                 >
                   <ListItemIcon
                     sx={{
-                      color: active ? "#ff6a3d" : "#727272",
+                      color: "#ffffff",
                       minWidth: sidebarCollapsed ? 0 : 34,
                       justifyContent: "center",
                     }}
@@ -120,14 +120,20 @@ export default function Sidebar() {
 
       <div className="border-t border-white/10 px-4 py-4">
         {!sidebarCollapsed ? (
-          <p className="truncate text-xs text-zinc-400">{session?.user?.email ?? "Signed in"}</p>
+          <p className="truncate text-xs text-white">{session?.user?.email ?? "Signed in"}</p>
         ) : null}
         <Tooltip title="Logout" placement="right" disableHoverListener={!sidebarCollapsed}>
           <Button
             variant="ghost"
             fullWidth
             size="small"
-            sx={{ mt: 1, justifyContent: sidebarCollapsed ? "center" : "flex-start", px: 0.5 }}
+            sx={{
+              mt: 1,
+              justifyContent: sidebarCollapsed ? "center" : "flex-start",
+              px: 0.5,
+              color: "#ff6a3d",
+              "&:hover": { color: "#ff6a3d", backgroundColor: "rgba(255,59,0,0.08)" },
+            }}
             onClick={() => signOut({ callbackUrl: "/login" })}
             aria-label="Logout"
           >

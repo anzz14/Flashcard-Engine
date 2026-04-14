@@ -69,8 +69,8 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
           arrow
           placement="top"
           slotProps={{
-            tooltip: { sx: { bgcolor: "#000000", color: "#ffffff" } },
-            arrow: { sx: { color: "#000000" } },
+            tooltip: { sx: { bgcolor: "#ff6a3d", color: "#000000" } },
+            arrow: { sx: { color: "#ff6a3d" } },
           }}
         >
           <span>{truncate(card.question, 60)}</span>
@@ -83,8 +83,8 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
           arrow
           placement="top"
           slotProps={{
-            tooltip: { sx: { bgcolor: "#000000", color: "#ffffff" } },
-            arrow: { sx: { color: "#000000" } },
+            tooltip: { sx: { bgcolor: "#ff6a3d", color: "#000000" } },
+            arrow: { sx: { color: "#ff6a3d" } },
           }}
         >
           <span>{truncate(card.answer, 60)}</span>
@@ -105,8 +105,8 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
           arrow
           placement="top"
           slotProps={{
-            tooltip: { sx: { bgcolor: "#000000", color: "#ffffff" } },
-            arrow: { sx: { color: "#000000" } },
+            tooltip: { sx: { bgcolor: "#ff6a3d", color: "#000000" } },
+            arrow: { sx: { color: "#ff6a3d" } },
           }}
         >
           <span

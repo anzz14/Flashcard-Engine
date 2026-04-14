@@ -17,6 +17,27 @@ export default function ProfileForm({ initialName, initialEmail }: ProfileFormPr
   const [name, setName] = useState(initialName);
   const [saving, setSaving] = useState(false);
 
+  const fieldSx = {
+    "& .MuiInputLabel-root": {
+      color: "#ffffff",
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ff6a3d",
+    },
+    "& .MuiOutlinedInput-root": {
+      color: "#ffffff",
+      "& fieldset": {
+        borderColor: "rgba(255,255,255,0.18)",
+      },
+      "&:hover fieldset": {
+        borderColor: "rgba(255,255,255,0.3)",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#ff6a3d",
+      },
+    },
+  };
+
   const isChanged = useMemo(
     () => name.trim() !== initialName.trim(),
     [initialName, name]
@@ -57,9 +78,31 @@ export default function ProfileForm({ initialName, initialEmail }: ProfileFormPr
           value={name}
           onChange={(event) => setName(event.target.value)}
           fullWidth
+          sx={fieldSx}
         />
 
-        <TextField label="Email" value={initialEmail} disabled fullWidth />
+        <TextField
+          label="Email"
+          value={initialEmail}
+          disabled
+          fullWidth
+          sx={{
+            ...fieldSx,
+            "& .MuiInputLabel-root.Mui-disabled": {
+              color: "rgba(255,255,255,0.8)",
+            },
+            "& .MuiOutlinedInput-root.Mui-disabled": {
+              "& fieldset": {
+                borderColor: "rgba(255,255,255,0.18)",
+              },
+            },
+            "& .MuiInputBase-input.Mui-disabled": {
+              WebkitTextFillColor: "#ffffff",
+              color: "#ffffff",
+              opacity: 1,
+            },
+          }}
+        />
 
         <Box sx={{ pt: 1, display: "flex", justifyContent: "flex-end" }}>
           <Button type="submit" variant="primary" disabled={!isChanged || saving}>

@@ -46,9 +46,9 @@ export default function DangerZone() {
   };
 
   return (
-    <div className="rounded-xl border border-red-200 bg-red-50/40 p-5">
+    <div className="rounded-xl border border-red-500/40 bg-[rgba(127,29,29,0.18)] p-5">
       <div className="space-y-2">
-        <h4 className="text-lg font-semibold text-red-700">Delete Account</h4>
+        <h4 className="text-lg font-semibold text-red-300">Delete Account</h4>
         <p className="text-sm text-white">{WARNING_TEXT}</p>
       </div>
 

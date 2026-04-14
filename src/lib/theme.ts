@@ -120,5 +120,17 @@ export const theme = createTheme({
         },
       },
     },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: "#ff6a3d",
+          color: "#000000",
+          border: "1px solid rgba(0,0,0,0.12)",
+        },
+        arrow: {
+          color: "#ff6a3d",
+        },
+      },
+    },
   },
 });

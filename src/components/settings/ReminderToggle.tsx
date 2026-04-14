@@ -34,7 +34,7 @@ export default function ReminderToggle({ initialEnabled }: ReminderToggleProps) 
   };
 
   return (
-    <div className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white p-4">
+    <div className="flex items-center justify-between gap-4 rounded-lg border border-white/10 bg-transparent p-4">
       <div className="space-y-1">
         <p className="text-sm font-medium text-[#ff6a3d]">Daily email reminders</p>
         <p className="text-sm text-white">
@@ -48,6 +48,22 @@ export default function ReminderToggle({ initialEnabled }: ReminderToggleProps) 
             checked={reminderEnabled}
             onChange={(_, checked) => {
               void handleToggle(checked);
+            }}
+            sx={{
+              "& .MuiSwitch-switchBase": {
+                color: "#ffffff",
+              },
+              "& .MuiSwitch-switchBase.Mui-checked": {
+                color: "#ff6a3d",
+              },
+              "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+                backgroundColor: "#ff6a3d",
+                opacity: 0.9,
+              },
+              "& .MuiSwitch-track": {
+                backgroundColor: "rgba(255,255,255,0.35)",
+                opacity: 1,
+              },
             }}
           />
         }
