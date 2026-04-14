@@ -148,6 +148,19 @@ const heroTickerItems = [
   "Study sessions that adapt",
 ];
 
+const fabricThreads = [
+  { id: 1, top: "12%", left: "4%", width: "44%", height: "3px", rotate: -13, duration: 10, delay: 0.1 },
+  { id: 2, top: "18%", left: "24%", width: "50%", height: "2px", rotate: 11, duration: 11.2, delay: 0.15 },
+  { id: 3, top: "24%", left: "10%", width: "58%", height: "3px", rotate: -7, duration: 9.4, delay: 0.05 },
+  { id: 4, top: "31%", left: "34%", width: "46%", height: "2px", rotate: 8, duration: 10.8, delay: 0.22 },
+  { id: 5, top: "39%", left: "6%", width: "64%", height: "3px", rotate: -10, duration: 9.9, delay: 0.18 },
+  { id: 6, top: "46%", left: "20%", width: "56%", height: "2px", rotate: 6, duration: 10.6, delay: 0.12 },
+  { id: 7, top: "54%", left: "12%", width: "60%", height: "3px", rotate: -8, duration: 11.1, delay: 0.25 },
+  { id: 8, top: "62%", left: "28%", width: "48%", height: "2px", rotate: 9, duration: 10.2, delay: 0.08 },
+  { id: 9, top: "70%", left: "8%", width: "66%", height: "3px", rotate: -6, duration: 11.4, delay: 0.2 },
+  { id: 10, top: "78%", left: "30%", width: "52%", height: "2px", rotate: 7, duration: 10.1, delay: 0.14 },
+] as const;
+
 const faqItems = [
   {
     question: "What is spaced repetition?",
@@ -439,30 +452,80 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
                 })}
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-[#151515] p-5">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#ff6a3d]">Live Trace</p>
-                <h3 className="mt-2 text-xl font-semibold text-white">{activeStep.panelTitle}</h3>
-
-                <div className="mt-4 space-y-2">
-                  {activeStep.panelRows.map((row) => (
-                    <div
-                      key={row.label}
-                      className="flex items-center justify-between rounded-md border border-white/10 bg-[#111111] px-3 py-2"
-                    >
-                      <span className="text-xs uppercase tracking-wide text-zinc-400">{row.label}</span>
-                      <span className="text-sm font-medium text-zinc-100">{row.value}</span>
-                    </div>
-                  ))}
+              <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#141414] p-5">
+                <div
+                  className="absolute inset-0 opacity-95"
+                  style={{
+                    backgroundImage:
+                      "repeating-linear-gradient(135deg, rgba(255,255,255,0.028) 0 1px, transparent 1px 10px), repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 14px), radial-gradient(circle at 20% 18%, rgba(255,255,255,0.03) 0 12%, transparent 30%), radial-gradient(circle at 78% 68%, rgba(255,255,255,0.025) 0 10%, transparent 28%)",
+                  }}
+                />
+                <motion.div
+                  className="pointer-events-none absolute inset-0 opacity-40"
+                  animate={{ backgroundPosition: ["0px 0px", "24px 18px"] }}
+                  transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(90deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 100%), linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 100%)",
+                    backgroundSize: "24px 24px",
+                  }}
+                />
+                <div className="absolute inset-0">
+                  {fabricThreads.map((thread) => {
+                    return (
+                      <motion.div
+                        key={thread.id}
+                        className="absolute rounded-full bg-[#1b1b1b]"
+                        style={{
+                          top: thread.top,
+                          left: thread.left,
+                          width: thread.width,
+                          height: thread.height,
+                          rotate: `${thread.rotate}deg`,
+                        }}
+                        animate={{
+                          backgroundColor: "#1b1b1b",
+                          opacity: [0.68, 0.84, 0.68],
+                          x: [0, 2, 0],
+                          y: [0, -1, 0],
+                        }}
+                        transition={{
+                          duration: thread.duration,
+                          delay: thread.delay,
+                          repeat: Infinity,
+                          repeatType: "mirror",
+                          ease: "easeInOut",
+                        }}
+                      />
+                    );
+                  })}
                 </div>
 
-                <div className="mt-5 rounded-md border border-[#ff3b00]/35 bg-black/30 p-3">
-                  <p className="text-xs uppercase tracking-wide text-zinc-400">Flow</p>
-                  <div className="mt-2 flex items-center gap-2 text-[11px] text-zinc-200">
-                    <span className="rounded border border-[#ff3b00]/40 px-2 py-1">Input</span>
-                    <ArrowRight size={12} className="text-[#ff6a3d]" />
-                    <span className="rounded border border-[#ff3b00]/40 px-2 py-1">AI</span>
-                    <ArrowRight size={12} className="text-[#ff6a3d]" />
-                    <span className="rounded border border-[#ff3b00]/40 px-2 py-1">Review</span>
+                <div className="relative z-10 rounded-2xl border border-white/10 bg-black/35 p-4 backdrop-blur-sm">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#ff6a3d]">Live Trace</p>
+                  <h3 className="mt-2 text-xl font-semibold text-white">{activeStep.panelTitle}</h3>
+
+                  <div className="mt-4 space-y-2">
+                    {activeStep.panelRows.map((row) => (
+                      <div
+                        key={row.label}
+                        className="flex items-center justify-between rounded-md border border-white/10 bg-[#111111]/90 px-3 py-2"
+                      >
+                        <span className="text-xs uppercase tracking-wide text-zinc-400">{row.label}</span>
+                        <span className="text-sm font-medium text-zinc-100">{row.value}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-5 rounded-md border border-[#ff3b00]/35 bg-black/30 p-3">
+                    <p className="text-xs uppercase tracking-wide text-zinc-400">Flow</p>
+                    <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-zinc-200">
+                      <span className="rounded border border-[#ff3b00]/40 px-2 py-1">Input</span>
+                      <ArrowRight size={12} className="text-[#ff6a3d]" />
+                      <span className="rounded border border-[#ff3b00]/40 px-2 py-1">AI</span>
+                      <ArrowRight size={12} className="text-[#ff6a3d]" />
+                      <span className="rounded border border-[#ff3b00]/40 px-2 py-1">Review</span>
+                    </div>
                   </div>
                 </div>
               </div>
