@@ -56,7 +56,7 @@ export default function GenerationProgress({
     <div className="space-y-4 rounded-2xl border border-white/10 bg-[#151515] p-5 shadow-sm">
       <h3 className="text-lg font-semibold text-[#ff6a3d]">Generating flashcards...</h3>
 
-      <ProgressBar value={doneChunks} max={totalChunks} label={label} />
+      <ProgressBar value={doneChunks} max={totalChunks} label={label} color="#ff6a3d" />
 
       <p className="text-sm text-white">{loadingMessages[messageIndex]}</p>
     </div>

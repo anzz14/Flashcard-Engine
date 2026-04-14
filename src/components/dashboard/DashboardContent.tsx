@@ -97,17 +97,17 @@ export default function DashboardContent({
 
       <Modal open={viewingCard !== null} onClose={() => setViewingCard(null)} title="View Card" maxWidth="sm">
         <Stack spacing={3} sx={{ pt: 1 }}>
-          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-white">Question</p>
-            <p className="whitespace-pre-wrap text-sm text-[#ff6a3d]">{viewingCard?.question ?? ""}</p>
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "transparent", border: "1px solid #ff6a3d" }}>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#ff6a3d]">Question</p>
+            <p className="whitespace-pre-wrap text-sm text-[#fffff]">{viewingCard?.question ?? ""}</p>
           </Box>
-          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-white">Answer</p>
-            <p className="whitespace-pre-wrap text-sm text-[#ff6a3d]">{viewingCard?.answer ?? ""}</p>
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "transparent", border: "1px solid #ff6a3d" }}>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#ff6a3d]">Answer</p>
+            <p className="whitespace-pre-wrap text-sm text-[#fffff]">{viewingCard?.answer ?? ""}</p>
           </Box>
-          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-white">Topic</p>
-            <p className="text-sm text-[#ff6a3d]">{viewingCard?.topicTag?.trim() || "General"}</p>
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "transparent", border: "1px solid #ff6a3d" }}>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#ff6a3d]">Topic</p>
+            <p className="text-sm text-[#ffff]">{viewingCard?.topicTag?.trim() || "General"}</p>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button variant="primary" onClick={() => setViewingCard(null)}>
