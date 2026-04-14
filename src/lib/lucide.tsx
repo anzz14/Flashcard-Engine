@@ -14,4 +14,6 @@ export {
 	Settings,
 	ArrowLeft,
 	Lightbulb,
+	AlertTriangle,
+	CheckCircle2,
 } from "lucide-react";

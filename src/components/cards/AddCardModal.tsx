@@ -115,9 +115,21 @@ export default function AddCardModal({ open, deckId, onClose, onAdd }: AddCardMo
             <Switch
               checked={addAnother}
               onChange={(_, checked) => setAddAnother(checked)}
+              sx={{
+                "& .MuiSwitch-switchBase.Mui-checked": {
+                  color: "#ff6a3d",
+                  "&:hover": {
+                    backgroundColor: "rgba(255,106,61,0.08)",
+                  },
+                },
+                "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+                  backgroundColor: "#ff6a3d",
+                },
+              }}
             />
           }
           label="Add Another?"
+          sx={{ color: "#ffffff" }}
         />
 
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
@@ -125,11 +137,30 @@ export default function AddCardModal({ open, deckId, onClose, onAdd }: AddCardMo
             variant="ghost"
             onClick={onClose}
             disabled={saving}
-            sx={{ color: "#ffffff", "&:hover": { backgroundColor: "transparent" } }}
+            sx={{
+              color: "#ffffff",
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.06)" },
+            }}
           >
             Cancel
           </Button>
-          <Button variant="primary" onClick={() => void handleSave()} disabled={saving}>
+          <Button
+            variant="primary"
+            onClick={() => void handleSave()}
+            disabled={saving}
+            sx={{
+              color: "#ff6a3d !important",
+              borderColor: "#ff6a3d !important",
+              "&:hover": {
+                borderColor: "#ff3b00 !important",
+                backgroundColor: "rgba(255,59,0,0.08) !important",
+              },
+              "&.Mui-disabled": {
+                color: "rgba(255,106,61,0.45) !important",
+                borderColor: "rgba(255,106,61,0.35) !important",
+              },
+            }}
+          >
             {saving ? <Spinner size="sm" className="text-white" /> : "Save"}
           </Button>
         </Box>

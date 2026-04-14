@@ -37,7 +37,7 @@ export default function Sidebar() {
   return (
     <aside className="flex h-full w-full flex-col border-r border-white/10 bg-[#151515]">
       <div className="flex h-16 items-center justify-between border-b border-white/10 px-4">
-        <p className="text-xl font-semibold tracking-tight text-white">
+        <p className="text-xl font-semibold tracking-tight text-[#f5e6c8]">
           {sidebarCollapsed ? "FE" : "Flashcard Engine"}
         </p>
         <Tooltip title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"} placement="right">
@@ -120,7 +120,7 @@ export default function Sidebar() {
 
       <div className="border-t border-white/10 px-4 py-4">
         {!sidebarCollapsed ? (
-          <p className="truncate text-xs text-white">{session?.user?.email ?? "Signed in"}</p>
+          <p className="truncate pl-0.5 text-xs text-white">{session?.user?.email ?? "Signed in"}</p>
         ) : null}
         <Tooltip title="Logout" placement="right" disableHoverListener={!sidebarCollapsed}>
           <Button
@@ -130,14 +130,15 @@ export default function Sidebar() {
             sx={{
               mt: 1,
               justifyContent: sidebarCollapsed ? "center" : "flex-start",
-              px: 0.5,
+              px: sidebarCollapsed ? 1.25 : 0.5,
+              minWidth: 0,
               color: "#ff6a3d",
               "&:hover": { color: "#ff6a3d", backgroundColor: "rgba(255,59,0,0.08)" },
             }}
             onClick={() => signOut({ callbackUrl: "/login" })}
             aria-label="Logout"
           >
-            {sidebarCollapsed ? <LogOut size={16} /> : "Logout"}
+            {sidebarCollapsed ? <LogOut size={18} /> : "Logout"}
           </Button>
         </Tooltip>
       </div>

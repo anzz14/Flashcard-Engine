@@ -65,12 +65,12 @@ export default function PDFUploader({ onFileSelected, disabled = false }: PDFUpl
         className={`rounded-2xl border-2 border-dashed p-6 text-center transition ${
           isDragging
             ? "border-[#ff6a3d] bg-[rgba(255,59,0,0.08)]"
-            : "border-white/20 bg-[#151515]"
+            : "border-white/10 bg-transparent"
         } ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
       >
-        <FileText className="mb-2 text-white" size={22} />
+        <FileText className="mb-2 text-[#ff6a3d]" size={22} />
         <p className="text-sm text-white">Drag and drop your PDF here</p>
-        <p className="mt-1 text-xs text-white">Max file size: 20MB</p>
+        <p className="mt-1 text-xs text-white/70">Max file size: 20MB</p>
 
         <div className="mt-4">
           <Button

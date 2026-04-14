@@ -158,6 +158,19 @@ export function CreateDeckFlow({
               setContentTab(value as "pdf" | "text");
               setErrorMessage(null);
             }}
+            sx={{
+              "& .MuiTab-root": {
+                color: "#ffffff",
+                textTransform: "none",
+                fontWeight: 600,
+              },
+              "& .MuiTab-root.Mui-selected": {
+                color: "#ff6a3d",
+              },
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#ff6a3d",
+              },
+            }}
           >
             <Tab label="Upload PDF" value="pdf" />
             <Tab label="Paste Text" value="text" />
@@ -186,7 +199,12 @@ export function CreateDeckFlow({
           ) : null}
 
           <Box sx={{ display: "flex", justifyContent: "space-between", gap: 1 }}>
-            <Button variant="ghost" onClick={() => setStep(1)} disabled={isStarting}>
+            <Button
+              variant="ghost"
+              onClick={() => setStep(1)}
+              disabled={isStarting}
+              sx={{ color: "#ffffff", "&:hover": { color: "#ffffff", backgroundColor: "transparent" } }}
+            >
               Back
             </Button>
 

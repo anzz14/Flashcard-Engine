@@ -43,7 +43,9 @@ export default function Topbar() {
         <IconButton onClick={toggleSidebar} className="md:hidden!" aria-label="Open menu" sx={{ color: "#fff" }}>
           <Menu size={22} />
         </IconButton>
-        <h1 className="text-lg font-semibold text-white">{title}</h1>
+        <h1 className={`text-lg font-semibold ${title === "Flashcard Engine" ? "text-[#f5e6c8]" : "text-white"}`}>
+          {title}
+        </h1>
       </div>
 
       <div className="flex items-center gap-3">
