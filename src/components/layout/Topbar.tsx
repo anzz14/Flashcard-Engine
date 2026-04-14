@@ -62,7 +62,17 @@ export default function Topbar() {
           sx={{ p: 0 }}
           aria-label="Open settings"
         >
-          <Avatar src={session?.user?.image ?? undefined} sx={{ width: 34, height: 34, cursor: "pointer" }}>
+          <Avatar
+            src={session?.user?.image ?? undefined}
+            sx={{
+              width: 34,
+              height: 34,
+              cursor: "pointer",
+              bgcolor: "#ff6a3d",
+              color: "#ffffff",
+              fontWeight: 700,
+            }}
+          >
             {initials}
           </Avatar>
         </IconButton>
