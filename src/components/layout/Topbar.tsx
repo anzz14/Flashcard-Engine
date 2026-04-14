@@ -5,6 +5,7 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useStreak } from "@/hooks/useStreak";
 import { useAppShell } from "@/components/layout/AppShellContext";
 
@@ -30,6 +31,7 @@ function getInitials(name?: string | null, email?: string | null): string {
 
 export default function Topbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const title = getPageTitle(pathname);
   const { data: session } = useSession();
   const { streakCurrent } = useStreak();
@@ -52,9 +54,15 @@ export default function Topbar() {
         <div className="rounded-full bg-[rgba(255,59,0,0.15)] px-3 py-1 text-sm font-semibold text-[#ff6a3d]">
           🔥 {streakCurrent}
         </div>
-        <Avatar src={session?.user?.image ?? undefined} sx={{ width: 34, height: 34 }}>
-          {initials}
-        </Avatar>
+        <IconButton 
+          onClick={() => router.push("/settings")}
+          sx={{ p: 0 }}
+          aria-label="Open settings"
+        >
+          <Avatar src={session?.user?.image ?? undefined} sx={{ width: 34, height: 34, cursor: "pointer" }}>
+            {initials}
+          </Avatar>
+        </IconButton>
       </div>
     </header>
   );
