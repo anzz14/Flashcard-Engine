@@ -43,27 +43,10 @@ function FallbackDailyReminderEmail({
 }
 
 async function getTemplates() {
-  // TODO(Module 14): switch to direct typed imports once email template exports are finalized.
-  const welcomeModule = (await import("../../emails/WelcomeEmail")) as Record<
-    string,
-    unknown
-  >;
-  const reminderModule = (await import("../../emails/DailyReminderEmail")) as Record<
-    string,
-    unknown
-  >;
-
-  const WelcomeEmail =
-    typeof welcomeModule.WelcomeEmail === "function"
-      ? (welcomeModule.WelcomeEmail as (props: { userName: string }) => React.ReactElement)
-      : FallbackWelcomeEmail;
-
-  const DailyReminderEmail =
-    typeof reminderModule.DailyReminderEmail === "function"
-      ? (reminderModule.DailyReminderEmail as (props: ReminderTemplateProps) => React.ReactElement)
-      : FallbackDailyReminderEmail;
-
-  return { WelcomeEmail, DailyReminderEmail };
+  return {
+    WelcomeEmail: FallbackWelcomeEmail,
+    DailyReminderEmail: FallbackDailyReminderEmail,
+  };
 }
 
 export async function sendWelcomeEmail(user: {

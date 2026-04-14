@@ -1,4 +1,4 @@
-import pdf from "pdf-parse";
+import { PDFParse } from "pdf-parse";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 
 export class PDFExtractionError extends Error {
@@ -54,8 +54,14 @@ function tryExtractPlainTextFallback(buffer: Buffer): string | null {
 }
 
 async function extractWithPdfParse(buffer: Buffer): Promise<string> {
-  const data = await pdf(buffer);
-  return data.text ?? "";
+  const parser = new PDFParse({ data: buffer });
+
+  try {
+    const data = await parser.getText();
+    return data.text ?? "";
+  } finally {
+    await parser.destroy();
+  }
 }
 
 async function extractWithPdfJs(buffer: Buffer): Promise<string> {

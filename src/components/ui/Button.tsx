@@ -1,6 +1,7 @@
 "use client";
 
 import MuiButton, { type ButtonProps as MuiButtonProps } from "@mui/material/Button";
+import type { SxProps, Theme } from "@mui/material/styles";
 
 type AppButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 
@@ -8,7 +9,7 @@ export type ButtonProps = Omit<MuiButtonProps, "variant" | "color"> & {
   variant?: AppButtonVariant;
 };
 
-const variantSxMap: Record<AppButtonVariant, MuiButtonProps["sx"]> = {
+const variantSxMap: Record<AppButtonVariant, SxProps<Theme>> = {
   primary: {
     textTransform: "none",
     borderRadius: "0.75rem",
@@ -67,10 +68,12 @@ const variantModeMap: Record<AppButtonVariant, MuiButtonProps["variant"]> = {
 };
 
 export function Button({ variant = "primary", sx, ...props }: ButtonProps) {
+  const mergedSx = sx ? ([variantSxMap[variant], sx] as MuiButtonProps["sx"]) : variantSxMap[variant];
+
   return (
     <MuiButton
       variant={variantModeMap[variant]}
-      sx={{ ...variantSxMap[variant], ...sx }}
+      sx={mergedSx}
       {...props}
     />
   );

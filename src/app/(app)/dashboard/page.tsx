@@ -4,8 +4,13 @@ import { getUserDecks, getWeakSpots } from "@/services/deckService";
 import { getUserStats } from "@/services/progressService";
 
 export default async function DashboardPage() {
-	const session = await auth();
-	const userId = session!.user.id;
+	const session = (await auth()) as { user?: { id?: string; name?: string | null } } | null;
+
+	if (!session?.user?.id) {
+		throw new Error("Unauthorized");
+	}
+
+	const userId = session.user.id;
 
 	const [decks, weakSpots, stats] = await Promise.all([
 		getUserDecks(userId),
