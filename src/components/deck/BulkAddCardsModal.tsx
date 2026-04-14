@@ -138,7 +138,12 @@ export default function BulkAddCardsModal({
           ) : null}
 
           <div className="flex justify-end gap-2">
-            <Button variant="ghost" onClick={handleClose} disabled={isStarting}>
+            <Button
+              variant="ghost"
+              onClick={handleClose}
+              disabled={isStarting}
+              sx={{ color: "#ffffff", "&:hover": { backgroundColor: "transparent" } }}
+            >
               Cancel
             </Button>
             <Button variant="primary" onClick={() => void handleGenerate()} disabled={isStarting}>

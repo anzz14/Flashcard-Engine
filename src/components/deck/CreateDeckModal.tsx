@@ -131,7 +131,11 @@ export function CreateDeckFlow({
 
           <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
             {showCancel && onCancel ? (
-              <Button variant="ghost" onClick={onCancel}>
+              <Button
+                variant="ghost"
+                onClick={onCancel}
+                sx={{ color: "#ffffff", "&:hover": { backgroundColor: "transparent" } }}
+              >
                 Cancel
               </Button>
             ) : null}

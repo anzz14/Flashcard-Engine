@@ -95,7 +95,12 @@ export default function EditCardModal({ card, onClose, onSave }: EditCardModalPr
         />
 
         <div className="flex justify-end gap-2">
-          <Button variant="ghost" onClick={onClose} disabled={saving}>
+          <Button
+            variant="ghost"
+            onClick={onClose}
+            disabled={saving}
+            sx={{ color: "#ffffff", "&:hover": { backgroundColor: "transparent" } }}
+          >
             Cancel
           </Button>
           <Button variant="primary" onClick={() => void handleSave()} disabled={saving}>

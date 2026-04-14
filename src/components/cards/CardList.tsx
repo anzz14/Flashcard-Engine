@@ -85,7 +85,12 @@ function CardFormModal({
         />
 
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
-          <Button variant="ghost" onClick={onClose} disabled={saving}>
+          <Button
+            variant="ghost"
+            onClick={onClose}
+            disabled={saving}
+            sx={{ color: "#ffffff", "&:hover": { backgroundColor: "transparent" } }}
+          >
             Cancel
           </Button>
           <Button
@@ -382,7 +387,12 @@ export default function CardList({ deckId, topics }: CardListProps) {
           ) : null}
 
           <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
-            <Button variant="ghost" onClick={() => setDeletingCard(null)} disabled={isDeleting}>
+            <Button
+              variant="ghost"
+              onClick={() => setDeletingCard(null)}
+              disabled={isDeleting}
+              sx={{ color: "#ffffff", "&:hover": { backgroundColor: "transparent" } }}
+            >
               Cancel
             </Button>
             <Button

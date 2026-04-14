@@ -71,7 +71,12 @@ export default function DangerZone() {
           />
 
           <div className="flex justify-end gap-2">
-            <Button variant="ghost" onClick={closeModal} disabled={deleting}>
+            <Button
+              variant="ghost"
+              onClick={closeModal}
+              disabled={deleting}
+              sx={{ color: "#ffffff", "&:hover": { backgroundColor: "transparent" } }}
+            >
               Cancel
             </Button>
             <Button

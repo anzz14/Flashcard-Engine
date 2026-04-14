@@ -121,7 +121,12 @@ export default function AddCardModal({ open, deckId, onClose, onAdd }: AddCardMo
         />
 
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
-          <Button variant="ghost" onClick={onClose} disabled={saving}>
+          <Button
+            variant="ghost"
+            onClick={onClose}
+            disabled={saving}
+            sx={{ color: "#ffffff", "&:hover": { backgroundColor: "transparent" } }}
+          >
             Cancel
           </Button>
           <Button variant="primary" onClick={() => void handleSave()} disabled={saving}>
