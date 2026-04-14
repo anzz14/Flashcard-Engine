@@ -27,6 +27,16 @@ body {
   scrollbar-width: thin;
 }
 
+::selection {
+  background: rgba(255, 106, 61, 0.35);
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background: rgba(255, 106, 61, 0.35);
+  color: #ffffff;
+}
+
 .app-scrollbar {
   scrollbar-color: rgba(255, 106, 61, 0.85) rgba(0, 0, 0, 0.45);
   scrollbar-width: thin;
