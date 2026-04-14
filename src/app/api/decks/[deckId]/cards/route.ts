@@ -11,9 +11,19 @@ export async function GET(req: Request, { params }: Props) {
 
 	try {
 		const { searchParams } = new URL(req.url);
+		const topics = searchParams
+			.getAll("topic")
+			.map((topic) => topic.trim())
+			.filter(Boolean);
 		const topic = searchParams.get("topic") ?? undefined;
 		const search = searchParams.get("search") ?? undefined;
-		const cards = await getCardsForDeck(deckId, userId, { topic, search });
+		const due = searchParams.get("due") ?? undefined;
+		const cards = await getCardsForDeck(deckId, userId, {
+			topics: topics.length > 0 ? topics : undefined,
+			topic,
+			search,
+			due: due === "due" || due === "not-due" ? due : undefined,
+		});
 		return apiSuccess(cards);
 	} catch {
 		return apiError("Failed to fetch cards", 500);

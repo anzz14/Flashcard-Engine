@@ -1,5 +1,5 @@
 import type { CardWithSM2, ReviewRating, SM2Update } from "../types/card";
-import { daysFromNow, pluralize } from "./utils";
+import { daysFromNow } from "./utils";
 
 export function applyRating(
   card: Pick<CardWithSM2, "interval" | "easeFactor" | "repetitions">,
@@ -9,29 +9,25 @@ export function applyRating(
 
   switch (rating) {
     case "AGAIN":
-      interval = 1;
+      interval = 0;
       easeFactor = Math.max(1.3, easeFactor - 0.2);
       repetitions = 0;
       break;
     case "HARD":
-      interval = Math.round(Math.max(1, interval * 1.2));
+      interval = 1;
       easeFactor = Math.max(1.3, easeFactor - 0.15);
       repetitions = repetitions + 1;
       break;
     case "GOOD":
-      // First review: 1 day. Subsequent: interval × easeFactor
-      interval = repetitions === 0 ? 1 : Math.round(interval * easeFactor);
+      interval = 3;
       repetitions = repetitions + 1;
       break;
     case "EASY":
-      interval = Math.round(interval * easeFactor * 1.3);
+      interval = 7;
       easeFactor = Math.min(3.0, easeFactor + 0.1);
       repetitions = repetitions + 1;
       break;
   }
-
-  // Minimum interval: always at least 1 day
-  interval = Math.max(1, interval);
 
   return {
     interval,
@@ -46,12 +42,17 @@ export function getNextReviewPreview(
   card: Pick<CardWithSM2, "interval" | "easeFactor" | "repetitions">,
   rating: ReviewRating
 ): string {
-  const { interval } = applyRating(card, rating);
-
-  if (interval >= 7 && interval % 7 === 0) {
-    const weeks = interval / 7;
-    return `in ${pluralize(weeks, "week")}`;
+  if (rating === "AGAIN") {
+    return "at end of deck";
   }
 
-  return `in ${pluralize(interval, "day")}`;
+  if (rating === "HARD") {
+    return "in 1 day";
+  }
+
+  if (rating === "GOOD") {
+    return "in 3 days";
+  }
+
+  return "in 7 days";
 }

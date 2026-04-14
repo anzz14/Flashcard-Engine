@@ -49,7 +49,27 @@ export default function LoginForm() {
         onChange={(e) => setEmail(e.target.value)}
         autoComplete="email"
         required
-        sx={{ mb: 2 }}
+        sx={{
+          mb: 2,
+          "& .MuiOutlinedInput-root": {
+            color: "#fff",
+            "& fieldset": {
+              borderColor: "rgba(255,255,255,0.15)",
+            },
+            "&:hover fieldset": {
+              borderColor: "rgba(255,59,0,0.4)",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "#ff6a3d",
+            },
+          },
+          "& .MuiInputLabel-root": {
+            color: "rgba(255,255,255,0.6)",
+            "&.Mui-focused": {
+              color: "#ff6a3d",
+            },
+          },
+        }}
       />
 
       <TextField
@@ -60,11 +80,31 @@ export default function LoginForm() {
         onChange={(e) => setPassword(e.target.value)}
         autoComplete="current-password"
         required
-        sx={{ mb: 2 }}
+        sx={{
+          mb: 2,
+          "& .MuiOutlinedInput-root": {
+            color: "#fff",
+            "& fieldset": {
+              borderColor: "rgba(255,255,255,0.15)",
+            },
+            "&:hover fieldset": {
+              borderColor: "rgba(255,59,0,0.4)",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "#ff6a3d",
+            },
+          },
+          "& .MuiInputLabel-root": {
+            color: "rgba(255,255,255,0.6)",
+            "&.Mui-focused": {
+              color: "#ff6a3d",
+            },
+          },
+        }}
       />
 
       {error && (
-        <p className="text-sm text-red-600 mb-3">{error}</p>
+        <p className="text-sm text-red-400 mb-3 text-center">{error}</p>
       )}
 
       <Button
@@ -72,15 +112,26 @@ export default function LoginForm() {
         type="submit"
         variant="contained"
         disabled={isLoading}
-        sx={{ mt: 1.5, mb: 2 }}
+        sx={{
+          mt: 1.5,
+          mb: 2,
+          bgcolor: "#ff3b00",
+          color: "#fff",
+          "&:hover": {
+            bgcolor: "#ff6a3d",
+          },
+          "&:disabled": {
+            bgcolor: "rgba(255,59,0,0.5)",
+          },
+        }}
       >
         {isLoading ? "Signing in..." : "Sign in"}
       </Button>
 
-      <p className="text-center text-sm text-gray-600">
+      <p className="text-center text-sm text-zinc-400">
         Don&apos;t have an account?{" "}
         <Link
-          className="font-medium text-indigo-600 hover:text-indigo-500"
+          className="font-medium text-[#ff6a3d] hover:text-[#ff9a7c] transition"
           href="/register"
         >
           Register

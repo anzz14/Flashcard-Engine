@@ -21,17 +21,32 @@ async function assertDeckOwnership(deckId: string, userId: string): Promise<void
 export async function getCardsForDeck(
   deckId: string,
   userId: string,
-  options?: { topic?: string; search?: string }
+  options?: {
+    topics?: string[];
+    topic?: string;
+    search?: string;
+    due?: "due" | "not-due";
+  }
 ): Promise<CardWithSM2[]> {
   await assertDeckOwnership(deckId, userId);
 
+  const topics = (options?.topics ?? [])
+    .map((topic) => topic.trim())
+    .filter(Boolean);
   const topic = options?.topic?.trim();
   const search = options?.search?.trim();
+  const due = options?.due;
+  const now = new Date();
+  const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
 
   const cards = await prisma.card.findMany({
     where: {
       deckId,
-      ...(topic
+      ...(topics.length > 0
+        ? {
+            topicTag: { in: topics },
+          }
+        : topic
         ? {
             topicTag: topic,
           }
@@ -54,6 +69,28 @@ export async function getCardsForDeck(
             ],
           }
         : {}),
+      ...(due === "due"
+        ? {
+            OR: [
+              {
+                isNew: true,
+              },
+              {
+                isNew: false,
+                nextReviewDate: {
+                  lte: todayEnd,
+                },
+              },
+            ],
+          }
+        : due === "not-due"
+          ? {
+              isNew: false,
+              nextReviewDate: {
+                gt: todayEnd,
+              },
+            }
+          : {}),
     },
     orderBy: [{ isNew: "desc" }, { createdAt: "asc" }],
     select: {
@@ -125,7 +162,7 @@ export async function createCard(
 export async function updateCard(
   cardId: string,
   userId: string,
-  data: { question?: string; answer?: string; topicTag?: string }
+  data: { question?: string; answer?: string; topicTag?: string | null }
 ): Promise<CardWithSM2> {
   const card = await prisma.card.findFirst({
     where: {
@@ -168,8 +205,12 @@ export async function updateCard(
   }
 
   if (data.topicTag !== undefined) {
-    const topicTag = data.topicTag.trim();
-    updateData.topicTag = topicTag || null;
+    if (data.topicTag === null) {
+      updateData.topicTag = null;
+    } else {
+      const topicTag = data.topicTag.trim();
+      updateData.topicTag = topicTag || null;
+    }
   }
 
   const updated = await prisma.card.update({

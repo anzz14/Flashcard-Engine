@@ -64,16 +64,16 @@ export function pluralize(
 
 export function getMasteryColor(masteryPercent: number): string {
   if (masteryPercent <= 25) {
-    return "bg-red-400";
+    return "bg-rose-200";
   }
 
   if (masteryPercent <= 50) {
-    return "bg-orange-400";
+    return "bg-orange-200";
   }
 
   if (masteryPercent <= 75) {
-    return "bg-yellow-400";
+    return "bg-amber-200";
   }
 
-  return "bg-green-400";
+  return "bg-emerald-200";
 }

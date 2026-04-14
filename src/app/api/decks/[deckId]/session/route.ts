@@ -19,6 +19,7 @@ export async function GET(req: Request, { params }: Props) {
 			totalNew: session.totalNew,
 			totalDue: session.totalDue,
 			totalCards: session.cards.length,
+			nextDueDate: session.nextDueDate,
 		});
 	} catch (e) {
 		if (e instanceof Error && e.message === "Deck not found") {

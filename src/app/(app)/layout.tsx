@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import AppShell from "@/components/layout/AppShell";
 
 export default async function AppLayout({
   children,
@@ -12,10 +13,5 @@ export default async function AppLayout({
     redirect("/login");
   }
 
-  return (
-    <>
-      {/* TODO: Wrap this area in AppShell in Module 8. */}
-      {children}
-    </>
-  );
+  return <AppShell>{children}</AppShell>;
 }

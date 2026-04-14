@@ -1,0 +1,29 @@
+"use client";
+
+import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
+
+type CardProps = {
+  children: ReactNode;
+  className?: string;
+  onClick?: () => void;
+  hoverable?: boolean;
+};
+
+export function Card({ children, className, onClick, hoverable = false }: CardProps) {
+  return (
+    <div
+      onClick={onClick}
+      className={cn(
+        "rounded-xl border border-white/10 bg-[#151515] p-4 shadow-sm",
+        hoverable && "transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_15px_rgba(255,59,0,0.15)]",
+        onClick && "cursor-pointer",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+export default Card;

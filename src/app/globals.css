@@ -22,5 +22,178 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Poppins", sans-serif;
+  scrollbar-color: rgba(255, 106, 61, 0.85) rgba(0, 0, 0, 0.45);
+  scrollbar-width: thin;
+}
+
+::selection {
+  background: rgba(255, 106, 61, 0.35);
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background: rgba(255, 106, 61, 0.35);
+  color: #ffffff;
+}
+
+.app-scrollbar {
+  scrollbar-color: rgba(255, 106, 61, 0.85) rgba(0, 0, 0, 0.45);
+  scrollbar-width: thin;
+}
+
+.app-scrollbar::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.app-scrollbar::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.app-scrollbar::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 106, 61, 0.85);
+  border-radius: 9999px;
+  border: 2px solid rgba(10, 10, 10, 0.95);
+}
+
+.app-scrollbar::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 106, 61, 1);
+}
+
+/* ── Hide scrollbars inside all MUI Dialogs (modals) ── */
+.MuiDialog-paper,
+.MuiDialog-paper *,
+.MuiDialogContent-root,
+.MuiDialogContent-root * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.MuiDialog-paper::-webkit-scrollbar,
+.MuiDialog-paper *::-webkit-scrollbar,
+.MuiDialogContent-root::-webkit-scrollbar,
+.MuiDialogContent-root *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+@keyframes heroWatermarkGlitch {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.36;
+  }
+  72% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.36;
+  }
+  75% {
+    transform: translate3d(-3px, 0, 0);
+    opacity: 0.44;
+  }
+  77% {
+    transform: translate3d(3px, 0, 0);
+    opacity: 0.34;
+  }
+  79% {
+    transform: translate3d(-2px, 0, 0);
+    opacity: 0.4;
+  }
+  81% {
+    transform: translate3d(2px, 0, 0);
+    opacity: 0.35;
+  }
+  83% {
+    transform: translate3d(-1px, 0, 0);
+    opacity: 0.38;
+  }
+  86% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.36;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.36;
+  }
+}
+
+/* TV-like scanlines + subtle noise for the orange hero area */
+.hero-screen-effect {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.92;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.15) 0px,
+      rgba(0, 0, 0, 0.15) 2px,
+      rgba(0, 0, 0, 0.08) 2px,
+      rgba(0, 0, 0, 0.08) 5px
+    ),
+    radial-gradient(circle at 20% 35%, rgba(0, 0, 0, 0.12) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 80% 65%, rgba(0, 0, 0, 0.09) 0 1px, transparent 1.8px);
+  background-size: 100% 5px, 56px 56px, 64px 64px;
+  mix-blend-mode: multiply;
+}
+
+.hero-watermark-glitch {
+  animation: heroWatermarkGlitch 2.4s linear infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes heroTickerScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.hero-ticker {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.hero-ticker-inner {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: max-content;
+  min-width: 200%;
+  padding: 0.7rem 0;
+  white-space: nowrap;
+  animation: heroTickerScroll 52s linear infinite;
+}
+
+.hero-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 1.35rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #350000;
+}
+
+.hero-ticker-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.35rem;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: rgba(53, 0, 0, 0.6);
 }
