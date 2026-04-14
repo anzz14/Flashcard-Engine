@@ -272,7 +272,7 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
       <main className="relative z-10">
         <section id="hero" className="relative overflow-hidden border-b border-black/30 bg-[#d74c43] text-black">
           <div className="hero-screen-effect" aria-hidden="true" />
-          <div className="relative z-10 mx-auto grid min-h-[76vh] w-full max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:py-24">
+          <div className="relative z-10 mx-auto grid min-h-[76vh] w-full max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 lg:py-24">
             <Reveal>
               <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-black/75">
                 Your brain. Upgraded.
@@ -296,40 +296,6 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
                 >
                   View Demo
                 </Link>
-              </div>
-            </Reveal>
-
-            <Reveal>
-              <div className="relative mx-auto w-full max-w-md rounded-2xl border border-black/35 bg-[#151515] p-5">
-                <div className="mb-4 flex items-center justify-between">
-                  <p className="text-xs uppercase tracking-[0.15em] text-[#ff6a3d]">Live Study Preview</p>
-                  <span className="h-2 w-2 rounded-full bg-[#ff6a3d]" />
-                </div>
-                <div className="relative h-64" style={{ perspective: "1200px" }}>
-                  <motion.div
-                    className="relative h-full w-full"
-                    style={{ transformStyle: "preserve-3d" }}
-                    animate={{ rotateY: [0, 0, 180, 180, 360] }}
-                    transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <div className="absolute inset-0 rounded-xl border border-white/10 bg-white p-5 text-black" style={{ backfaceVisibility: "hidden" }}>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-white">Question</p>
-                      <p className="mt-6 text-xl font-semibold leading-snug text-[#ff6a3d]">What makes spaced repetition effective for long-term memory?</p>
-                    </div>
-                    <div
-                      className="absolute inset-0 rounded-xl border border-[#ff3b00] bg-[#ff3b00] p-5 text-white"
-                      style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-                    >
-                      <p className="text-xs font-semibold uppercase tracking-wide text-white/85">Answer</p>
-                      <p className="mt-6 text-lg leading-relaxed">It reinforces recall right before forgetting, which strengthens retrieval pathways over time.</p>
-                    </div>
-                  </motion.div>
-                </div>
-                <div className="mt-4 grid grid-cols-3 gap-2 text-center text-[11px] text-zinc-300">
-                  <div className="rounded border border-white/10 py-2">Weak Spot: 3</div>
-                  <div className="rounded border border-white/10 py-2">Streak: 11</div>
-                  <div className="rounded border border-white/10 py-2">Retention: 87%</div>
-                </div>
               </div>
             </Reveal>
           </div>
