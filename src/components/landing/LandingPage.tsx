@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   Brain,
@@ -217,6 +217,7 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
   const authHref = isLoggedIn ? "/dashboard" : "/login";
   const [activeHowStep, setActiveHowStep] = useState(1);
   const activeStep = howSteps[activeHowStep];
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#151515] text-white">
@@ -618,33 +619,51 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
           <Reveal>
             <h2 className="text-center text-3xl font-bold tracking-tight sm:text-4xl">Frequently asked questions.</h2>
             <div className="mx-auto mt-8 max-w-3xl divide-y divide-white/10 rounded-xl border border-white/10 bg-[#151515]">
-              {faqItems.map((item) => (
-                <details key={item.question} className="group px-5 py-4">
-                  <summary className="cursor-pointer list-none text-sm font-medium text-zinc-200">
-                    <span>{item.question}</span>
-                  </summary>
-                  <p className="mt-2 text-sm text-zinc-400">
-                    {item.answer}
-                  </p>
-                </details>
+              {faqItems.map((item, index) => (
+                <div key={item.question} className="px-5 py-4">
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaqIndex((current) => (current === index ? null : index))}
+                    className="flex w-full cursor-pointer items-start gap-3 text-left text-sm font-medium text-zinc-200"
+                    aria-expanded={openFaqIndex === index}
+                  >
+                    <span className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#ff6a3d]">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="flex-1">{item.question}</span>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {openFaqIndex === index ? (
+                      <motion.div
+                        key="faq-answer"
+                        initial={{ height: 0, opacity: 0, y: -4 }}
+                        animate={{ height: "auto", opacity: 1, y: 0 }}
+                        exit={{ height: 0, opacity: 0, y: -4 }}
+                        transition={{ duration: 0.35, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <p className="mt-3 text-sm text-zinc-400">
+                          {item.answer}
+                        </p>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
+                </div>
               ))}
             </div>
           </Reveal>
         </Section>
 
-        <section className="relative mx-auto w-full max-w-6xl overflow-hidden px-4 pb-20 pt-6 sm:px-6">
-          <div className="absolute inset-0 -z-10 opacity-60" style={{
-            backgroundImage:
-              "radial-gradient(circle at center, rgba(255,59,0,0.32) 0%, rgba(255,59,0,0.12) 30%, transparent 62%), repeating-radial-gradient(circle at center, rgba(255,59,0,0.35) 0 30px, transparent 30px 28px)",
-          }} />
-          <Reveal className="rounded-2xl border border-[#ff3b00]/35 bg-[#151515] px-6 py-12 text-center shadow-[0_0_45px_rgba(255,59,0,0.28)]">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#ff6a3d]">Final call</p>
-            <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">Break free from forgetting.</h2>
-            <Link href={primaryHref} className="mt-8 inline-flex items-center gap-2 rounded-md bg-[#ff3b00] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#ff6a3d]">
-              Start Studying Now <ArrowRight size={16} />
+        <footer className="border-t border-white/10 px-4 py-10 sm:px-6">
+          <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
+            <p className="text-sm text-zinc-400">Flashcard Engine</p>
+            <p className="text-sm text-zinc-500">Study smarter with spaced repetition and AI.</p>
+            <Link href={primaryHref} className="text-sm font-medium text-[#ff6a3d] transition hover:text-[#ff9a7c]">
+              {isLoggedIn ? "Go to Dashboard" : "Start Studying"}
             </Link>
-          </Reveal>
-        </section>
+          </div>
+        </footer>
       </main>
     </div>
 
