@@ -9,7 +9,7 @@ import {
   Trophy,
 } from "lucide-react";
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import { useState, type ReactNode, useEffect } from "react";
 
 type LandingPageProps = {
   isLoggedIn: boolean;
@@ -194,6 +194,20 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
   const authHref = isLoggedIn ? "/dashboard" : "/login";
   const [activeHowStep, setActiveHowStep] = useState(1);
   const activeStep = howSteps[activeHowStep];
+  const [showAuthButton, setShowAuthButton] = useState(false);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      // Show button if cursor is in top area and either left or right side
+      const isTopArea = e.clientY < 300;
+      const isLeftSide = e.clientX < 300;
+      const isRightSide = e.clientX > window.innerWidth - 300;
+      setShowAuthButton(isTopArea && (isLeftSide || isRightSide));
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#151515] text-white">
@@ -230,6 +244,20 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
           </Link>
         </div>
       </header>
+
+      {/* Floating sticky auth button */}
+      <motion.div
+        className="fixed top-4 right-4 z-40"
+        animate={{ opacity: showAuthButton ? 1 : 0, pointerEvents: showAuthButton ? "auto" : "none" }}
+        transition={{ duration: 0.2 }}
+      >
+        <Link
+          href={authHref}
+          className="rounded-full border border-[#ff3b00]/50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-[#ff6a3d] transition hover:border-[#ff6a3d] hover:text-[#ff9a7c] bg-black/30 backdrop-blur-md"
+        >
+          {isLoggedIn ? "Dashboard" : "Login"}
+        </Link>
+      </motion.div>
 
       <main className="relative z-10">
         <section id="hero" className="border-b border-black/30 bg-[#ff3b00] text-black">
@@ -564,6 +592,8 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
         </section>
       </main>
     </div>
+
+    
   );
 }
 
