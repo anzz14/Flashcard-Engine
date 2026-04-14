@@ -298,8 +298,19 @@ export default function CardList({ deckId, topics }: CardListProps) {
         {cards.length} of {totalCount} cards
       </p>
 
-      <TableContainer className="rounded-xl border border-slate-200 bg-white">
-        <Table>
+      <TableContainer className="rounded-xl border border-white/10 bg-[#151515]">
+        <Table
+          sx={{
+            "& .MuiTableCell-root": {
+              color: "#ffffff",
+              borderBottomColor: "rgba(255,255,255,0.10)",
+            },
+            "& .MuiTableHead-root .MuiTableCell-root": {
+              color: "#ff6a3d",
+              fontWeight: 700,
+            },
+          }}
+        >
           <TableHead>
             <TableRow>
               <TableCell>Question</TableCell>
@@ -351,17 +362,17 @@ export default function CardList({ deckId, topics }: CardListProps) {
 
       <Modal open={viewingCard !== null} onClose={() => setViewingCard(null)} title="View Card" maxWidth="sm">
         <Stack spacing={3} sx={{ pt: 1 }}>
-          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#111111", border: "1px solid rgba(255,255,255,0.10)" }}>
             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-white">Question</p>
             <p className="whitespace-pre-wrap text-sm text-[#ff6a3d]">{viewingCard?.question ?? ""}</p>
           </Box>
 
-          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#111111", border: "1px solid rgba(255,255,255,0.10)" }}>
             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-white">Answer</p>
             <p className="whitespace-pre-wrap text-sm text-[#ff6a3d]">{viewingCard?.answer ?? ""}</p>
           </Box>
 
-          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#111111", border: "1px solid rgba(255,255,255,0.10)" }}>
             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-white">Topic</p>
             <p className="text-sm text-[#ff6a3d]">{viewingCard?.topicTag?.trim() || "General"}</p>
           </Box>
@@ -381,7 +392,7 @@ export default function CardList({ deckId, topics }: CardListProps) {
           </p>
 
           {deletingCard ? (
-            <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#f8fafc" }}>
+            <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#111111", border: "1px solid rgba(255,255,255,0.10)" }}>
               <p className="text-sm font-medium text-[#ff6a3d]">{deletingCard.question}</p>
             </Box>
           ) : null}

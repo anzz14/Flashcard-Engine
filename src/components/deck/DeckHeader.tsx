@@ -81,12 +81,35 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
     ? `/decks/${deck.id}/study?topic=${encodeURIComponent(activeTopics[0])}`
     : `/decks/${deck.id}/study`;
 
+  const getTopicChipSx = (isActive: boolean) => ({
+    height: 22,
+    fontSize: "0.68rem",
+    fontWeight: 600,
+    ...(isActive
+      ? {
+          backgroundColor: "rgba(255,59,0,0.06)",
+          borderColor: "rgba(255,106,61,0.65)",
+          color: "#ff6a3d",
+        }
+      : {
+          backgroundColor: "rgba(255,255,255,0.015)",
+          borderColor: "rgba(255,255,255,0.20)",
+          color: "#ffffff",
+        }),
+    "& .MuiChip-label": {
+      px: 0.75,
+    },
+    "&:hover": {
+      backgroundColor: isActive ? "rgba(255,59,0,0.06)" : "rgba(255,255,255,0.015)",
+    },
+  });
+
   return (
-    <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5">
+    <div className="space-y-4 rounded-2xl border border-white/10 bg-[#151515] p-5">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-2">
           <h1 className="text-3xl font-bold text-[#ff6a3d]">{deck.name}</h1>
-          <IconButton aria-label="Rename deck" onClick={() => setRenameOpen(true)}>
+          <IconButton aria-label="Rename deck" onClick={() => setRenameOpen(true)} sx={{ color: "#ffffff" }}>
             <Edit2 size={18} />
           </IconButton>
         </div>
@@ -109,53 +132,21 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
 
       <div className="flex flex-wrap items-center gap-2">
         <Chip
+          variant="outlined"
           label="All Topics"
           clickable
           onClick={() => setTopicFilter(null)}
-          sx={
-            activeTopics.length === 0
-              ? {
-                  backgroundColor: "#e0e7ff",
-                  borderColor: "#e0e7ff",
-                  borderWidth: 1,
-                  borderStyle: "solid",
-                  color: "#3730a3",
-                  fontWeight: 700,
-                }
-              : {
-                  backgroundColor: "#ffffff",
-                  borderColor: "#e0e7ff",
-                  borderWidth: 1,
-                  borderStyle: "solid",
-                  color: "#3730a3",
-                }
-          }
+          sx={getTopicChipSx(activeTopics.length === 0)}
         />
 
         {topicTags.map((topic) => (
           <Chip
             key={topic}
+            variant="outlined"
             label={topic}
             clickable
             onClick={() => setTopicFilter(topic)}
-            sx={
-              activeTopics.includes(topic)
-                ? {
-                    backgroundColor: "#e0e7ff",
-                    borderColor: "#e0e7ff",
-                    borderWidth: 1,
-                    borderStyle: "solid",
-                    color: "#3730a3",
-                    fontWeight: 700,
-                  }
-                : {
-                    backgroundColor: "#ffffff",
-                    borderColor: "#e0e7ff",
-                    borderWidth: 1,
-                    borderStyle: "solid",
-                    color: "#3730a3",
-                  }
-            }
+            sx={getTopicChipSx(activeTopics.includes(topic))}
           />
         ))}
       </div>

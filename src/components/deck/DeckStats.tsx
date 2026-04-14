@@ -20,7 +20,7 @@ export default function DeckStats({ deck }: DeckStatsProps) {
     {
       label: "Due Today",
       value: String(deck.dueToday),
-      valueClassName: deck.dueToday > 0 ? "text-orange-600" : undefined,
+      valueClassName: deck.dueToday > 0 ? "text-[#ff6a3d]" : undefined,
     },
     {
       label: "New Cards",

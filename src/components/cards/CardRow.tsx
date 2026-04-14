@@ -1,7 +1,6 @@
 "use client";
 
 import { MoreVertical } from "@/lib/lucide";
-import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,7 +8,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Tooltip from "@mui/material/Tooltip";
 import { useState, type MouseEvent } from "react";
-import { Badge, getTopicColor } from "@/components/ui/Badge";
+import { Badge, getTopicColor, type BadgeColor } from "@/components/ui/Badge";
 import { formatDate, truncate } from "@/lib/utils";
 import type { CardWithSM2 } from "@/types/card";
 
@@ -36,12 +35,7 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
   const isDue = !card.isNew && reviewDateStart.getTime() <= todayStart.getTime();
 
   const statusLabel = card.isNew ? "New" : isDue ? "Due" : "Scheduled";
-  const statusBorderColor = card.isNew ? "#bcd0f8" : isDue ? "#f3bcbc" : "#aee8c5";
-  const statusSx = card.isNew
-    ? { backgroundColor: "#dbeafe", color: "#1d4ed8", fontWeight: 600 }
-    : isDue
-      ? { backgroundColor: "#fee2e2", color: "#b91c1c", fontWeight: 600 }
-      : { backgroundColor: "#dcfce7", color: "#166534", fontWeight: 600 };
+  const statusColor: BadgeColor = statusLabel === "Due" ? "red" : statusLabel === "Scheduled" ? "green" : "gray";
 
   const dotColor = card.isNew
     ? "#94a3b8"
@@ -61,7 +55,14 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
   };
 
   return (
-    <TableRow hover>
+    <TableRow
+      hover
+      sx={{
+        "&:hover": {
+          backgroundColor: "rgba(255,255,255,0.04)",
+        },
+      }}
+    >
       <TableCell>
         <Tooltip
           title={card.question}
@@ -95,21 +96,7 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
       </TableCell>
 
       <TableCell align="center">
-        <Chip
-          size="small"
-          label={statusLabel}
-          sx={{
-            ...statusSx,
-            borderStyle: "solid",
-            borderWidth: "1px",
-            borderColor: statusBorderColor,
-            fontSize: "0.68rem",
-            height: 22,
-            "& .MuiChip-label": {
-              px: 0.75,
-            },
-          }}
-        />
+        <Badge label={statusLabel} color={statusColor} compact thinBorder />
       </TableCell>
 
       <TableCell align="center" sx={{ textAlign: "center" }}>
@@ -131,7 +118,7 @@ export default function CardRow({ card, onView, onEdit, onDelete }: CardRowProps
       </TableCell>
 
       <TableCell align="center">
-        <IconButton size="small" aria-label="Card actions" onClick={handleOpenMenu}>
+        <IconButton size="small" aria-label="Card actions" onClick={handleOpenMenu} sx={{ color: "#ffffff" }}>
           <MoreVertical size={18} />
         </IconButton>
 

@@ -50,7 +50,7 @@ export default function AppShell({ children }: AppShellProps) {
 
         <div className="flex min-w-0 flex-1 flex-col">
           <Topbar />
-          <main className="flex-1 overflow-y-auto p-6 bg-[#151515]">{children}</main>
+          <main className="app-scrollbar flex-1 overflow-y-auto bg-[#151515] p-6">{children}</main>
         </div>
       </div>
     </AppShellContext.Provider>
