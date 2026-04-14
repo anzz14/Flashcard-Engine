@@ -138,6 +138,16 @@ const useCases = [
   { icon: <Brain size={18} />, title: "Lifelong learners" },
 ];
 
+const heroTickerItems = [
+  "AI flashcard generation",
+  "Spaced repetition engine",
+  "100% active recall",
+  "Daily streak momentum",
+  "Weak topic detection",
+  "Retention tracking",
+  "Study sessions that adapt",
+];
+
 const faqItems = [
   {
     question: "What is spaced repetition?",
@@ -351,6 +361,16 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
               fill="currentColor"
             />
           </svg>
+          <div className="hero-ticker" aria-hidden="true">
+            <div className="hero-ticker-inner">
+              {[...heroTickerItems, ...heroTickerItems].flatMap((item, index, list) => [
+                <span key={`item-${item}-${index}`} className="hero-ticker-item">{item}</span>,
+                ...(index < list.length - 1
+                  ? [<span key={`dot-${item}-${index}`} className="hero-ticker-dot">•</span>]
+                  : []),
+              ])}
+            </div>
+          </div>
         </section>
 
         <Section id="problem">

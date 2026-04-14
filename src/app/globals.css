@@ -137,3 +137,53 @@ body {
   animation: heroWatermarkGlitch 2.4s linear infinite;
   will-change: transform, opacity;
 }
+
+@keyframes heroTickerScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.hero-ticker {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.hero-ticker-inner {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: max-content;
+  min-width: 200%;
+  padding: 0.7rem 0;
+  white-space: nowrap;
+  animation: heroTickerScroll 52s linear infinite;
+}
+
+.hero-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 1.35rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #350000;
+}
+
+.hero-ticker-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.35rem;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: rgba(53, 0, 0, 0.6);
+}
