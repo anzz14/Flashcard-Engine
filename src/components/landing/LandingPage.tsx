@@ -260,8 +260,9 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
       </motion.div>
 
       <main className="relative z-10">
-        <section id="hero" className="border-b border-black/30 bg-[#ff3b00] text-black">
-          <div className="mx-auto grid min-h-[76vh] w-full max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:py-24">
+        <section id="hero" className="relative overflow-hidden border-b border-black/30 bg-[#d74c43] text-black">
+          <div className="hero-screen-effect" aria-hidden="true" />
+          <div className="relative z-10 mx-auto grid min-h-[76vh] w-full max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:py-24">
             <Reveal>
               <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-black/75">
                 Your brain. Upgraded.
@@ -322,6 +323,34 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
               </div>
             </Reveal>
           </div>
+          <svg
+            className="hero-watermark-glitch pointer-events-none absolute bottom-[-25%] right-[-3%] z-2 w-[52vw] min-w-60 text-white/35"
+            viewBox="0 0 163 160"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M162.809 89.4121H82.6844C74.7832 89.4121 67.2059 92.5528 61.6216 98.1424C56.0441 103.725 52.9111 111.294 52.9111 119.185V159.996H72.1703V126.45C72.1703 116.812 72.3437 108.001 72.3437 108.001H162.809V89.4121Z"
+              fill="currentColor"
+            />
+            <path
+              d="M162.808 118.61H111.815C103.914 118.61 96.3368 121.751 90.7524 127.341C85.1749 132.923 82.042 140.492 82.042 148.384V159.997H104.909V144.052C104.909 134.414 104.909 134.082 104.909 134.082H162.808V118.61Z"
+              fill="currentColor"
+            />
+            <path
+              d="M162.809 146.002C144.706 146.002 134.567 145.996 116.464 146.004V160H162.809V146.002Z"
+              fill="currentColor"
+            />
+            <path
+              d="M162.809 0.00304711H70.8863C52.0802 0.00304711 34.0448 7.47609 20.7501 20.7772C7.46368 34.07 0 52.0946 0 70.8889C0 99.2859 0 140.767 0 159.997H15.7849V67.7138C15.7849 53.2572 15.7849 41.5373 15.7849 41.5373H162.812V0L162.809 0.00304711Z"
+              fill="currentColor"
+            />
+            <path
+              d="M162.809 51.8704H56.8042C48.903 51.8704 41.3258 55.0111 35.7414 60.6008C30.1639 66.1835 27.031 73.7522 27.031 81.6437V159.997H41.8159V96.3178C41.8159 86.6801 41.8159 78.8688 41.8159 78.8688H162.809V51.8674V51.8704Z"
+              fill="currentColor"
+            />
+          </svg>
         </section>
 
         <Section id="problem">
@@ -580,7 +609,7 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
         <section className="relative mx-auto w-full max-w-6xl overflow-hidden px-4 pb-20 pt-6 sm:px-6">
           <div className="absolute inset-0 -z-10 opacity-60" style={{
             backgroundImage:
-              "radial-gradient(circle at center, rgba(255,59,0,0.32) 0%, rgba(255,59,0,0.12) 30%, transparent 62%), repeating-radial-gradient(circle at center, rgba(255,59,0,0.35) 0 2px, transparent 2px 28px)",
+              "radial-gradient(circle at center, rgba(255,59,0,0.32) 0%, rgba(255,59,0,0.12) 30%, transparent 62%), repeating-radial-gradient(circle at center, rgba(255,59,0,0.35) 0 30px, transparent 30px 28px)",
           }} />
           <Reveal className="rounded-2xl border border-[#ff3b00]/35 bg-[#151515] px-6 py-12 text-center shadow-[0_0_45px_rgba(255,59,0,0.28)]">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#ff6a3d]">Final call</p>

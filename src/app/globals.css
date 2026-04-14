@@ -72,3 +72,68 @@ body {
   width: 0 !important;
   height: 0 !important;
 }
+
+@keyframes heroWatermarkGlitch {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.36;
+  }
+  72% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.36;
+  }
+  75% {
+    transform: translate3d(-3px, 0, 0);
+    opacity: 0.44;
+  }
+  77% {
+    transform: translate3d(3px, 0, 0);
+    opacity: 0.34;
+  }
+  79% {
+    transform: translate3d(-2px, 0, 0);
+    opacity: 0.4;
+  }
+  81% {
+    transform: translate3d(2px, 0, 0);
+    opacity: 0.35;
+  }
+  83% {
+    transform: translate3d(-1px, 0, 0);
+    opacity: 0.38;
+  }
+  86% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.36;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.36;
+  }
+}
+
+/* TV-like scanlines + subtle noise for the orange hero area */
+.hero-screen-effect {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.92;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.15) 0px,
+      rgba(0, 0, 0, 0.15) 2px,
+      rgba(0, 0, 0, 0.08) 2px,
+      rgba(0, 0, 0, 0.08) 5px
+    ),
+    radial-gradient(circle at 20% 35%, rgba(0, 0, 0, 0.12) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 80% 65%, rgba(0, 0, 0, 0.09) 0 1px, transparent 1.8px);
+  background-size: 100% 5px, 56px 56px, 64px 64px;
+  mix-blend-mode: multiply;
+}
+
+.hero-watermark-glitch {
+  animation: heroWatermarkGlitch 2.4s linear infinite;
+  will-change: transform, opacity;
+}
