@@ -112,7 +112,7 @@ export default function InsightsDashboard() {
                   <div className="flex items-center gap-2">
                     <Badge label={topic.topicTag} color={getTopicColor(topic.topicTag)} />
                   </div>
-                  <span className="text-sm font-semibold text-[#ff6a3d]">{topic.retentionRate}%</span>
+                  <span className="text-sm font-semibold text-[#fffff]">{topic.retentionRate}%</span>
                 </div>
                 <div className="h-2 w-full rounded-full border-1 border-[#ff6a3d] bg-transparent">
                   <div

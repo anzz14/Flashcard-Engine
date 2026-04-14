@@ -28,16 +28,6 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
       : deck.dueToday < 10
         ? "text-amber-500"
         : "text-orange-600";
-  const reviewedCount = Math.max(0, deck.cardCount - deck.newCount);
-
-  const progressLegend = [
-    {
-      label: "Reviewed",
-      value: reviewedCount,
-      color: "bg-emerald-500",
-      textColor: "text-emerald-700",
-    },
-  ] as const;
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -73,27 +63,13 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between ">
-        <div className="space-y-2">
-          <p className={`text-sm mt-8 font-semibold ${dueColorClass}`}>
-            {deck.dueToday} due
-          </p>
-          <p className="text-[11px] -mt-2 text-white">
-            Last studied: {deck.lastStudied ? formatDate(deck.lastStudied) : "Never studied"}
-          </p>
-        </div>
-
-        <div className="mt-12 mr-3 grid gap-1 text-[10px] leading-none sm:grid-cols-1 sm:gap-2">
-          {progressLegend.map((item) => (
-            <div key={item.label} className="flex items-center gap-1.5 whitespace-nowrap">
-              <span className={`h-2 w-2 rounded-full ${item.color}`} />
-              <span className={`font-semibold ${item.textColor}`}>
-                {item.value}
-              </span>
-              <span className="text-white">{item.label}</span>
-            </div>
-          ))}
-        </div>
+      <div className="space-y-2">
+        <p className={`text-sm mt-8 font-semibold ${dueColorClass}`}>
+          {deck.dueToday} due
+        </p>
+        <p className="text-[11px] -mt-2 text-white">
+          Last studied: {deck.lastStudied ? formatDate(deck.lastStudied) : "Never studied"}
+        </p>
       </div>
 
       <Menu
@@ -101,9 +77,28 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
         open={menuOpen}
         onClose={handleMenuClose}
         onClick={(event) => event.stopPropagation()}
+        slotProps={{
+          paper: {
+            sx: {
+              backgroundColor: "#151515",
+              border: "1px solid rgba(255,255,255,0.10)",
+              color: "#ffffff",
+              boxShadow: "0 10px 24px rgba(0,0,0,0.35)",
+            },
+          },
+        }}
       >
         <MenuItem
-          sx={{ fontSize: "0.82rem", lineHeight: 1.35, minHeight: 0, py: 0.5 }}
+          sx={{
+            fontSize: "0.82rem",
+            lineHeight: 1.35,
+            minHeight: 0,
+            py: 0.5,
+            color: "#ffffff",
+            "&:hover": {
+              backgroundColor: "rgba(255,255,255,0.06)",
+            },
+          }}
           onClick={(event) => {
             event.stopPropagation();
             handleMenuClose();
@@ -113,7 +108,16 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
           Rename
         </MenuItem>
         <MenuItem
-          sx={{ fontSize: "0.82rem", lineHeight: 1.35, minHeight: 0, py: 0.5 }}
+          sx={{
+            fontSize: "0.82rem",
+            lineHeight: 1.35,
+            minHeight: 0,
+            py: 0.5,
+            color: "#ffffff",
+            "&:hover": {
+              backgroundColor: "rgba(255,255,255,0.06)",
+            },
+          }}
           onClick={(event) => {
             event.stopPropagation();
             handleMenuClose();

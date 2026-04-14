@@ -35,7 +35,7 @@ export default function WeakSpotsList({ cards, onViewCard }: WeakSpotsListProps)
   return (
     <Card className="p-6">
       <div className="mb-4 flex items-center gap-2">
-        <Target className="h-5 w-5 text-white" />
+        <Target className="h-5 w-5 text-[#ff6a3d]" />
         <h3 className="text-lg font-semibold text-[#ff6a3d]">Weak Spots</h3>
       </div>
       <p className="mb-5 text-sm text-white">Cards you struggle with most</p>

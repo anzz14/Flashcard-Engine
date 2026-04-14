@@ -13,12 +13,12 @@ const badgeColorSx: Record<
   BadgeColor,
   { backgroundColor: string; color: string; borderColor: string }
 > = {
-  indigo: { backgroundColor: "#e0e7ff", color: "#3730a3", borderColor: "#becdff" },
-  green: { backgroundColor: "#dcfce7", color: "#166534", borderColor: "#afe8c6" },
-  red: { backgroundColor: "#fee2e2", color: "#991b1b", borderColor: "#f7bfc0" },
-  orange: { backgroundColor: "#ffedd5", color: "#9a3412", borderColor: "#f1cca5" },
-  yellow: { backgroundColor: "#fef9c3", color: "#854d0e", borderColor: "#efe58f" },
-  gray: { backgroundColor: "#f1f5f9", color: "#334155", borderColor: "#cfd8e3" },
+  indigo: { backgroundColor: "#c7d2fe", color: "#3730a3", borderColor: "#a5b4fc" },
+  green: { backgroundColor: "#bbf7d0", color: "#166534", borderColor: "#86efac" },
+  red: { backgroundColor: "#fecaca", color: "#991b1b", borderColor: "#fca5a5" },
+  orange: { backgroundColor: "#fed7aa", color: "#9a3412", borderColor: "#fdba74" },
+  yellow: { backgroundColor: "#fde68a", color: "#854d0e", borderColor: "#fcd34d" },
+  gray: { backgroundColor: "#cbd5e1", color: "#334155", borderColor: "#94a3b8" },
 };
 
 const palette: BadgeColor[] = ["indigo", "green", "red", "orange", "yellow", "gray"];

@@ -123,7 +123,7 @@ export default function DashboardContent({
           <Button
             variant="primary"
             onClick={() => setOpenCreateModal(true)}
-            startIcon={<Plus size={20} className="text-white" />}
+            startIcon={<Plus size={20} className="text-[#ff6a3d]" />}
           >
             New Deck
           </Button>

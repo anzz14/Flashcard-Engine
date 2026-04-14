@@ -8,8 +8,8 @@ type DueTodayProps = {
 };
 
 export default function DueToday({ dueCount, onClick }: DueTodayProps) {
-  const countColor =
-    dueCount < 3 ? "text-emerald-400" : dueCount < 10 ? "text-[#ff6a3d]" : "text-blue-400";
+  
+   
 
   return (
     <Card className="px-4 py-3">
@@ -17,9 +17,9 @@ export default function DueToday({ dueCount, onClick }: DueTodayProps) {
         <div className="flex min-w-0 items-center gap-2.5">
           <CalendarCheck2 className="h-4 w-4 shrink-0 text-zinc-400" />
           <div className="min-w-0">
-            <p className="text-sm font-medium text-zinc-400">Due Today</p>
-            <p className="text-base text-zinc-300">
-              <span className={`font-semibold ${countColor}`}>{dueCount}</span> cards due today
+            <p className="text-sm font-medium text-white">Due Today</p>
+            <p className="text-base text-white">
+              <span className={`font-semibold text-[#ff6a3d]`}>{dueCount}</span> cards due today
             </p>
           </div>
         </div>
