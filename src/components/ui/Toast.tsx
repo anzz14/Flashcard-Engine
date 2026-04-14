@@ -27,6 +27,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState<ToastSeverity>("info");
+  const isError = severity === "error";
 
   const show = useCallback((nextMessage: string, nextSeverity: ToastSeverity) => {
     setMessage(nextMessage);
@@ -49,7 +50,18 @@ export function ToastProvider({ children }: ToastProviderProps) {
           onClose={() => setOpen(false)}
           severity={severity}
           variant="filled"
-          sx={{ width: "100%" }}
+          sx={{
+            width: "100%",
+            ...(isError
+              ? {}
+              : {
+                  backgroundColor: "#ff6a3d",
+                  color: "#ffffff",
+                  "& .MuiAlert-icon": { color: "#ffffff" },
+                  "& .MuiAlert-action": { color: "#ffffff" },
+                  "& .MuiAlert-message": { color: "#ffffff" },
+                }),
+          }}
         >
           {message}
         </Alert>
