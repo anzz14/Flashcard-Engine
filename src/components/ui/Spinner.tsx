@@ -13,7 +13,7 @@ const sizeMap = {
 } as const;
 
 export function Spinner({ size = "md", className }: SpinnerProps) {
-  return <CircularProgress size={sizeMap[size]} className={cn(className)} />;
+  return <CircularProgress size={sizeMap[size]} className={cn("text-[#ff6a3d]", className)} />;
 }
 
 export default Spinner;

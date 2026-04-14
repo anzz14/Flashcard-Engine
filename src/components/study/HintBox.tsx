@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Lightbulb } from "@/lib/lucide";
 import { Button } from "@/components/ui/Button";
 import { Spinner } from "@/components/ui/Spinner";
 
@@ -46,6 +47,14 @@ export default function HintBox({ cardId, question, answer }: HintBoxProps) {
     return (
       <Button
         variant="ghost"
+        startIcon={<Lightbulb size={16} className="text-[#ff6a3d]" />}
+        sx={{
+          color: "#ff6a3d",
+          "&:hover": {
+            backgroundColor: "transparent",
+            color: "#ff6a3d",
+          },
+        }}
         onClick={() => {
           setIsLoading(true);
           setIsVisible(true);
@@ -58,11 +67,11 @@ export default function HintBox({ cardId, question, answer }: HintBoxProps) {
   }
 
   return (
-    <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-      <div className="text-xs font-semibold text-amber-700"> Hint</div>
+    <div className="rounded-xl border border-[#ff6a3d]/30 bg-[rgba(255,59,0,0.08)] p-4">
+      <div className="text-xs font-semibold text-[#ff6a3d]"> Hint</div>
 
       {isLoading ? (
-        <div className="mt-3 flex items-center justify-center gap-2 text-sm text-amber-600">
+        <div className="mt-3 flex items-center justify-center gap-2 text-sm text-[#ff9a7c]">
           <Spinner size="sm" />
           <span>Thinking...</span>
         </div>
@@ -70,8 +79,12 @@ export default function HintBox({ cardId, question, answer }: HintBoxProps) {
 
       {!isLoading && error ? (
         <div className="mt-3 space-y-2">
-          <p className="text-sm text-red-600">{error}</p>
-          <Button variant="ghost" onClick={() => void fetchHint()} sx={{ p: 0, minWidth: 0 }}>
+          <p className="text-sm text-red-400">{error}</p>
+          <Button
+            variant="ghost"
+            onClick={() => void fetchHint()}
+            sx={{ p: 0, minWidth: 0, color: "#ffffff", "&:hover": { backgroundColor: "transparent" } }}
+          >
             Try again
           </Button>
         </div>

@@ -2,7 +2,7 @@
 
 import Checkbox from "@mui/material/Checkbox";
 import { useEffect, useState } from "react";
-import { Eye } from "lucide-react";
+import { CheckCircle2, Eye } from "lucide-react";
 import { Badge, getTopicColor } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -90,7 +90,7 @@ export default function CardSuggestions({ deckId, onAdded }: CardSuggestionsProp
   }
 
   return (
-    <Card className="border border-indigo-100 bg-indigo-50/40 p-5">
+    <Card className="border border-white/10 bg-[#151515] p-5">
       {isLoading ? (
         <div className="flex items-center gap-2 text-sm text-white">
           <Spinner size="sm" />
@@ -101,13 +101,16 @@ export default function CardSuggestions({ deckId, onAdded }: CardSuggestionsProp
       {!isLoading && error ? <p className="text-sm text-white">Could not load suggestions</p> : null}
 
       {!isLoading && !error && added ? (
-        <p className="text-sm font-medium text-emerald-700">✅ {addedCount} cards added to your deck!</p>
+        <p className="flex items-center gap-2 text-sm font-medium text-white">
+          <CheckCircle2 className="h-4 w-4 text-white" aria-hidden="true" />
+          <span>{addedCount} cards added to your deck!</span>
+        </p>
       ) : null}
 
       {!isLoading && !error && !added && suggestions.length > 0 ? (
         <div className="space-y-3">
           <div className="flex items-center justify-between gap-3">
-            <p className="font-semibold text-[#ff6a3d]">🧠 Suggested Cards</p>
+            <p className="font-semibold text-white">Suggested Cards</p>
             <p className="text-xs text-white">Based on your weak spots</p>
           </div>
 
@@ -129,8 +132,8 @@ export default function CardSuggestions({ deckId, onAdded }: CardSuggestionsProp
                     });
                   }}
                   className={cn(
-                    "w-full rounded-xl border border-slate-200 p-3 text-left transition hover:border-indigo-200 hover:bg-indigo-50/40",
-                    checked ? "bg-white" : "bg-slate-50"
+                    "w-full rounded-xl border border-[#ff6a3d]/40 bg-transparent p-3 text-left transition hover:border-[#ff6a3d]/60",
+                    checked ? "" : ""
                   )}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -149,6 +152,12 @@ export default function CardSuggestions({ deckId, onAdded }: CardSuggestionsProp
                           });
                         }}
                         size="small"
+                        sx={{
+                          color: "#ffffff",
+                          "&.Mui-checked": {
+                            color: "#ff6a3d",
+                          },
+                        }}
                       />
                       <div className="min-w-0">
                         <p className="flex items-center gap-2 text-sm font-medium text-[#ff6a3d]">
@@ -158,7 +167,7 @@ export default function CardSuggestions({ deckId, onAdded }: CardSuggestionsProp
                               e.stopPropagation();
                               setActiveSuggestion(item);
                             }}
-                            className="inline-flex items-center justify-center rounded-md p-0.5 text-white transition hover:bg-slate-100 hover:text-white"
+                            className="inline-flex items-center justify-center rounded-md p-0.5 text-white transition hover:bg-white/10 hover:text-white"
                             aria-label="View card details"
                           >
                             <Eye className="h-4 w-4 shrink-0" aria-hidden="true" />

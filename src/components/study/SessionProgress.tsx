@@ -25,7 +25,7 @@ export default function SessionProgress({
   const topic = topicTag?.trim() || null;
 
   return (
-    <div className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="space-y-3 rounded-2xl border border-white/10 bg-[#151515] p-4 shadow-sm">
       <div className="flex items-center justify-between gap-3">
         <div className="space-y-1">
           <p className="text-sm font-semibold text-[#ff6a3d]">
@@ -40,6 +40,7 @@ export default function SessionProgress({
             onExit();
           }}
           size="small"
+          sx={{ color: "#ffffff" }}
         >
           <X size={18} />
         </IconButton>
@@ -51,9 +52,9 @@ export default function SessionProgress({
         sx={{
           height: 10,
           borderRadius: 9999,
-          backgroundColor: "#e2e8f0",
+          backgroundColor: "rgba(255,255,255,0.10)",
           "& .MuiLinearProgress-bar": {
-            backgroundColor: "#6366f1",
+            backgroundColor: "#ff6a3d",
           },
         }}
       />

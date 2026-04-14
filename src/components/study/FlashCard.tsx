@@ -48,32 +48,32 @@ export default function FlashCard({
         {/* Front */}
         <div
           style={{ backfaceVisibility: "hidden", position: "absolute", inset: 0 }}
-          className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-8 shadow-lg"
+          className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-[#151515] p-8 shadow-lg"
         >
           {topic && (
             <div className="mb-4">
               <Badge label={topic} color={getTopicColor(topic)} />
             </div>
           )}
-          <p className="mb-2 text-sm text-gray-500">Question</p>
-          <p className="max-w-2xl whitespace-pre-wrap break-words text-center text-2xl font-medium leading-relaxed text-gray-900">
+          <p className="mb-2 text-sm text-zinc-400">Question</p>
+          <p className="max-w-2xl whitespace-pre-wrap wrap-break-word text-center text-2xl font-medium leading-relaxed text-white">
             {question}
           </p>
-          <p className="mt-6 text-sm text-gray-400">Click to reveal answer</p>
+          <p className="mt-6 text-sm text-zinc-500">Click to reveal answer</p>
         </div>
 
         {/* Back */}
         <div
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)", position: "absolute", inset: 0 }}
-          className="flex flex-col items-center justify-center rounded-2xl border border-indigo-100 bg-indigo-50 p-8 shadow-lg"
+          className="flex flex-col items-center justify-center rounded-2xl border border-[#ff6a3d]/35 bg-transparent p-8 shadow-lg"
         >
           {topic && (
             <div className="mb-4">
               <Badge label={topic} color={getTopicColor(topic)} />
             </div>
           )}
-          <p className="mb-2 text-sm text-indigo-400">Answer</p>
-          <p className="max-w-2xl whitespace-pre-wrap break-words text-center text-xl leading-relaxed text-gray-900">
+          <p className="mb-2 text-sm text-[#ff9a7c]">Answer</p>
+          <p className="max-w-2xl whitespace-pre-wrap wrap-break-word text-center text-xl leading-relaxed text-white">
             {answer}
           </p>
         </div>

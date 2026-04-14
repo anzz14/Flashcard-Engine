@@ -24,10 +24,10 @@ type Props = {
 type SessionPageRating = Exclude<ReviewRating, "AGAIN">;
 
 const ratingStyle: Record<ReviewRating, { bg: string; color: string }> = {
-  AGAIN: { bg: "#fee2e2", color: "#991b1b" },
-  HARD: { bg: "#ffedd5", color: "#9a3412" },
-  GOOD: { bg: "#fef9c3", color: "#854d0e" },
-  EASY: { bg: "#dcfce7", color: "#166534" },
+  AGAIN: { bg: "rgba(220, 38, 38, 0.14)", color: "#fca5a5" },
+  HARD: { bg: "rgba(249, 115, 22, 0.14)", color: "#fdba74" },
+  GOOD: { bg: "rgba(250, 204, 21, 0.14)", color: "#fde047" },
+  EASY: { bg: "rgba(34, 197, 94, 0.14)", color: "#86efac" },
 };
 
 const ratingLabels: Record<SessionPageRating, string> = {
@@ -150,6 +150,11 @@ export default function LastSessionClient({ deckId, sessionDate, cards }: Props)
           size="small"
           label="Difficulty"
           value={selectedRatings}
+          sx={{
+            "& .MuiSelect-icon": {
+              color: "#ffffff",
+            },
+          }}
           slotProps={{
             select: {
               multiple: true,
@@ -173,7 +178,15 @@ export default function LastSessionClient({ deckId, sessionDate, cards }: Props)
         >
           {ratingOptions.map((rating) => (
             <MenuItem key={rating} value={rating}>
-              <Checkbox checked={selectedRatings.includes(rating)} />
+              <Checkbox
+                checked={selectedRatings.includes(rating)}
+                sx={{
+                  color: "#ffffff",
+                  "&.Mui-checked": {
+                    color: "#ffffff",
+                  },
+                }}
+              />
               <ListItemText primary={ratingLabels[rating]} />
             </MenuItem>
           ))}
@@ -181,15 +194,22 @@ export default function LastSessionClient({ deckId, sessionDate, cards }: Props)
       </div>
 
       {!filteredCards.length ? (
-        <Card className="rounded-2xl border border-slate-200 p-6 text-center shadow-sm">
+        <Card
+          className="rounded-2xl border border-white/10 bg-transparent p-6 text-center shadow-sm"
+          sx={{ backgroundColor: "transparent !important" }}
+        >
           <p className="text-sm text-white">No cards match your current filters.</p>
         </Card>
       ) : null}
 
       {filteredCards.map((card) => (
-        <Card key={card.id} className="rounded-2xl border border-slate-200 p-4 shadow-sm">
+        <Card
+          key={card.id}
+          className="rounded-2xl border border-white/10 bg-transparent p-4 shadow-sm"
+          sx={{ backgroundColor: "transparent !important" }}
+        >
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm font-medium text-[#ff6a3d]">{card.question}</p>
+            <p className="text-sm font-medium text-white">{card.question}</p>
             <Chip
               label={ratingLabels[toSessionPageRating(card.sessionRating)]}
               size="small"
@@ -198,6 +218,7 @@ export default function LastSessionClient({ deckId, sessionDate, cards }: Props)
                 fontWeight: 700,
                 bgcolor: ratingStyle[card.sessionRating].bg,
                 color: ratingStyle[card.sessionRating].color,
+                border: "1px solid rgba(255, 255, 255, 0.1)",
               }}
             />
           </div>

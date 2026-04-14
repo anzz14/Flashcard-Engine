@@ -102,7 +102,7 @@ export default function RatingButtons({ card, onRate, isSubmitting }: RatingButt
               {isSubmitting ? <Spinner size="sm" className="text-white" /> : option.label}
             </Button>
 
-            <span className="absolute -right-2 -top-2 rounded-md border border-slate-200 bg-white px-1.5 py-0.5 text-xs font-semibold text-white">
+            <span className="absolute -right-2 -top-2 rounded-md border border-white/20 bg-[#151515] px-1.5 py-0.5 text-xs font-semibold text-[#ff6a3d]">
               {option.keyLabel}
             </span>
           </div>

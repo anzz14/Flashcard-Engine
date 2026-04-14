@@ -28,7 +28,7 @@ export default async function StudyPage({ params, searchParams }: Props) {
 	const { cards, totalNew, totalDue } = sessionData;
 
 	return (
-		<div className="min-h-screen bg-gray-50 px-4 py-8">
+		<div className="min-h-screen bg-[#151515] px-4 py-8">
 			{cards.length === 0 ? (
 				<EmptySession deckId={deckId} topicFilter={resolvedSearchParams.topic} />
 			) : (

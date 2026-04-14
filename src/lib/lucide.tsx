@@ -13,4 +13,5 @@ export {
 	BookOpen,
 	Settings,
 	ArrowLeft,
+	Lightbulb,
 } from "lucide-react";

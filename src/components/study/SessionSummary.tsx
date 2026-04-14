@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { CheckCircle2 } from "lucide-react";
 import CardSuggestions from "@/components/study/CardSuggestions";
 import { Button } from "@/components/ui/Button";
 import type { ReviewRating } from "@/types/card";
@@ -17,7 +18,7 @@ type SessionSummaryProps = {
 
 function StatPill({ label, value, color }: { label: string; value: number; color: string }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 text-center shadow-sm">
+    <div className="rounded-xl border border-white/10 bg-[#151515] p-4 text-center shadow-sm">
       <p className={`text-2xl font-bold ${color}`}>{value}</p>
       <p className="text-xs font-medium uppercase tracking-wide text-white">{label}</p>
     </div>
@@ -32,6 +33,10 @@ export default function SessionSummary({
 }: SessionSummaryProps) {
   const router = useRouter();
   const [addedCount, setAddedCount] = useState(0);
+
+  const handleStudyAgain = () => {
+    router.push(`/decks/${deckId}/last-session`);
+  };
 
   const counts = useMemo(() => {
     const values = Object.values(ratings);
@@ -57,9 +62,9 @@ export default function SessionSummary({
   }, [streakData]);
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 rounded-2xl border border-slate-200 bg-slate-50 p-6">
+    <div className="mx-auto max-w-3xl space-y-6 rounded-2xl border border-white/10 bg-[#151515] p-6">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-[#ff6a3d]">Session Complete! 🎉</h2>
+        <h2 className="text-3xl font-bold text-[#ff6a3d]">Session Complete!</h2>
         <p className="mt-1 text-sm text-white">
           You reviewed {Object.keys(ratings).length || totalCards} cards this session.
         </p>
@@ -73,7 +78,7 @@ export default function SessionSummary({
       </div>
 
       {masteredToday > 0 ? (
-        <p className="text-center text-sm font-medium text-emerald-700">
+        <p className="text-center text-sm font-medium text-emerald-400">
           Mastered today: {masteredToday} cards
         </p>
       ) : null}
@@ -83,10 +88,10 @@ export default function SessionSummary({
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.35 }}
-          className="rounded-xl border border-orange-200 bg-orange-50 p-4 text-center"
+          className="rounded-xl border border-[#ff6a3d]/35 bg-[rgba(255,59,0,0.10)] p-4 text-center"
         >
-          <p className="text-xl font-bold text-orange-700">🔥 Streak up!</p>
-          <p className="text-sm text-orange-800">Current streak: {streakData.streakCurrent} days</p>
+          <p className="text-xl font-bold text-[#ff6a3d]">🔥 Streak up!</p>
+          <p className="text-sm text-[#ff9a7c]">Current streak: {streakData.streakCurrent} days</p>
         </motion.div>
       ) : null}
 
@@ -98,13 +103,14 @@ export default function SessionSummary({
       )}
 
       {addedCount > 0 && (
-        <p className="text-center text-xs text-white">
-          {addedCount} new cards added - they'll appear in tomorrow's session
+        <p className="flex items-center justify-center gap-2 text-center text-xs text-emerald-400">
+          
+          <span>{addedCount} new cards added - they'll appear in tomorrow's session</span>
         </p>
       )}
 
       <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-        <Button variant="primary" onClick={() => router.push(`/decks/${deckId}/study`)}>
+        <Button variant="primary" onClick={handleStudyAgain}>
           Study Again
         </Button>
         <Button variant="secondary" onClick={() => router.push(`/decks/${deckId}`)}>
