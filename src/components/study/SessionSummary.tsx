@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Flame } from "@/lib/lucide";
 import CardSuggestions from "@/components/study/CardSuggestions";
 import { Button } from "@/components/ui/Button";
 import type { ReviewRating } from "@/types/card";
@@ -90,7 +90,10 @@ export default function SessionSummary({
           transition={{ duration: 0.35 }}
           className="rounded-xl border border-[#ff6a3d]/35 bg-[rgba(255,59,0,0.10)] p-4 text-center"
         >
-          <p className="text-xl font-bold text-[#ff6a3d]">🔥 Streak up!</p>
+          <p className="inline-flex items-center gap-2 text-xl font-bold text-[#ff6a3d]">
+            <Flame size={20} />
+            <span>Streak up!</span>
+          </p>
           <p className="text-sm text-[#ff9a7c]">Current streak: {streakData.streakCurrent} days</p>
         </motion.div>
       ) : null}
@@ -104,7 +107,7 @@ export default function SessionSummary({
 
       {addedCount > 0 && (
         <p className="flex items-center justify-center gap-2 text-center text-xs text-emerald-400">
-          
+          <CheckCircle2 className="h-4 w-4" />
           <span>{addedCount} new cards added - they'll appear in tomorrow's session</span>
         </p>
       )}

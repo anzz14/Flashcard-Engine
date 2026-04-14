@@ -16,4 +16,5 @@ export {
 	Lightbulb,
 	AlertTriangle,
 	CheckCircle2,
+	Flame,
 } from "lucide-react";

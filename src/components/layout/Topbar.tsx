@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "@/lib/lucide";
+import { Flame, Menu } from "@/lib/lucide";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import { useSession } from "next-auth/react";
@@ -52,7 +52,10 @@ export default function Topbar() {
 
       <div className="flex items-center gap-3">
         <div className="rounded-full bg-[rgba(255,59,0,0.15)] px-3 py-1 text-sm font-semibold text-[#ff6a3d]">
-          🔥 {streakCurrent}
+          <span className="inline-flex items-center gap-1.5">
+            <Flame size={14} />
+            {streakCurrent}
+          </span>
         </div>
         <IconButton 
           onClick={() => router.push("/settings")}
