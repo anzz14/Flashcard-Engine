@@ -53,7 +53,7 @@ export default function GenerationProgress({
   );
 
   return (
-    <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="space-y-4 rounded-2xl border border-white/10 bg-[#151515] p-5 shadow-sm">
       <h3 className="text-lg font-semibold text-[#ff6a3d]">Generating flashcards...</h3>
 
       <ProgressBar value={doneChunks} max={totalChunks} label={label} />

@@ -42,13 +42,17 @@ export default async function EditDeckCardsPage({ params }: Props) {
      
       <div className="flex items-center gap-3">
         <Link href={`/decks/${deckId}`}>
-          <Button variant="ghost" startIcon={<ArrowLeft size={20} />}>
+          <Button
+            variant="ghost"
+            startIcon={<ArrowLeft size={20} />}
+            sx={{ color: "#ff6a3d", "&:hover": { backgroundColor: "transparent" } }}
+          >
             Back to Deck
           </Button>
         </Link>
       </div>
 
-      <p className="text-black font-bold">{deck.cardCount} cards total</p>
+      <p className="font-bold text-white">{deck.cardCount} cards total</p>
 
       <CardList deckId={deckId} topics={uniqueTopics} />
     </div>

@@ -110,6 +110,18 @@ export default function BulkAddCardsModal({
               setContentTab(value as "pdf" | "text");
               setErrorMessage(null);
             }}
+            sx={{
+              borderBottom: "1px solid rgba(255,255,255,0.10)",
+              "& .MuiTab-root": {
+                color: "rgba(255,255,255,0.70)",
+              },
+              "& .Mui-selected": {
+                color: "#ff6a3d !important",
+              },
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#ff6a3d",
+              },
+            }}
           >
             <Tab label="Upload PDF" value="pdf" />
             <Tab label="Paste Text" value="text" />

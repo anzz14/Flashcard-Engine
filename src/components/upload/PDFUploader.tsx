@@ -64,8 +64,8 @@ export default function PDFUploader({ onFileSelected, disabled = false }: PDFUpl
         onDrop={onDrop}
         className={`rounded-2xl border-2 border-dashed p-6 text-center transition ${
           isDragging
-            ? "border-indigo-400 bg-indigo-50"
-            : "border-slate-300 bg-white"
+            ? "border-[#ff6a3d] bg-[rgba(255,59,0,0.08)]"
+            : "border-white/20 bg-[#151515]"
         } ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
       >
         <FileText className="mb-2 text-white" size={22} />
@@ -100,7 +100,7 @@ export default function PDFUploader({ onFileSelected, disabled = false }: PDFUpl
         <p className="text-sm text-white">Selected file: {selectedFile.name}</p>
       ) : null}
 
-      {error ? <Alert severity="error">{error}</Alert> : null}
+      {error ? <Alert severity="error" sx={{ backgroundColor: "rgba(239,68,68,0.15)", color: "#fecaca", border: "1px solid rgba(239,68,68,0.45)" }}>{error}</Alert> : null}
     </div>
   );
 }

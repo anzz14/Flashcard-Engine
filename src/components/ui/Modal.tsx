@@ -22,7 +22,7 @@ export function Modal({ open, onClose, title, children, maxWidth = "sm" }: Modal
       <IconButton
         aria-label="Close"
         onClick={onClose}
-        sx={{ position: "absolute", right: 8, top: 8 }}
+        sx={{ position: "absolute", right: 8, top: 8, color: "#ffffff" }}
       >
         <X size={18} />
       </IconButton>
