@@ -126,6 +126,15 @@ Right now decks are private. A shareable read-only link (or exportable Anki form
 **6. Better PDF extraction**
 The current PDF pipeline fails on scanned/image-based PDFs. Adding OCR (Tesseract or a cloud vision API) as a fallback would dramatically expand what users can upload.
 
+**7. Friends & social study**
+Add a friends list to see when classmates are studying, which decks they're working on, and their study streaks. This creates lightweight accountability without being invasive.
+
+**8. Deck merging / mashup**
+Right now each deck is isolated. Allowing users to merge multiple decks into one would support multi-topic study sessions and make prep for cumulative exams easier.
+
+**9. Quiz challenges between friends**
+Competitive study mode: two or more friends can challenge each other on the same deck in real time, with synchronized questions, timing, and a final leaderboard.
+
 ---
 
 ## Interesting Challenges
