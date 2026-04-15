@@ -15,7 +15,7 @@ export default function NewDeckPage() {
 				</p>
 			</div>
 
-			<div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+			<div className="rounded-2xl border border-white bg-transparent p-6 shadow-none">
 				<CreateDeckFlow
 					showCancel={false}
 					onCreated={(deckId) => {

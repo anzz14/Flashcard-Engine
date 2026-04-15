@@ -65,6 +65,7 @@ export default function DeckGrid({ decks, onDeckChange }: DeckGridProps) {
       <EmptyState
         icon={<Layers className="h-10 w-10" />}
         title="No decks yet"
+        className="border-white/10 bg-transparent shadow-none"
         action={
           <Button variant="primary" onClick={() => router.push("/decks/new")}>
             Create your first deck

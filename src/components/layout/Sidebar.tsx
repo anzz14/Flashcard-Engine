@@ -48,7 +48,12 @@ export default function Sidebar() {
     }
 
     setIsLoggingOut(true);
-    await signOut({ callbackUrl: "/login" });
+    try {
+      await signOut({ redirect: false });
+      window.location.assign("/login");
+    } catch {
+      setIsLoggingOut(false);
+    }
   };
 
   return (

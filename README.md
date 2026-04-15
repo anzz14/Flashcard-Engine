@@ -160,7 +160,7 @@ MUI's emotion-based styling system doesn't work with React Server Components out
 | Language | TypeScript |
 | Database | PostgreSQL via Prisma |
 | Auth | NextAuth v5 (credentials + session) |
-| AI | Grok (OpenRouter) |
+| AI | Grok + OpenRouter (on fallback) |
 | UI | MUI v9 + Tailwind v4 |
 | Animation | Framer Motion |
 | Deployment | Vercel |
