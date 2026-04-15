@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import EmptySession from "@/components/study/EmptySession";
 import FlashCard from "@/components/study/FlashCard";
 import HintBox from "@/components/study/HintBox";
+import DeckDetailSkeleton from "@/components/deck/DeckDetailSkeleton";
 import RatingButtons from "@/components/study/RatingButtons";
 import SessionProgress from "@/components/study/SessionProgress";
 import SessionSummary from "@/components/study/SessionSummary";
@@ -41,6 +42,7 @@ export default function StudySession({
   const [streakData, setStreakData] = useState<UserStreak | null>(null);
   const [hasHydratedResume, setHasHydratedResume] = useState(false);
   const [restoreNonce, setRestoreNonce] = useState(0);
+  const [isExiting, setIsExiting] = useState(false);
   const storageKey = `study-session:${deckId}`;
   const { show } = useToast();
 
@@ -192,6 +194,10 @@ export default function StudySession({
     return <EmptySession deckId={deckId} />;
   }
 
+  if (isExiting) {
+    return <DeckDetailSkeleton />;
+  }
+
   if (sessionComplete) {
     return (
       <SessionSummary
@@ -210,6 +216,7 @@ export default function StudySession({
         total={cards.length}
         topicTag={activeTopic}
         onExit={() => {
+          setIsExiting(true);
           const reviewedCount = Object.keys(ratings).length;
           window.localStorage.setItem(
             storageKey,
@@ -221,8 +228,10 @@ export default function StudySession({
             })
           );
           show(`Session exited (${reviewedCount}/${cards.length} reviewed)`, "info");
-          router.replace(`/decks/${deckId}`);
-          router.refresh();
+          window.requestAnimationFrame(() => {
+            router.replace(`/decks/${deckId}`);
+            router.refresh();
+          });
         }}
       />
 
