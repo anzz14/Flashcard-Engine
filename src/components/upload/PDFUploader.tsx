@@ -10,7 +10,8 @@ type PDFUploaderProps = {
   disabled?: boolean;
 };
 
-const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
+// Keep this below typical hosted function request body limits to avoid HTML 413 responses.
+const MAX_FILE_SIZE_BYTES = 4 * 1024 * 1024;
 
 export default function PDFUploader({ onFileSelected, disabled = false }: PDFUploaderProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -25,7 +26,7 @@ export default function PDFUploader({ onFileSelected, disabled = false }: PDFUpl
     }
 
     if (file.size >= MAX_FILE_SIZE_BYTES) {
-      setError("File is too large. Maximum size is 20MB.");
+      setError("File is too large. Maximum size is 4MB for uploads on the deployed app.");
       return;
     }
 
@@ -70,7 +71,7 @@ export default function PDFUploader({ onFileSelected, disabled = false }: PDFUpl
       >
         <FileText className="mb-2 text-[#ff6a3d]" size={22} />
         <p className="text-sm text-white">Drag and drop your PDF here</p>
-        <p className="mt-1 text-xs text-white/70">Max file size: 20MB</p>
+        <p className="mt-1 text-xs text-white/70">Max file size: 4MB</p>
 
         <div className="mt-4">
           <Button

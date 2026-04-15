@@ -32,6 +32,22 @@ function countWords(text: string): number {
   return trimmed.split(/\s+/).length;
 }
 
+async function getErrorMessageFromResponse(response: Response, fallback: string): Promise<string> {
+  const contentType = response.headers.get("content-type") ?? "";
+
+  if (contentType.includes("application/json")) {
+    const data = (await response.json()) as { error?: string };
+    return data.error ?? fallback;
+  }
+
+  const text = await response.text();
+  if (text.includes("<!DOCTYPE") || text.includes("<html")) {
+    return "Upload failed on deployed server. Try a smaller PDF (<= 4MB) or paste text instead.";
+  }
+
+  return text.slice(0, 200) || fallback;
+}
+
 export function CreateDeckFlow({
   onCreated,
   onCancel,
@@ -81,8 +97,16 @@ export function CreateDeckFlow({
           body: JSON.stringify({ name: deckName.trim() }),
         });
 
+        if (!createResponse.ok) {
+          const createError = await getErrorMessageFromResponse(
+            createResponse,
+            "Failed to create deck"
+          );
+          throw new Error(createError);
+        }
+
         const createData = (await createResponse.json()) as { id?: string; error?: string };
-        if (!createResponse.ok || !createData.id) {
+        if (!createData.id) {
           throw new Error(createData.error ?? "Failed to create deck");
         }
 
@@ -104,9 +128,12 @@ export function CreateDeckFlow({
         body: formData,
       });
 
-      const generateData = (await generateResponse.json()) as { error?: string };
       if (!generateResponse.ok) {
-        throw new Error(generateData.error ?? "Generation failed — please try again");
+        const generateError = await getErrorMessageFromResponse(
+          generateResponse,
+          "Generation failed — please try again"
+        );
+        throw new Error(generateError);
       }
 
       setStep(3);

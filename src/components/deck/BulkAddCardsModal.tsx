@@ -24,6 +24,22 @@ function countWords(text: string): number {
   return trimmed.split(/\s+/).length;
 }
 
+async function getErrorMessageFromResponse(response: Response, fallback: string): Promise<string> {
+  const contentType = response.headers.get("content-type") ?? "";
+
+  if (contentType.includes("application/json")) {
+    const data = (await response.json()) as { error?: string };
+    return data.error ?? fallback;
+  }
+
+  const text = await response.text();
+  if (text.includes("<!DOCTYPE") || text.includes("<html")) {
+    return "Upload failed on deployed server. Try a smaller PDF (<= 4MB) or paste text instead.";
+  }
+
+  return text.slice(0, 200) || fallback;
+}
+
 export default function BulkAddCardsModal({
   open,
   deckId,
@@ -86,9 +102,12 @@ export default function BulkAddCardsModal({
         body: formData,
       });
 
-      const data = (await response.json()) as { error?: string };
       if (!response.ok) {
-        throw new Error(data.error ?? "Generation failed — please try again");
+        const message = await getErrorMessageFromResponse(
+          response,
+          "Generation failed — please try again"
+        );
+        throw new Error(message);
       }
 
       setStep(2);
