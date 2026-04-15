@@ -4,6 +4,7 @@ import { MoreVertical } from "@/lib/lucide";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { Spinner } from "@/components/ui/Spinner";
 import { useRouter } from "next/navigation";
 import { useState, type MouseEvent } from "react";
 import { Card } from "@/components/ui/Card";
@@ -19,6 +20,7 @@ type DeckCardProps = {
 export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
   const menuOpen = Boolean(anchorEl);
   const displayName = truncate(deck.name, 40);
   const isNameTruncated = displayName !== deck.name;
@@ -38,9 +40,24 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
     setAnchorEl(null);
   };
 
+  const handleOpenDeck = () => {
+    if (isNavigating) {
+      return;
+    }
+
+    setIsNavigating(true);
+    router.push(`/decks/${deck.id}`);
+  };
+
   return (
-    <Card hoverable className="space-y-4 p-5" onClick={() => router.push(`/decks/${deck.id}`)}>
-      <div className="flex items-start justify-between gap-3">
+    <Card hoverable className="relative space-y-4 p-5" onClick={handleOpenDeck}>
+      {isNavigating ? (
+        <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center rounded-xl bg-black/10">
+          <Spinner size="md" color="#ff6a3d" />
+        </div>
+      ) : null}
+
+      <div className={isNavigating ? "pointer-events-none opacity-0" : "flex items-start justify-between gap-3"}>
         <div className="min-w-0 space-y-2">
           <p
             className="truncate text-lg font-semibold text-[#ff6a3d]"
@@ -63,7 +80,7 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className={isNavigating ? "pointer-events-none space-y-2 opacity-0" : "space-y-2"}>
         <p className={`text-sm mt-8 font-semibold ${dueColorClass}`}>
           {deck.dueToday} due
         </p>
@@ -72,61 +89,63 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
         </p>
       </div>
 
-      <Menu
-        anchorEl={anchorEl}
-        open={menuOpen}
-        onClose={handleMenuClose}
-        onClick={(event) => event.stopPropagation()}
-        slotProps={{
-          paper: {
-            sx: {
-              backgroundColor: "#151515",
-              border: "1px solid rgba(255,255,255,0.10)",
+      {!isNavigating ? (
+        <Menu
+          anchorEl={anchorEl}
+          open={menuOpen}
+          onClose={handleMenuClose}
+          onClick={(event) => event.stopPropagation()}
+          slotProps={{
+            paper: {
+              sx: {
+                backgroundColor: "#151515",
+                border: "1px solid rgba(255,255,255,0.10)",
+                color: "#ffffff",
+                boxShadow: "0 10px 24px rgba(0,0,0,0.35)",
+              },
+            },
+          }}
+        >
+          <MenuItem
+            sx={{
+              fontSize: "0.82rem",
+              lineHeight: 1.35,
+              minHeight: 0,
+              py: 0.5,
               color: "#ffffff",
-              boxShadow: "0 10px 24px rgba(0,0,0,0.35)",
-            },
-          },
-        }}
-      >
-        <MenuItem
-          sx={{
-            fontSize: "0.82rem",
-            lineHeight: 1.35,
-            minHeight: 0,
-            py: 0.5,
-            color: "#ffffff",
-            "&:hover": {
-              backgroundColor: "rgba(255,255,255,0.06)",
-            },
-          }}
-          onClick={(event) => {
-            event.stopPropagation();
-            handleMenuClose();
-            onRename?.();
-          }}
-        >
-          Rename
-        </MenuItem>
-        <MenuItem
-          sx={{
-            fontSize: "0.82rem",
-            lineHeight: 1.35,
-            minHeight: 0,
-            py: 0.5,
-            color: "#ffffff",
-            "&:hover": {
-              backgroundColor: "rgba(255,255,255,0.06)",
-            },
-          }}
-          onClick={(event) => {
-            event.stopPropagation();
-            handleMenuClose();
-            onArchive?.();
-          }}
-        >
-          Archive
-        </MenuItem>
-      </Menu>
+              "&:hover": {
+                backgroundColor: "rgba(255,255,255,0.06)",
+              },
+            }}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleMenuClose();
+              onRename?.();
+            }}
+          >
+            Rename
+          </MenuItem>
+          <MenuItem
+            sx={{
+              fontSize: "0.82rem",
+              lineHeight: 1.35,
+              minHeight: 0,
+              py: 0.5,
+              color: "#ffffff",
+              "&:hover": {
+                backgroundColor: "rgba(255,255,255,0.06)",
+              },
+            }}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleMenuClose();
+              onArchive?.();
+            }}
+          >
+            Archive
+          </MenuItem>
+        </Menu>
+      ) : null}
     </Card>
   );
 }

@@ -32,7 +32,7 @@ const ratingStyle: Record<ReviewRating, { bg: string; color: string }> = {
 
 const ratingLabels: Record<SessionPageRating, string> = {
   HARD: "Hard",
-  GOOD: "Good",
+  GOOD: "Medium",
   EASY: "Easy",
 };
 
@@ -234,7 +234,12 @@ export default function LastSessionClient({ deckId, sessionDate, cards }: Props)
               />
 
               {isFlipped ? (
-                <RatingButtons card={card} onRate={handleRate} isSubmitting={isSubmitting} />
+                <RatingButtons
+                  card={card}
+                  onRate={handleRate}
+                  isSubmitting={isSubmitting}
+                  pendingRating={null}
+                />
               ) : null}
             </div>
           ) : null}

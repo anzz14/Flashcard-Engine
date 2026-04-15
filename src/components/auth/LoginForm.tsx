@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { Spinner } from "@/components/ui/Spinner";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -125,7 +126,7 @@ export default function LoginForm() {
           },
         }}
       >
-        {isLoading ? "Signing in..." : "Sign in"}
+        {isLoading ? <Spinner size="sm" color="#ffffff" /> : "Sign in"}
       </Button>
 
       <p className="text-center text-sm text-zinc-400">

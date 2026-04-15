@@ -1,13 +1,15 @@
 import { CalendarCheck2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { Spinner } from "@/components/ui/Spinner";
 
 type DueTodayProps = {
   dueCount: number;
   onClick: () => void;
+  loading?: boolean;
 };
 
-export default function DueToday({ dueCount, onClick }: DueTodayProps) {
+export default function DueToday({ dueCount, onClick, loading = false }: DueTodayProps) {
   
    
 
@@ -27,8 +29,8 @@ export default function DueToday({ dueCount, onClick }: DueTodayProps) {
         {dueCount === 0 ? (
           <p className="shrink-0 text-sm font-semibold text-emerald-400">All caught up!</p>
         ) : (
-          <Button variant="primary" size="small" onClick={onClick}>
-            Start Review
+          <Button variant="primary" size="small" onClick={onClick} disabled={loading}>
+            {loading ? <Spinner size="sm" color="#ff6a3d" /> : "Start Review"}
           </Button>
         )}
       </div>

@@ -10,6 +10,7 @@ type RatingButtonsProps = {
   card: CardWithSM2;
   onRate: (rating: ReviewRating) => void;
   isSubmitting: boolean;
+  pendingRating: ReviewRating | null;
 };
 
 type RatingConfig = {
@@ -51,7 +52,7 @@ const ratings: RatingConfig[] = [
   },
 ];
 
-export default function RatingButtons({ card, onRate, isSubmitting }: RatingButtonsProps) {
+export default function RatingButtons({ card, onRate, isSubmitting, pendingRating }: RatingButtonsProps) {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (isSubmitting) {
@@ -99,7 +100,11 @@ export default function RatingButtons({ card, onRate, isSubmitting }: RatingButt
                 },
               }}
             >
-              {isSubmitting ? <Spinner size="sm" className="text-white" /> : option.label}
+              {pendingRating === option.rating ? (
+                <Spinner size="sm" className="text-white" color="#ffffff" />
+              ) : (
+                option.label
+              )}
             </Button>
 
             <span className="absolute -right-2 -top-2 rounded-md border border-white/20 bg-[#151515] px-1.5 py-0.5 text-xs font-semibold text-[#ff6a3d]">

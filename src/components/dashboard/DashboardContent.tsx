@@ -39,6 +39,7 @@ export default function DashboardContent({
   const router = useRouter();
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [viewingCard, setViewingCard] = useState<CardWithSM2 | null>(null);
+  const [isStartingReview, setIsStartingReview] = useState(false);
 
   const hour = new Date().getHours();
   const greeting =
@@ -81,7 +82,9 @@ export default function DashboardContent({
         />
         <DueToday
           dueCount={totalDueToday}
+          loading={isStartingReview}
           onClick={() => {
+            setIsStartingReview(true);
             if (dueDeckId) {
               router.push(`/decks/${dueDeckId}/study`);
             } else {

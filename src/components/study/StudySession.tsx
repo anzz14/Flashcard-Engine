@@ -36,6 +36,7 @@ export default function StudySession({
   const [isFlipped, setIsFlipped] = useState(false);
   const [ratings, setRatings] = useState<Record<string, ReviewRating>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pendingRating, setPendingRating] = useState<ReviewRating | null>(null);
   const [sessionComplete, setSessionComplete] = useState(initialCards.length === 0);
   const [streakData, setStreakData] = useState<UserStreak | null>(null);
   const [hasHydratedResume, setHasHydratedResume] = useState(false);
@@ -136,6 +137,7 @@ export default function StudySession({
     }
 
     setIsSubmitting(true);
+    setPendingRating(rating);
 
     try {
       const response = await fetch("/api/review", {
@@ -180,6 +182,7 @@ export default function StudySession({
       show("Failed to submit review", "error");
     } finally {
       setIsSubmitting(false);
+      setPendingRating(null);
     }
   };
 
@@ -255,6 +258,7 @@ export default function StudySession({
                 void handleRate(rating);
               }}
               isSubmitting={isSubmitting}
+              pendingRating={pendingRating}
             />
           </motion.div>
         ) : null}

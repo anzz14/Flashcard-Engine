@@ -8,8 +8,10 @@ import {
   GraduationCap,
   Trophy,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { type ReactNode, useState } from "react";
+import { Spinner } from "@/components/ui/Spinner";
 
 type LandingPageProps = {
   isLoggedIn: boolean;
@@ -189,6 +191,8 @@ const faqItems = [
   },
 ];
 
+const productPreviewVideoUrl = "https://www.loom.com/embed/2719537d3d3547769bf848e5418c7449";
+
 function Reveal({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <motion.div
@@ -218,6 +222,17 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
   const [activeHowStep, setActiveHowStep] = useState(1);
   const activeStep = howSteps[activeHowStep];
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const router = useRouter();
+
+  const handleNavigate = (href: string) => {
+    if (isNavigating) {
+      return;
+    }
+
+    setIsNavigating(true);
+    router.push(href);
+  };
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#151515] text-white">
@@ -252,12 +267,14 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
       <motion.div
         className="fixed top-4 right-4 z-40"
       >
-        <Link
-          href={authHref}
+        <button
+          type="button"
+          onClick={() => handleNavigate(authHref)}
+          disabled={isNavigating}
           className="rounded-full border border-[#ff3b00]/50 bg-black/30 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-[#ff6a3d] backdrop-blur-md transition hover:border-[#ff6a3d] hover:text-[#ff9a7c]"
         >
-          {isLoggedIn ? "Dashboard" : "Login"}
-        </Link>
+          {isNavigating ? <Spinner size="sm" color="#ff6a3d" /> : isLoggedIn ? "Dashboard" : "Login"}
+        </button>
       </motion.div>
 
       <main className="relative z-10">
@@ -275,12 +292,20 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
                 AI-powered flashcards that adapt to your brain. Learn faster, retain longer, and never forget what matters.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href={primaryHref}
-                  className="inline-flex items-center gap-2 rounded-md bg-[#050505] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0f0f0f]"
+                <button
+                  type="button"
+                  onClick={() => handleNavigate(primaryHref)}
+                  disabled={isNavigating}
+                  className="inline-flex min-w-36 items-center justify-center gap-2 rounded-md bg-[#050505] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0f0f0f] disabled:cursor-not-allowed disabled:opacity-90"
                 >
-                  Start Studying <ArrowRight size={16} />
-                </Link>
+                  {isNavigating ? (
+                    <Spinner size="sm" color="#ff6a3d" />
+                  ) : (
+                    <>
+                      Start Studying <ArrowRight size={16} />
+                    </>
+                  )}
+                </button>
                 <Link
                   href="#preview"
                   className="inline-flex items-center rounded-md border border-black/35 px-5 py-3 text-sm font-semibold text-black transition hover:bg-black/10"
@@ -570,31 +595,26 @@ export default function LandingPage({ isLoggedIn }: LandingPageProps) {
         <Section id="preview">
           <Reveal>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Product preview</h2>
-            <div className="mt-8 rounded-2xl border border-white/10 bg-[#151515] p-5 shadow-[0_0_35px_rgba(255,59,0,0.15)]">
-              <div className="grid gap-4 lg:grid-cols-3">
-                <div className="rounded-xl border border-white/10 bg-[#151515] p-4">
-                  <p className="text-xs uppercase tracking-wide text-zinc-500">Flashcards</p>
-                  <div className="mt-3 space-y-2">
-                    <div className="rounded border border-[#ff3b00]/30 bg-[#140b08] p-3 text-sm">AI card: Networking basics</div>
-                    <div className="rounded border border-white/10 p-3 text-sm">Prompt card: OSI layers</div>
-                  </div>
-                </div>
-                <div className="rounded-xl border border-white/10 bg-[#151515] p-4">
-                  <p className="text-xs uppercase tracking-wide text-zinc-500">Progress graph</p>
-                  <div className="mt-4 flex h-28 items-end gap-2">
-                    {[32, 44, 26, 61, 72, 80, 74].map((h, i) => (
-                      <div key={i} className="flex-1 rounded-t bg-linear-to-t from-[#ff3b00] to-[#ff6a3d]" style={{ height: `${h}%` }} />
-                    ))}
-                  </div>
-                </div>
-                <div className="rounded-xl border border-white/10 bg-[#151515] p-4">
-                  <p className="text-xs uppercase tracking-wide text-zinc-500">Weak topics</p>
-                  <div className="mt-3 space-y-2 text-sm text-zinc-200">
-                    <div className="flex items-center justify-between rounded border border-white/10 px-3 py-2"><span>Databases</span><span className="text-[#ff6a3d]">42%</span></div>
-                    <div className="flex items-center justify-between rounded border border-white/10 px-3 py-2"><span>Algorithms</span><span className="text-[#ff6a3d]">48%</span></div>
-                    <div className="flex items-center justify-between rounded border border-white/10 px-3 py-2"><span>Systems</span><span className="text-[#ff6a3d]">54%</span></div>
-                  </div>
-                </div>
+            <div className="mt-8 overflow-hidden rounded-2xl border border-white/10 bg-[#151515] shadow-[0_0_35px_rgba(255,59,0,0.15)]">
+              <div className="aspect-video w-full bg-black/40">
+                <iframe
+                  src={productPreviewVideoUrl}
+                  title="Flashcard Engine product preview"
+                  className="h-full w-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+              <div className="flex items-center justify-between gap-3 border-t border-white/10 px-4 py-3 text-sm text-zinc-400">
+                <span>Watch the product walkthrough</span>
+                <a
+                  href="https://www.loom.com/share/2719537d3d3547769bf848e5418c7449"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-medium text-[#ff6a3d] transition hover:text-[#ff9a7c]"
+                >
+                  Open in Loom
+                </a>
               </div>
             </div>
           </Reveal>
