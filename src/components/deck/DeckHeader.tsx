@@ -9,6 +9,7 @@ import AddCardModal from "@/components/cards/AddCardModal";
 import BulkAddCardsModal from "@/components/deck/BulkAddCardsModal";
 import RenameDeckModal from "@/components/deck/RenameDeckModal";
 import { Button } from "@/components/ui/Button";
+import { Spinner } from "@/components/ui/Spinner";
 import { useToast } from "@/components/ui/Toast";
 import type { DeckWithStats } from "@/types/deck";
 
@@ -25,6 +26,8 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
   const [renameOpen, setRenameOpen] = useState(false);
   const [addCardOpen, setAddCardOpen] = useState(false);
   const [bulkAddOpen, setBulkAddOpen] = useState(false);
+  const [isStartingSession, setIsStartingSession] = useState(false);
+  const [isManagingCards, setIsManagingCards] = useState(false);
 
   const activeTopics = useMemo(() => {
     const many = searchParams
@@ -81,6 +84,24 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
     ? `/decks/${deck.id}/study?topic=${encodeURIComponent(activeTopics[0])}`
     : `/decks/${deck.id}/study`;
 
+  const handleNavigate = (href: string, action: "start-session" | "manage-cards") => {
+    if (action === "start-session" && isStartingSession) {
+      return;
+    }
+
+    if (action === "manage-cards" && isManagingCards) {
+      return;
+    }
+
+    if (action === "start-session") {
+      setIsStartingSession(true);
+    } else {
+      setIsManagingCards(true);
+    }
+
+    router.push(href);
+  };
+
   const getTopicChipSx = (isActive: boolean) => ({
     height: 22,
     fontSize: "0.68rem",
@@ -115,11 +136,27 @@ export default function DeckHeader({ deck, onRename }: DeckHeaderProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="secondary" href={startSessionHref}>
-            Start Session
+          <Button
+            variant="secondary"
+            onClick={() => handleNavigate(startSessionHref, "start-session")}
+            disabled={isStartingSession}
+          >
+            {isStartingSession ? (
+              <Spinner size="sm" color="#ff6a3d" />
+            ) : (
+              "Start Session"
+            )}
           </Button>
-          <Button variant="secondary" href={`/decks/${deck.id}/edit`}>
-            Manage Cards
+          <Button
+            variant="secondary"
+            onClick={() => handleNavigate(`/decks/${deck.id}/edit`, "manage-cards")}
+            disabled={isManagingCards}
+          >
+            {isManagingCards ? (
+              <Spinner size="sm" color="#ff6a3d" />
+            ) : (
+              "Manage Cards"
+            )}
           </Button>
           <Button variant="secondary" onClick={() => setBulkAddOpen(true)}>
             Bulk Add
