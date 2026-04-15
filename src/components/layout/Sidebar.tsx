@@ -10,8 +10,10 @@ import { motion } from "framer-motion";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useAppShell } from "@/components/layout/AppShellContext";
 import { Button } from "@/components/ui/Button";
+import { Spinner } from "@/components/ui/Spinner";
 
 type NavItem = {
   label: string;
@@ -33,6 +35,11 @@ export default function Sidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const { sidebarCollapsed, toggleSidebarCollapsed } = useAppShell();
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
+
+  useEffect(() => {
+    setPendingHref(null);
+  }, [pathname]);
 
   return (
     <aside className="flex h-full w-full flex-col border-r border-white/10 bg-[#151515]">
@@ -73,6 +80,7 @@ export default function Sidebar() {
                 <ListItemButton
                   component={Link}
                   href={item.href}
+                  onClick={() => setPendingHref(item.href)}
                   sx={{
                     borderRadius: "0.75rem",
                     mb: 0.5,
@@ -92,7 +100,7 @@ export default function Sidebar() {
                       justifyContent: "center",
                     }}
                   >
-                    {item.icon}
+                    {pendingHref === item.href ? <Spinner size="sm" color="#ff6a3d" /> : item.icon}
                   </ListItemIcon>
                   {!sidebarCollapsed ? (
                     <motion.div

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { Spinner } from "@/components/ui/Spinner";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -217,7 +218,7 @@ export default function RegisterForm() {
           },
         }}
       >
-        {isLoading ? "Creating account..." : "Create account"}
+        {isLoading ? <Spinner size="sm" color="#ffffff" /> : "Create account"}
       </Button>
 
       <p className="text-center text-sm text-zinc-400">

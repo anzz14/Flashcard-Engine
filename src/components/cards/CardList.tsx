@@ -7,6 +7,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Skeleton from "@mui/material/Skeleton";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -144,6 +145,7 @@ export default function CardList({ deckId, topics }: CardListProps) {
   const [deletingCard, setDeletingCard] = useState<CardWithSM2 | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [isLoadingCards, setIsLoadingCards] = useState(true);
   const { show } = useToast();
 
   useEffect(() => {
@@ -186,12 +188,17 @@ export default function CardList({ deckId, topics }: CardListProps) {
     const load = async () => {
       try {
         if (mounted) {
+          setIsLoadingCards(true);
           setCards([]);
         }
         await loadCards();
       } catch {
         if (mounted) {
           show("Failed to load cards", "error");
+        }
+      } finally {
+        if (mounted) {
+          setIsLoadingCards(false);
         }
       }
     };
@@ -322,17 +329,57 @@ export default function CardList({ deckId, topics }: CardListProps) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {cards.map((card) => (
-              <CardRow
-                key={card.id}
-                card={card}
-                onView={(next) => setViewingCard(next)}
-                onEdit={(next) => setEditingCard(next)}
-                onDelete={(next) => {
-                  setDeletingCard(next);
-                }}
-              />
-            ))}
+            {isLoadingCards ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <TableRow key={`card-skeleton-${index}`}>
+                  <TableCell>
+                    <Skeleton variant="text" width="90%" sx={{ bgcolor: "rgba(255,255,255,0.12)" }} />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton variant="text" width="85%" sx={{ bgcolor: "rgba(255,255,255,0.12)" }} />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Skeleton
+                      variant="rounded"
+                      width={88}
+                      height={28}
+                      sx={{ mx: "auto", bgcolor: "rgba(255,255,255,0.12)" }}
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Skeleton
+                      variant="rounded"
+                      width={84}
+                      height={28}
+                      sx={{ mx: "auto", bgcolor: "rgba(255,255,255,0.12)" }}
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Skeleton variant="circular" width={12} height={12} sx={{ mx: "auto", bgcolor: "rgba(255,255,255,0.12)" }} />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Skeleton
+                      variant="circular"
+                      width={36}
+                      height={36}
+                      sx={{ mx: "auto", bgcolor: "rgba(255,255,255,0.12)" }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              cards.map((card) => (
+                <CardRow
+                  key={card.id}
+                  card={card}
+                  onView={(next) => setViewingCard(next)}
+                  onEdit={(next) => setEditingCard(next)}
+                  onDelete={(next) => {
+                    setDeletingCard(next);
+                  }}
+                />
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
