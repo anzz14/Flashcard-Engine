@@ -12,6 +12,7 @@ import TextFallback from "@/components/upload/TextFallback";
 import UploadErrorBanner from "@/components/upload/UploadErrorBanner";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
+import { Spinner } from "@/components/ui/Spinner";
 
 type CreateDeckModalProps = {
   open: boolean;
@@ -209,7 +210,7 @@ export function CreateDeckFlow({
             </Button>
 
             <Button variant="primary" onClick={() => void handleGenerate()} disabled={isStarting}>
-              Generate Flashcards
+              {isStarting ? <Spinner size="sm" color="#ffffff" /> : "Generate Flashcards"}
             </Button>
           </Box>
         </Stack>

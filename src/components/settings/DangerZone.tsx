@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
+import { Spinner } from "@/components/ui/Spinner";
 import { useToast } from "@/components/ui/Toast";
 
 const WARNING_TEXT =
@@ -86,7 +87,7 @@ export default function DangerZone() {
               }}
               disabled={deleting || confirmInput !== "DELETE"}
             >
-              Delete Account
+              {deleting ? <Spinner size="sm" color="#ffffff" /> : "Delete Account"}
             </Button>
           </div>
         </div>
