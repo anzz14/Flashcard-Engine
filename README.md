@@ -21,10 +21,9 @@ The core loop:
 ---
 
 ## Screenshot / Demo Flow
+<img width="1460" height="161" alt="image" src="https://github.com/user-attachments/assets/d7f1e8ad-8f05-4e13-b83e-fa0091ee9d82" />
 
-```
-Upload PDF → Generation Progress → Deck View → Study Session → Session Summary → Insights
-```
+
 
 The study session is the heart of the app. Cards flip on click (or Space/Enter). After revealing the answer, you rate your recall. That rating feeds directly into SM-2 to set the next review date.
 
