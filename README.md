@@ -44,35 +44,43 @@ Every card stores three numbers:
 
 After each review, the algorithm adjusts based on your rating:
 
-**AGAIN** — You blanked. Reset to interval=1, repetitions=0, ease drops by 0.2 (floor: 1.3). You'll see it again tomorrow.
+**AGAIN** — You blanked. Reset to interval=0 (end of deck for now), repetitions=0, ease drops by 0.2 (floor: 1.3).
 
-**HARD** — You got it, but struggled. Interval × 1.2, ease drops by 0.15. Slight slowdown.
+**HARD** — You got it, but struggled. Interval = 1 day, ease drops by 0.15.
 
-**GOOD** — Normal recall. Interval × easeFactor. Ease unchanged. This is the default path.
+**GOOD** — Normal recall. Interval = 3 days. Ease unchanged. This is the default path.
 
-**EASY** — Instant recall. Interval × easeFactor × 1.3, ease increases by 0.15 (ceiling: 3.0). The card backs off faster.
+**EASY** — Instant recall. Interval = 7 days, ease increases by 0.1 (ceiling: 3.0). The card backs off faster.
 
-The key insight: **easy cards compound**. A card you find easy today might not appear for 3 weeks, then 2 months, then 6 months. Hard cards stay in your face until they stick. You never waste time reviewing what you already know cold.
+The approach is **fixed intervals** for all cards (0→1→3→7), not a multiplier-based SM-2. This keeps early-stage cards feeling responsive without disappearing for weeks after one review. It's the same bootstrapping strategy Anki uses.
 
 ```ts
-// src/lib/sm2.ts (simplified)
+// src/lib/sm2.ts
 export function applyRating(card, rating) {
-  if (rating === "AGAIN") {
-    return { interval: 1, repetitions: 0, easeFactor: Math.max(1.3, card.easeFactor - 0.2) };
+  let { interval, easeFactor, repetitions } = card;
+
+  switch (rating) {
+    case "AGAIN":
+      interval = 0;
+      easeFactor = Math.max(1.3, easeFactor - 0.2);
+      repetitions = 0;
+      break;
+    case "HARD":
+      interval = 1;
+      easeFactor = Math.max(1.3, easeFactor - 0.15);
+      repetitions = repetitions + 1;
+      break;
+    case "GOOD":
+      interval = 3;
+      repetitions = repetitions + 1;
+      break;
+    case "EASY":
+      interval = 7;
+      easeFactor = Math.min(3.0, easeFactor + 0.1);
+      repetitions = repetitions + 1;
+      break;
   }
-  if (rating === "HARD") {
-    return { interval: Math.round(card.interval * 1.2), easeFactor: Math.max(1.3, card.easeFactor - 0.15) };
-  }
-  if (rating === "GOOD") {
-    const interval = card.repetitions === 0 ? 1 : Math.round(card.interval * card.easeFactor);
-    return { interval, repetitions: card.repetitions + 1, easeFactor: card.easeFactor };
-  }
-  // EASY
-  return {
-    interval: Math.round(card.interval * card.easeFactor * 1.3),
-    repetitions: card.repetitions + 1,
-    easeFactor: Math.min(3.0, card.easeFactor + 0.15),
-  };
+  return { interval, easeFactor, repetitions, nextReviewDate: daysFromNow(interval), isNew: false };
 }
 ```
 
@@ -124,9 +132,9 @@ The current PDF pipeline fails on scanned/image-based PDFs. Adding OCR (Tesserac
 ## Interesting Challenges
 
 ### Challenge: SM-2 scheduling for early-stage cards
-A strict SM-2 implementation multiplies `interval × easeFactor` on every GOOD rating, which produces large jumps even for cards a user has only seen once or twice. In practice this felt too aggressive during early reviews — a card seen once shouldn't disappear for a week.
+A strict SM-2 implementation multiplies `interval × easeFactor` on every GOOD rating, which produces large jumps even for cards a user has only seen once or twice. In practice this felt too aggressive — a card seen once shouldn't disappear for a week.
 
-The current implementation intentionally uses fixed intervals for the first few repetitions (e.g. day 1 → day 3 → day 7) before handing off to the multiplier-based schedule. This is the same bootstrapping approach Anki uses and keeps early-stage cards feeling responsive without sacrificing long-term spacing. The tradeoff is a slightly less "pure" SM-2 — the algorithm only kicks in fully once a card has established a review history.
+Instead of the full multiplier algorithm, this implementation uses **fixed intervals** (AGAIN=0, HARD=1 day, GOOD=3 days, EASY=7 days). This keeps early-stage cards feeling responsive and predictable. It's a deliberate design choice (same approach Anki uses) rather than a simplified SM-2 — sacrificing mathematical purity for better UX.
 
 ### Challenge: SSE stream cleanup on Vercel
 SSE streams need careful cleanup when the client disconnects. The initial implementation leaked event listeners and setInterval handles on every connection. I fixed this by attaching to `request.signal`'s `abort` event and tracking a `closed` boolean, then unregistering all listeners atomically.
