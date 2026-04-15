@@ -17,6 +17,7 @@ import CardRow from "@/components/cards/CardRow";
 import CardSearch from "@/components/cards/CardSearch";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
+import { Spinner } from "@/components/ui/Spinner";
 import { useToast } from "@/components/ui/Toast";
 import type { CardWithSM2 } from "@/types/card";
 
@@ -111,7 +112,7 @@ function CardFormModal({
               }
             }}
           >
-            Save
+            {saving ? <Spinner size="sm" color="#ffffff" /> : "Save"}
           </Button>
         </Box>
       </Stack>
@@ -409,19 +410,19 @@ export default function CardList({ deckId, topics }: CardListProps) {
 
       <Modal open={viewingCard !== null} onClose={() => setViewingCard(null)} title="View Card" maxWidth="sm">
         <Stack spacing={3} sx={{ pt: 1 }}>
-          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#111111", border: "1px solid rgba(255,255,255,0.10)" }}>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-white">Question</p>
-            <p className="whitespace-pre-wrap text-sm text-[#ff6a3d]">{viewingCard?.question ?? ""}</p>
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#111111", border: "1px solid rgba(255,106,61,0.85)" }}>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#ff6a3d]">Question</p>
+            <p className="whitespace-pre-wrap text-sm text-[#fffff]">{viewingCard?.question ?? ""}</p>
           </Box>
 
-          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#111111", border: "1px solid rgba(255,255,255,0.10)" }}>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-white">Answer</p>
-            <p className="whitespace-pre-wrap text-sm text-[#ff6a3d]">{viewingCard?.answer ?? ""}</p>
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#111111", border: "1px solid rgba(255,106,61,0.85)" }}>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#ff6a3d]">Answer</p>
+            <p className="whitespace-pre-wrap text-sm text-white">{viewingCard?.answer ?? ""}</p>
           </Box>
 
-          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#111111", border: "1px solid rgba(255,255,255,0.10)" }}>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-white">Topic</p>
-            <p className="text-sm text-[#ff6a3d]">{viewingCard?.topicTag?.trim() || "General"}</p>
+          <Box sx={{ p: 1.5, borderRadius: 1.5, backgroundColor: "#111111", border: "1px solid rgba(255,106,61,0.85)" }}>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#ff6a3d]">Topic</p>
+            <p className="text-sm text-white">{viewingCard?.topicTag?.trim() || "General"}</p>
           </Box>
 
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
@@ -461,7 +462,7 @@ export default function CardList({ deckId, topics }: CardListProps) {
                 void handleDelete(deletingCard.id);
               }}
             >
-              Delete
+              {isDeleting ? <Spinner size="sm" color="#ffffff" /> : "Delete"}
             </Button>
           </Box>
         </Stack>

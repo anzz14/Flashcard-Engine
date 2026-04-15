@@ -36,10 +36,20 @@ export default function Sidebar() {
   const { data: session } = useSession();
   const { sidebarCollapsed, toggleSidebarCollapsed } = useAppShell();
   const [pendingHref, setPendingHref] = useState<string | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
     setPendingHref(null);
   }, [pathname]);
+
+  const handleLogout = async () => {
+    if (isLoggingOut) {
+      return;
+    }
+
+    setIsLoggingOut(true);
+    await signOut({ callbackUrl: "/login" });
+  };
 
   return (
     <aside className="flex h-full w-full flex-col border-r border-white/10 bg-[#151515]">
@@ -135,6 +145,7 @@ export default function Sidebar() {
             variant="ghost"
             fullWidth
             size="small"
+            disabled={isLoggingOut}
             sx={{
               mt: 1,
               justifyContent: sidebarCollapsed ? "center" : "flex-start",
@@ -143,10 +154,18 @@ export default function Sidebar() {
               color: "#ff6a3d",
               "&:hover": { color: "#ff6a3d", backgroundColor: "rgba(255,59,0,0.08)" },
             }}
-            onClick={() => signOut({ callbackUrl: "/login" })}
+            onClick={() => {
+              void handleLogout();
+            }}
             aria-label="Logout"
           >
-            {sidebarCollapsed ? <LogOut size={18} /> : "Logout"}
+            {isLoggingOut ? (
+              <Spinner size="sm" color="#ff6a3d" />
+            ) : sidebarCollapsed ? (
+              <LogOut size={18} />
+            ) : (
+              "Logout"
+            )}
           </Button>
         </Tooltip>
       </div>

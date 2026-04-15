@@ -57,7 +57,13 @@ export default function DeckCard({ deck, onRename, onArchive }: DeckCardProps) {
         </div>
       ) : null}
 
-      <div className={isNavigating ? "pointer-events-none opacity-0" : "flex items-start justify-between gap-3"}>
+      <div
+        className={
+          isNavigating
+            ? "flex items-start justify-between gap-3 pointer-events-none opacity-0"
+            : "flex items-start justify-between gap-3"
+        }
+      >
         <div className="min-w-0 space-y-2">
           <p
             className="truncate text-lg font-semibold text-[#ff6a3d]"

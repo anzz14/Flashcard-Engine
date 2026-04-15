@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
-import CardList from "@/components/cards/CardList";
-import BackToDeckButton from "@/components/deck/BackToDeckButton";
+import EditDeckCardsClient from "@/components/deck/EditDeckCardsClient";
 import { auth } from "@/lib/auth";
 import { getCardsForDeck } from "@/services/cardService";
 import { getDeckById } from "@/services/deckService";
@@ -36,15 +35,10 @@ export default async function EditDeckCardsPage({ params }: Props) {
   );
 
   return (
-    <div className="space-y-4">
-     
-      <div className="flex items-center gap-3">
-        <BackToDeckButton deckId={deckId} />
-      </div>
-
-      <p className="font-bold text-white">{deck.cardCount} cards total</p>
-
-      <CardList deckId={deckId} topics={uniqueTopics} />
-    </div>
+    <EditDeckCardsClient
+      deckId={deckId}
+      deckCardCount={deck.cardCount}
+      uniqueTopics={uniqueTopics}
+    />
   );
 }
