@@ -42,8 +42,16 @@ export async function POST(req: Request) {
 		try {
 			extractedText = await extractTextFromPDF(buffer);
 		} catch (e) {
-			if (e instanceof PDFExtractionError) {
-				return apiError(e.message, 422);
+			console.error("PDF error caught in route:", {
+				name: (e as any)?.name,
+				message: (e as any)?.message,
+				isInstanceof: e instanceof PDFExtractionError,
+				fullError: e,
+			});
+
+			// Fallback to name-based check in case instanceof fails due to module isolation
+			if ((e as any)?.name === "PDFExtractionError" || e instanceof PDFExtractionError) {
+				return apiError((e as Error).message, 422);
 			}
 
 			const message = e instanceof Error ? e.message.toLowerCase() : "";
